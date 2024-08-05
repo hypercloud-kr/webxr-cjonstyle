@@ -1,1 +1,1 @@
-export const XR8_MODE = false;
+export const XR8_MODE = true;

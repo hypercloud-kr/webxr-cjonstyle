@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AboutPage, RootPage } from '@/pages';
+import { AboutPage } from '@/pages';
 import { MobileLayout } from '@/components';
 const ArPage = lazy(() => import('@pages/ar.tsx'));
 
@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <RootPage />,
+        element: <ArPage />,
       },
       {
         path: '/ar',

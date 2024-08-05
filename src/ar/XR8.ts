@@ -1,11 +1,11 @@
 import { ArManager, updateDeltaTime } from '@/ar/ArManager';
 
-declare let XR8: unknown;
-declare let XRExtras: unknown;
+declare let XR8: any;
+declare let XRExtras: any;
 
 declare global {
   interface Window {
-    LandingPage: unknown;
+    LandingPage: any;
   }
 }
 
@@ -57,7 +57,7 @@ const XR8Renderer = (canvas: HTMLCanvasElement) => ({
     // videoHeight,
     canvasWidth,
     canvasHeight,
-  }) => {
+  }: any) => {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
   },
