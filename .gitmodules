@@ -1,3 +1,3 @@
 [submodule "src/common"]
 	path = src/common
-	url = https://${PACKAGE_TOKEN}@github.com/hypercloud-kr/webxr-components.git
+	url = git@github.com:hypercloud-kr/webxr-components.git
