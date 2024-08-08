@@ -32,6 +32,7 @@ const XR8Renderer = (canvas: HTMLCanvasElement) => ({
   onStart: () => {
     XR8.Threejs.configure({ renderCameraTexture: false });
     const xrScene = XR8.Threejs.xrScene(); // Get the 3js scene from XR8.Threejs
+    if (!xrScene) location.reload();
     xrScene.renderer.antialias = true;
     xrScene.renderer.alpha = true;
     // Scene 관련 로직

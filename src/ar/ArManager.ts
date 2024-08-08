@@ -1,8 +1,9 @@
 import { XR8_MODE } from '@/ar/config.ts';
 import { IAnimate } from '@hypercloud-kr/webxr-node/dist/animate';
-import { SampleScene } from '@/ar/sample/SampleScene.ts';
+import { MainScene } from '@/ar/MainScene';
 import * as THREE from 'three';
 import { XrSceneConfig } from '@hypercloud-kr/webxr-node/dist/XrScene.ts';
+import { addTouchEvent } from './touch/touch';
 
 const clock = new THREE.Clock();
 export let deltaTime = 0;
@@ -59,24 +60,25 @@ export class ArManager implements IAnimate {
   // 여러개의 Scene을 관리할 수 있도록
   // private Scene1: Scene1;
   // private Scene2: Scene2;
-  private sampleScene: SampleScene;
+  private mainScene: MainScene;
   // 8ThWall에서 Slam용으로 사용할 카메라 return
   public get xr8Camera() {
-    return this.sampleScene.camera;
+    return this.mainScene.camera;
   }
   constructor(config: XrSceneConfig) {
-    this.sampleScene = new SampleScene(config);
+    this.mainScene = new MainScene(config);
     // this.Scene1 = new Scene1(canvas);
     // this.Scene2 = new Scene2(canvas);
+    addTouchEvent(this.mainScene);
   }
   update() {
-    this.sampleScene.update();
+    this.mainScene.update();
     // this.Scene1.update();
     // this.Scene2.update();
   }
 
   render() {
-    this.sampleScene.render();
+    this.mainScene.render();
     // this.Scene1.render();
     // this.Scene2.render();
   }
