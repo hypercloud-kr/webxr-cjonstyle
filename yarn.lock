@@ -501,10 +501,10 @@
     react-calendar "^5.0.0"
     recharts "^2.12.7"
 
-"@hypercloud-kr/webxr-node@^1.0.1":
-  version "1.0.1"
-  resolved "https://npm.pkg.github.com/download/@hypercloud-kr/webxr-node/1.0.1/a9a4ec6c649ca15d2f3e7754960b61a86415cc84#a9a4ec6c649ca15d2f3e7754960b61a86415cc84"
-  integrity sha512-WwbcrqLgiZRZn1ODNGaknNUhV7CTMiPT3rTgE5EgOwzcQjQIf3inmSFJar4uV6LfUbiCueX3jVVYJSJFEcu6Wg==
+"@hypercloud-kr/webxr-node@^1.0.4":
+  version "1.0.4"
+  resolved "https://npm.pkg.github.com/download/@hypercloud-kr/webxr-node/1.0.4/904f597e29b77b651efa2b21bd27e06144a26d25#904f597e29b77b651efa2b21bd27e06144a26d25"
+  integrity sha512-pDrygtxmjQ4PuSt2z60Lp4I8lAJYcxide8E2IBwSnfFBXlPPVn+ANJZNWIn+ZQvnuDfo+alIc1gfbmUh3yMMPw==
   dependencies:
     eases "^1.0.8"
     three "0.156.1"
