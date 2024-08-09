@@ -27,7 +27,7 @@ function ArComponent() {
     }
   }, []);
 
-  console.log('ArComponent');
+  // console.log('ArComponent');
 
   return <StyledCanvas id={'arCanvas'} />;
 }

@@ -5,6 +5,8 @@ import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { setEnvironment } from './background/background';
 import Environment from '@/assets/imgs/environment.jpg';
 import { Loader } from './background/loader';
+import { objectArr } from './constants/constants';
+import { stateStore } from '@/ar/storage';
 
 type SampleSceneConfig = XrSceneConfig & {
   someProps?: string;
@@ -24,7 +26,25 @@ export class MainScene extends XrScene {
       Environment,
       Loader.textureLoader
     );
-    const sampleObject = new MainObject();
+    objectArr.sort(() => Math.random() - 0.5);
+    stateStore.setSuffleItems();
+    const sampleObject = new MainObject(objectArr[0]);
     this.appendChild(sampleObject);
+
+    const sampleObject2 = new MainObject(objectArr[1]);
+    sampleObject2.position.set(0, 0, -5);
+    this.appendChild(sampleObject2);
+
+    const sampleObject3 = new MainObject(objectArr[2]);
+    sampleObject3.position.set(0, 0, -2);
+    this.appendChild(sampleObject3);
+
+    const sampleObject4 = new MainObject(objectArr[3]);
+    sampleObject4.position.set(-2, 0, 0);
+    this.appendChild(sampleObject4);
+
+    const sampleObject5 = new MainObject(objectArr[4]);
+    sampleObject5.position.set(2, 0, 0);
+    this.appendChild(sampleObject5);
   }
 }

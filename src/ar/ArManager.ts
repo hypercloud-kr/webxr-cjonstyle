@@ -60,7 +60,7 @@ export class ArManager implements IAnimate {
   // 여러개의 Scene을 관리할 수 있도록
   // private Scene1: Scene1;
   // private Scene2: Scene2;
-  private mainScene: MainScene;
+  public mainScene: MainScene;
   // 8ThWall에서 Slam용으로 사용할 카메라 return
   public get xr8Camera() {
     return this.mainScene.camera;

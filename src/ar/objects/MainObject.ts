@@ -3,14 +3,17 @@ import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { deltaTime } from '@/ar/ArManager.ts';
 import * as THREE from 'three';
 import { TouchableModelModule } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
+import { stateStore } from '@/ar/storage';
 
 export class MainObject extends XrObject {
   touchableModelModule;
-  constructor() {
+  item;
+  constructor(item) {
     super();
+    this.item = item;
     // 오브젝트 기본값 설정
     ResourceManager.instance
-      .loadGLTF('https://asset.hyper-cloud.kr/develop/glb/GiftBox.glb')
+      .loadGLTF(item.url)
       .then(this.onLoadModel.bind(this));
 
     this.touchableModelModule = new TouchableModelModule(this);
@@ -24,13 +27,24 @@ export class MainObject extends XrObject {
       mode: THREE.LoopOnce,
       repetitions: 1,
     });
-    this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
-      this.callBackFinishAnimation();
-    });
+    // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
+    //   this.callBackFinishAnimation();
+    // });
+    stateStore.setModelLoaded();
   }
 
-  onTouch(mesh: any) {
+  onTouch(mesh?: THREE.Intersection[]) {
     console.log(this.model.scene, mesh);
+    if (this.item.name !== stateStore.nextName()) {
+      return;
+    }
+    this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
+      console.log('finish', stateStore.getState());
+      this.callBackFinishAnimation();
+    });
+
+    stateStore.setItems(this.item.name);
+
     // this.model.animations.forEach((clip) => {
     //   const action = this.modelMixer.clipAction(clip);
     //   action.stop();
@@ -38,7 +52,15 @@ export class MainObject extends XrObject {
   }
 
   callBackFinishAnimation() {
-    console.log('finish');
+    console.log('finish', stateStore.getState());
+    stateStore.setIsFinished(this.item.name);
+    if (
+      stateStore
+        .getState()
+        .items.every((item) => item.isCollected && item.isFinished)
+    ) {
+      stateStore.setGameState('end');
+    }
   }
 
   update() {
