@@ -7,6 +7,7 @@ import Environment from '@/assets/imgs/environment.jpg';
 import { Loader } from './background/loader';
 import { objectArr } from './constants/constants';
 import { stateStore } from '@/ar/storage';
+import { PlaneObject } from './objects/PlaneObjet';
 
 type SampleSceneConfig = XrSceneConfig & {
   someProps?: string;
@@ -46,6 +47,9 @@ export class MainScene extends XrScene {
     const sampleObject5 = new MainObject(objectArr[4]);
     sampleObject5.position.set(2, 0, 0);
     this.appendChild(sampleObject5);
+
+    const plane = new PlaneObject();
+    this.appendChild(plane);
   }
   release(): void {
     super.release();

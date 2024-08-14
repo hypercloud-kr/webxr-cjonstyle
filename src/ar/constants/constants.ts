@@ -29,6 +29,7 @@ export const globalState = {
       name: 'item1',
       isCollected: false,
       isFinished: false,
+      img: '',
     },
     {
       name: 'item2',
