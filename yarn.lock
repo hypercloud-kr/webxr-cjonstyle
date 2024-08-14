@@ -476,6 +476,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
+"@hypercloud-kr/github-templates@^0.1.1":
+  version "0.1.1"
+  resolved "https://npm.pkg.github.com/download/@hypercloud-kr/github-templates/0.1.1/11bd57285f143675b021123069611a448f7931b1#11bd57285f143675b021123069611a448f7931b1"
+  integrity sha512-oJS/+ctq0Tw1cmguvDYwclHokWYHBaTSgbEdH5GoaV2SfjZva8spVWMuV85VHPcxOn4KIKn7jq+KOJov/iAP0g==
+
 "@hypercloud-kr/graphics-components@^0.2.2":
   version "0.2.2"
   resolved "https://npm.pkg.github.com/download/@hypercloud-kr/graphics-components/0.2.2/fb86a6c28950575d809f416411606de096b10bcd#fb86a6c28950575d809f416411606de096b10bcd"
@@ -501,10 +506,10 @@
     react-calendar "^5.0.0"
     recharts "^2.12.7"
 
-"@hypercloud-kr/webxr-node@^1.0.4":
-  version "1.0.4"
-  resolved "https://npm.pkg.github.com/download/@hypercloud-kr/webxr-node/1.0.4/904f597e29b77b651efa2b21bd27e06144a26d25#904f597e29b77b651efa2b21bd27e06144a26d25"
-  integrity sha512-pDrygtxmjQ4PuSt2z60Lp4I8lAJYcxide8E2IBwSnfFBXlPPVn+ANJZNWIn+ZQvnuDfo+alIc1gfbmUh3yMMPw==
+"@hypercloud-kr/webxr-node@^1.0.7":
+  version "1.0.7"
+  resolved "https://npm.pkg.github.com/download/@hypercloud-kr/webxr-node/1.0.7/4a8bf033b01715edd11f1929b7fb69b389d3d55a#4a8bf033b01715edd11f1929b7fb69b389d3d55a"
+  integrity sha512-ILJ7ZBj8z8Jcnn2AWuU9hsNH9gWPB9f9FgvZC36Y4gfsJSnNxUq4e1Kcim3yvW3LteDgOw5JCDo5jg5YoE4Faw==
   dependencies:
     eases "^1.0.8"
     three "0.156.1"

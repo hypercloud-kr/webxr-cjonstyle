@@ -25,6 +25,9 @@ function ArComponent() {
     } else {
       ArManager.init({ canvas });
     }
+    return () => {
+      if (ArManager.initialized) ArManager.instance.release();
+    };
   }, []);
 
   // console.log('ArComponent');

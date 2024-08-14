@@ -16,13 +16,13 @@ export const load8ThWall = (canvas: HTMLCanvasElement) => {
     XR8.Threejs.pipelineModule(), // Creates a ThreeJS AR Scene.
     XR8.XrController.pipelineModule(), // Enables SLAM tracking.
     window.LandingPage.pipelineModule(), // Detects unsupported browsers and gives hints.
+    // XRExtras.FullWindowCanvas.pipelineModule(), // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(), // Manages the loading screen on startup.
     XRExtras.RuntimeError.pipelineModule(), // Shows an error image on runtime error.
     XR8Renderer(canvas),
   ]);
   const allowedDevices = XR8.XrConfig.device().ANY;
   XR8.XrController.configure({ imageTargets: [] });
-
   // Open the camera and start running the camera run loop.
   XR8.run({ canvas, allowedDevices });
 };
@@ -30,7 +30,7 @@ export const load8ThWall = (canvas: HTMLCanvasElement) => {
 const XR8Renderer = (canvas: HTMLCanvasElement) => ({
   name: 'webxr-boilerplate',
   onStart: () => {
-    XR8.Threejs.configure({ renderCameraTexture: false });
+    XR8.Threejs.configure({ renderCameraTexture: true });
     const xrScene = XR8.Threejs.xrScene(); // Get the 3js scene from XR8.Threejs
     if (!xrScene) location.reload();
     xrScene.renderer.antialias = true;

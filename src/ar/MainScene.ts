@@ -47,4 +47,7 @@ export class MainScene extends XrScene {
     sampleObject5.position.set(2, 0, 0);
     this.appendChild(sampleObject5);
   }
+  release(): void {
+    super.release();
+  }
 }

@@ -57,12 +57,11 @@ export class MainObject extends XrObject {
     if (
       stateStore
         .getState()
-        .items.every((item) => item.isCollected && item.isFinished)
+        .items.every(item => item.isCollected && item.isFinished)
     ) {
       stateStore.setGameState('end');
     }
   }
-
   update() {
     // deltaTime을 곱해줘야 디바이스 성능에 따라 일정한 속도로 움직임
     this.modelGroup.rotation.y += (Math.PI / 4) * deltaTime; //초당 90도

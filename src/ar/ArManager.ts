@@ -39,9 +39,8 @@ export class ArManager implements IAnimate {
       return;
     }
     this._instance = new ArManager(config);
-
     // Solve InitCallback
-    this.initCallbacks.forEach((callback) => callback());
+    this.initCallbacks.forEach(callback => callback());
     this.initCallbacks = [];
     // 8ThWall은 8ThWall Init 부분에서 처리
     if (!XR8_MODE) {
@@ -70,6 +69,9 @@ export class ArManager implements IAnimate {
     // this.Scene1 = new Scene1(canvas);
     // this.Scene2 = new Scene2(canvas);
     addTouchEvent(this.mainScene);
+  }
+  release() {
+    this.mainScene.release();
   }
   update() {
     this.mainScene.update();
