@@ -22,7 +22,7 @@
     "@emotion/styled": "^11.13.0",
     "@hypercloud-kr/graphics-components": "^0.2.2",
     "@hypercloud-kr/styling-kit": "^0.7.1",
-    "@hypercloud-kr/webxr-node": "^1.0.4",
+    "@hypercloud-kr/webxr-node": "^1.0.7",
     "@types/three": "0.156.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -30,6 +30,7 @@
     "three": "0.156.1"
   },
   "devDependencies": {
+    "@hypercloud-kr/github-templates": "^0.1.1",
     "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

@@ -7,12 +7,14 @@ const devConfig = {
   VITE_HARS_API: 'https://api.dev.hars.kr',
   VITE_CUSTOM_API: 'https://custom.dev.hars.kr',
   VITE_NODE_ENV: 'development',
+  HOST_IP: '0.0.0.0',
 };
 
 const prodConfig = {
   VITE_HARS_API: 'https://api.hars.kr',
   VITE_CUSTOM_API: 'https://custom.hars.kr',
   VITE_NODE_ENV: 'production',
+  HOST_IP: 'local.hyper-cloud.kr',
 };
 
 const getConfig = (mode: string) => {
@@ -63,7 +65,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       https: true as never,
-      host: 'local.hyper-cloud.kr',
+      host: getConfig(mode).HOST_IP,
       port: 4000,
     },
     define: {
