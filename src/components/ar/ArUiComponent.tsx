@@ -51,8 +51,10 @@ function ArUiComponent() {
         0
       );
       setTimerWidth(progressPercentage);
+      if (stateStore.getState().gameState === 'end') {
+        return;
+      }
       //   progressBar.style.width = progressPercentage + '%';
-
       if (elapsedTime < duration) {
         requestAnimationFrame(animateProgressBar);
       } else if (callback) {

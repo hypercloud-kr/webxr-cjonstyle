@@ -28,7 +28,7 @@ export class MainScene extends XrScene {
       Loader.textureLoader
     );
     objectArr.sort(() => Math.random() - 0.5);
-    stateStore.setSuffleItems();
+    stateStore.initItems();
     const sampleObject = new MainObject(objectArr[0]);
     this.appendChild(sampleObject);
 
