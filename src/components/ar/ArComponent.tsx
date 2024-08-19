@@ -27,6 +27,10 @@ function ArComponent() {
     }
     return () => {
       if (ArManager.initialized) ArManager.instance.release();
+      if (XR8) {
+        XR8.stop();
+        XR8.clearCameraPipelineModules();
+      }
     };
   }, []);
 

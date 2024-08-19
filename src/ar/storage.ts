@@ -21,18 +21,23 @@ export const stateStore = {
   },
   setItems(name) {
     const items = state.items.slice();
-    items.find((item) => item.name === name).isCollected = true;
+    items.find(item => item.name === name).isCollected = true;
     state = { ...state, items };
     emitChange();
   },
   setIsFinished(name) {
     const items = state.items.slice();
-    items.find((item) => item.name === name).isFinished = true;
+    items.find(item => item.name === name).isFinished = true;
     state = { ...state, items };
     emitChange();
   },
-  setSuffleItems() {
-    state = { ...state, items: state.items.sort(() => Math.random() - 0.5) };
+  initItems() {
+    const items = state.items.slice().sort(() => Math.random() - 0.5);
+    items.forEach(item => {
+      item.isCollected = false;
+      item.isFinished = false;
+    });
+    state = { ...state, items };
     emitChange();
   },
   nextName() {
@@ -45,7 +50,7 @@ export const stateStore = {
   subscribe(listener) {
     listeners = [...listeners, listener];
     return () => {
-      listeners = listeners.filter((l) => l !== listener);
+      listeners = listeners.filter(l => l !== listener);
     };
   },
   getState() {

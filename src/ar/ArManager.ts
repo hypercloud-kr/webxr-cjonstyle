@@ -3,7 +3,7 @@ import { IAnimate } from '@hypercloud-kr/webxr-node/dist/animate';
 import { MainScene } from '@/ar/MainScene';
 import * as THREE from 'three';
 import { XrSceneConfig } from '@hypercloud-kr/webxr-node/dist/XrScene.ts';
-import { addTouchEvent } from './touch/touch';
+import { addTouchEvent, removeTouchEvent } from './touch/touch';
 
 const clock = new THREE.Clock();
 export let deltaTime = 0;
@@ -54,6 +54,10 @@ export class ArManager implements IAnimate {
       animate(this.instance)(1);
     }
   }
+
+  static initialize() {
+    this._instance = undefined;
+  }
   // Static Method End
 
   // 여러개의 Scene을 관리할 수 있도록
@@ -72,6 +76,8 @@ export class ArManager implements IAnimate {
   }
   release() {
     this.mainScene.release();
+    removeTouchEvent();
+    ArManager.initialize();
   }
   update() {
     this.mainScene.update();
