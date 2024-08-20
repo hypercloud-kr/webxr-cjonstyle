@@ -13,6 +13,7 @@ export function updateDeltaTime() {
 
 export class ArManager implements IAnimate {
   static _instance: ArManager;
+  ready;
   static get initialized() {
     return !!this._instance;
   }
@@ -39,6 +40,11 @@ export class ArManager implements IAnimate {
       return;
     }
     this._instance = new ArManager(config);
+    console.log(config.isFirstStart);
+    if (!config.isFirstStart) {
+      const mainGroup = this.instance.mainScene.children[0];
+      mainGroup.initAfterTouch();
+    }
     // Solve InitCallback
     this.initCallbacks.forEach(callback => callback());
     this.initCallbacks = [];
@@ -58,6 +64,18 @@ export class ArManager implements IAnimate {
   static initialize() {
     this._instance = undefined;
   }
+
+  static initGroup(setIsOpenGuide2?) {
+    const mainGroup = this.instance.mainScene.children[0];
+    const callback = () => {
+      if (setIsOpenGuide2) setIsOpenGuide2(false);
+    };
+    mainGroup.init(callback);
+  }
+
+  static setReady() {
+    this.instance.ready = true;
+  }
   // Static Method End
 
   // 여러개의 Scene을 관리할 수 있도록
@@ -73,7 +91,38 @@ export class ArManager implements IAnimate {
     // this.Scene1 = new Scene1(canvas);
     // this.Scene2 = new Scene2(canvas);
     addTouchEvent(this.mainScene);
+    this.mainGroup = this.mainScene.children[0];
+    // window.addEventListener("deviceorientation", this.mainGroup.handleOrientation, true);
+    // const requestPermission = (window.DeviceOrientationEvent as unknown as DeviceOrientationEventiOS)?.requestPermission;
+    // if (typeof (DeviceMotionEvent) !== 'undefined' && typeof (requestPermission) === 'function') {
+    //   requestPermission().then((response) => {
+    //       if (response === 'granted') {
+    //           window.addEventListener('devicemotion', this.mainGroup.handleOrientation)
+    //       }
+    //   })
+    // }
   }
+  handleOrientation = event => {
+    const { absolute, alpha, beta, gamma } = event;
+    let div;
+    if (!document.getElementById('test')) {
+      div = document.createElement('div');
+    } else {
+      div = document.getElementById('test');
+    }
+    div.id = 'test';
+    div.innerHTML = `absolute: ${absolute}, alpha: ${alpha}, beta: ${beta}, gamma: ${gamma}`;
+    div.style.cssText =
+      'position: fixed; top: 30px; left: 0; z-index: 1000; background-color0padding: 10px;';
+    document.body.appendChild(div);
+
+    // const pos = this.parent.camera.position;
+    // const cameraDirection = new THREE.Vector3();
+    // this.parent.camera.getWorldDirection(cameraDirection);
+    // this.mainScene.children[0].modelGroup.position.set(pos.x + cameraDirection.x * 2, pos.y + cameraDirection.y * 2, pos.z + cameraDirection.z * 2);
+    // this.mainScene.children[0].modelGroup.lookAt(pos);
+    // this.mainScene.children[0].modelGroup.position.z = +beta - 90;
+  };
   release() {
     this.mainScene.release();
     removeTouchEvent();
@@ -84,7 +133,6 @@ export class ArManager implements IAnimate {
     // this.Scene1.update();
     // this.Scene2.update();
   }
-
   render() {
     this.mainScene.render();
     // this.Scene1.render();

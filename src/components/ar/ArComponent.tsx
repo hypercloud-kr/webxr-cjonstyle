@@ -1,8 +1,12 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { XR8_MODE } from '@/ar/config';
 import { ArManager } from '@/ar/ArManager';
 import { load8ThWall } from '@/ar/XR8';
+import useDeviceAlertManager from '../ui/useDeviceAlertManager';
+import GuideComponent from '../ui/GuideComponent';
+import Guide2Component from '../ui/Guide2Component';
+import { stateStore } from '@/ar/storage';
 
 declare global {
   interface Window {
@@ -11,6 +15,10 @@ declare global {
 }
 
 function ArComponent() {
+  const [isOpenGuide, setIsOpenGuide] = useState(
+    stateStore.getState().firstStart
+  );
+  const [isOpenGuide2, setIsOpenGuide2] = useState(false);
   useEffect(() => {
     const canvas = document.getElementById('arCanvas') as HTMLCanvasElement;
     if (!canvas) return;
@@ -18,7 +26,7 @@ function ArComponent() {
     canvas.height = window.innerHeight;
 
     const loadXr = () => {
-      load8ThWall(canvas);
+      load8ThWall(canvas, stateStore.getState().firstStart);
     };
     if (XR8_MODE) {
       window.XR8 ? loadXr() : window.addEventListener('xrloaded', loadXr);
@@ -31,12 +39,24 @@ function ArComponent() {
         XR8.stop();
         XR8.clearCameraPipelineModules();
       }
+      stateStore.setRestart();
     };
   }, []);
-
+  useDeviceAlertManager();
   // console.log('ArComponent');
 
-  return <StyledCanvas id={'arCanvas'} />;
+  return (
+    <>
+      <StyledCanvas id={'arCanvas'} />
+      {isOpenGuide && (
+        <GuideComponent
+          setIsOpenGuide={setIsOpenGuide}
+          setIsOpenGuide2={setIsOpenGuide2}
+        />
+      )}
+      {isOpenGuide2 && <Guide2Component setIsOpenGuide={setIsOpenGuide2} />}
+    </>
+  );
 }
 
 export default ArComponent;

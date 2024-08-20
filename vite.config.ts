@@ -71,5 +71,6 @@ export default defineConfig(({ mode }) => {
     define: {
       ...getMetaEnv(mode),
     },
+    assetsInclude: ['**/*.glb'],
   };
 });

@@ -7,7 +7,9 @@ import Environment from '@/assets/imgs/environment.jpg';
 import { Loader } from './background/loader';
 import { objectArr } from './constants/constants';
 import { stateStore } from '@/ar/storage';
-import { PlaneObject } from './objects/PlaneObjet';
+// import { PlaneObject } from './objects/PlaneObjet';
+import { MainGroup } from './objects/MainGroup';
+import { PlaneGrid } from './objects/PlaneGrid';
 
 type SampleSceneConfig = XrSceneConfig & {
   someProps?: string;
@@ -17,7 +19,7 @@ export class MainScene extends XrScene {
   constructor(config: SampleSceneConfig) {
     super(config);
     ResourceManager.init(this.renderer, this.scene);
-    this.camera.position.set(0, 1, 2);
+    this.camera.position.set(0, 5, 2);
     // 카메라, renderer, scene, light등 설정
     Loader.getInstance().init();
     setEnvironment(
@@ -30,26 +32,57 @@ export class MainScene extends XrScene {
     objectArr.sort(() => Math.random() - 0.5);
     stateStore.initItems();
     const sampleObject = new MainObject(objectArr[0]);
-    this.appendChild(sampleObject);
+    sampleObject.position.set(
+      objectArr[0].position[0],
+      objectArr[0].position[1],
+      objectArr[0].position[2]
+    );
+    // this.appendChild(sampleObject);
 
     const sampleObject2 = new MainObject(objectArr[1]);
-    sampleObject2.position.set(0, 0, -5);
-    this.appendChild(sampleObject2);
+    sampleObject2.position.set(
+      objectArr[1].position[0],
+      objectArr[1].position[1],
+      objectArr[1].position[2]
+    );
+    // this.appendChild(sampleObject2);
 
     const sampleObject3 = new MainObject(objectArr[2]);
-    sampleObject3.position.set(0, 0, -2);
-    this.appendChild(sampleObject3);
+    sampleObject3.position.set(
+      objectArr[2].position[0],
+      objectArr[2].position[1],
+      objectArr[2].position[2]
+    );
+    // this.appendChild(sampleObject3);
 
     const sampleObject4 = new MainObject(objectArr[3]);
-    sampleObject4.position.set(-2, 0, 0);
-    this.appendChild(sampleObject4);
+    sampleObject4.position.set(
+      objectArr[3].position[0],
+      objectArr[3].position[1],
+      objectArr[3].position[2]
+    );
+    // this.appendChild(sampleObject4);
 
     const sampleObject5 = new MainObject(objectArr[4]);
-    sampleObject5.position.set(2, 0, 0);
-    this.appendChild(sampleObject5);
+    sampleObject5.position.set(
+      objectArr[4].position[0],
+      objectArr[4].position[1],
+      objectArr[4].position[2]
+    );
+    // this.appendChild(sampleObject5);
 
-    const plane = new PlaneObject();
-    this.appendChild(plane);
+    const plane = new PlaneGrid();
+    plane.position.set(0, -1, 0);
+    // this.appendChild(plane);
+    const group = new MainGroup(plane);
+    group.appendChild(sampleObject);
+    group.appendChild(sampleObject2);
+    group.appendChild(sampleObject3);
+    group.appendChild(sampleObject4);
+    group.appendChild(sampleObject5);
+    group.appendChild(plane);
+    this.appendChild(group);
+    console.log(this);
   }
   release(): void {
     super.release();

@@ -1,7 +1,7 @@
 // This is an example of a third-party store
 // that you might need to integrate with React.
 
-import { globalState } from './constants/constants';
+import { globalState, objectArr } from './constants/constants';
 
 // If your app is fully built with React,
 // we recommend using React state instead.
@@ -19,6 +19,10 @@ export const stateStore = {
     state = { ...state, isModelLoaded: true };
     emitChange();
   },
+  setReady() {
+    state = { ...state, ready: true };
+    emitChange();
+  },
   setItems(name) {
     const items = state.items.slice();
     items.find(item => item.name === name).isCollected = true;
@@ -29,6 +33,18 @@ export const stateStore = {
     const items = state.items.slice();
     items.find(item => item.name === name).isFinished = true;
     state = { ...state, items };
+    emitChange();
+  },
+  setScore() {
+    state = { ...state, score: state.score + 10 };
+    emitChange();
+  },
+  setCount() {
+    state = { ...state, count: state.count + 1 };
+    emitChange();
+  },
+  setRestart() {
+    state = { ...state, firstStart: false };
     emitChange();
   },
   initItems() {
@@ -46,6 +62,11 @@ export const stateStore = {
         return state.items[i].name;
       }
     }
+  },
+  sufflePosition() {
+    const objArr = objectArr.slice().sort(() => Math.random() - 0.5);
+    state = { ...state, position: objArr.map(item => item.position) };
+    emitChange();
   },
   subscribe(listener) {
     listeners = [...listeners, listener];

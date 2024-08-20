@@ -6,20 +6,20 @@ import { stateStore } from '@/ar/storage';
 
 const body700 = typography.body02[700];
 
-const StartingPage = () => {
+const PrecautionsComponent = () => {
   const onClick = () => {
-    stateStore.setGameState('precautions');
+    stateStore.setGameState('running');
   };
   return (
     <StartingWrapper>
+      유의사항
       <ImgWrapper>
-        {/* <Img src={mainImg} alt="" /> */}
         <Button onClick={onClick}>시작하기</Button>
       </ImgWrapper>
     </StartingWrapper>
   );
 };
-export default StartingPage;
+export default PrecautionsComponent;
 
 const StartingWrapper = styled.div`
   position: fixed;
@@ -34,7 +34,7 @@ const StartingWrapper = styled.div`
         url(${backgroundImg})
         0 0px / 100% 100%
         no-repeat; */
-  background: rgb(211, 211, 211) url(/backgroundImg.png) 0 0px;
+  /* background: rgb(211, 211, 211) url(/backgroundImg.png) 0 0px; */
   object-fit: cover;
   background-position: center;
   background-size: cover;
