@@ -1,4 +1,4 @@
-import { touchManager } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchManager';
+import { touchManager } from '../TouchManager'; //'@hypercloud-kr/webxr-node/dist/modules/touch/TouchManager';
 import * as THREE from 'three';
 
 export const addTouchEvent = (scene: any) => {
