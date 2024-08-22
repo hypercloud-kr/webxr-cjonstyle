@@ -2,7 +2,7 @@ import { XrObject } from '@hypercloud-kr/webxr-node/dist/XrObject';
 import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { ArManager, deltaTime } from '@/ar/ArManager.ts';
 import * as THREE from 'three';
-import { TouchableModelModule } from '../TouchableModel'; //from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
+import { TouchableModelModule } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
 import { stateStore } from '@/ar/storage';
 
 export class MainObject extends XrObject {
