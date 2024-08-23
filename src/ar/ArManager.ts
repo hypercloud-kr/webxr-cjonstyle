@@ -44,6 +44,7 @@ export class ArManager implements IAnimate {
     if (!config.isFirstStart) {
       const mainGroup = this.instance.mainScene.children[0];
       mainGroup.initAfterTouch();
+      this.setReady();
     }
     // Solve InitCallback
     this.initCallbacks.forEach(callback => callback());
@@ -66,9 +67,12 @@ export class ArManager implements IAnimate {
   }
 
   static initGroup(setIsOpenGuide2?) {
-    const mainGroup = this.instance.mainScene.children[0];
+    const mainGroup = this.instance.mainScene.children.find(
+      item => item.id === 'mainGroup'
+    );
     const callback = () => {
       if (setIsOpenGuide2) setIsOpenGuide2(false);
+      ArManager.setReady();
     };
     mainGroup.init(callback);
   }

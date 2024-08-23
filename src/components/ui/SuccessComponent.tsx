@@ -1,8 +1,15 @@
 import styled from '@emotion/styled';
 import { stateStore } from '@/ar/storage';
+import { useEffect, useState } from 'react';
 
 export const SuccessComponent = () => {
-  const apply = async () => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    setResultState(stateStore.getState().score);
+  }, [stateStore.getState().score]);
+  const share = async () => {
     try {
       // 공유할 데이터 설정
       const shareData = {
@@ -19,19 +26,84 @@ export const SuccessComponent = () => {
     }
   };
   const replay = () => {
+    stateStore.setScore(true);
+    stateStore.setCount(true);
     stateStore.setGameState('running');
   };
-
+  const setResultState = score => {
+    // const score = stateStore.getState().score;
+    if (10 <= score && score < 40) {
+      setTitle('쇼핑뉴비');
+      setDescription('쇼핑의 시작은 당신과 함께!');
+    } else if (40 <= score && score < 60) {
+      setTitle('쇼핑초보');
+      setDescription('쇼핑의 시작은 당신과 함께!');
+    } else if (60 <= score && score < 90) {
+      setTitle('쇼핑고수');
+      setDescription('쇼핑의 시작은 당신과 함께!');
+    } else if (90 <= score) {
+      setTitle('쇼핑달인');
+      setDescription('쇼핑의 시작은 당신과 함께!');
+    }
+  };
   return (
-    <div>
-      <h1>Success</h1>
-      {stateStore.getState().score}
-      <ApplyProduct onClick={apply}>상품 응모하기</ApplyProduct>
-      <ReplayBtn onClick={replay}>replay</ReplayBtn>
-    </div>
+    <SuccessContainer>
+      <ResultContainer>
+        {stateStore.getState().score === 0 ? (
+          <div>Time out</div>
+        ) : (
+          <div>{title}</div>
+        )}
+
+        {stateStore.getState().score}
+        <div>티어</div>
+        <div>{description}</div>
+      </ResultContainer>
+      <ChoiceContainer>
+        <BtnGroup>
+          <ApplyProduct>상품 응모하기</ApplyProduct>
+          <ReplayBtn onClick={replay}>replay</ReplayBtn>
+        </BtnGroup>
+        <ShareGroup>
+          <ShareBtn onClick={share}>share</ShareBtn>
+        </ShareGroup>
+      </ChoiceContainer>
+    </SuccessContainer>
   );
 };
 
+const SuccessContainer = styled.div`
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+`;
+const ResultContainer = styled.div`
+  display: flex;
+  width: 80%;
+  height: 300px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+const ChoiceContainer = styled.div`
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+const BtnGroup = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
 const ReplayBtn = styled.button`
   background-color: #f00;
   color: #fff;
@@ -49,4 +121,13 @@ const ApplyProduct = styled.button`
   border: none;
   cursor: pointer;
   margin-top: 20px;
+`;
+const ShareGroup = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+const ShareBtn = styled.button`
+  border-radius: 50%;
 `;
