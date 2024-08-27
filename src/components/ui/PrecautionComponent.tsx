@@ -12,8 +12,20 @@ const PrecautionsComponent = () => {
   };
   return (
     <StartingWrapper>
-      유의사항
+      <PrecautionTitle>유의사항</PrecautionTitle>
       <ImgWrapper>
+        <ul>
+          <li>Chrom, Safari 브라우저 사용을 권장합니다.</li>
+          <li>
+            네트워크 환경에 따라 AR증강현실 로딩에 10초 이상의 시간이 소요될 수
+            있습니다.
+          </li>
+          <li>
+            사용자 디바이스가 물리적으로 불안정할 경우 AR 증강현실 체험이 어려울
+            수 있습니다.
+          </li>
+          <li>AR 콘텐츠 사용 시 주변 장애물이나 안전에 주의하시기 바랍니다.</li>
+        </ul>
         <Button onClick={onClick}>시작하기</Button>
       </ImgWrapper>
     </StartingWrapper>
@@ -40,6 +52,12 @@ const StartingWrapper = styled.div`
   background-size: cover;
 `;
 
+const PrecautionTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ImgWrapper = styled.div`
   display: inline-flex;
   margin-top: 111px;
@@ -50,8 +68,8 @@ const ImgWrapper = styled.div`
   gap: 24px;
 
   color: var(--white, var(--common-100, #fff));
-  text-align: center;
-  font: var(--display01-b);
+  /* text-align: center; */
+  /* font: var(--display01-b); */
   line-height: 142%;
 `;
 

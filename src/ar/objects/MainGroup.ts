@@ -4,9 +4,14 @@ import { PlaneObject } from './PlaneObjet';
 // import { TouchableModelModule } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
 import { stateStore } from '@/ar/storage';
 import { ArManager } from '../ArManager';
+import {
+  addOrientationEvent,
+  removeOrientationEvent,
+} from '@/utils/CustomEvent';
 let angle;
 export class MainGroup extends XrObject {
   grid;
+  id;
   touchableModelModule;
   constructor(grid) {
     super();
@@ -36,6 +41,7 @@ export class MainGroup extends XrObject {
     // if(stateStore.getState().firstStart) {
     //   this.init(() => {});
     // };
+    this.id = 'mainGroup';
   }
   // onTouch(mesh?: THREE.Intersection[]) {
   //   console.log(this.children, this.modelGroup, mesh[0].object);
@@ -50,36 +56,12 @@ export class MainGroup extends XrObject {
   // }
   init(callback) {
     this.modelGroup.visible = true;
-
-    window.addEventListener('deviceorientation', handleOrientation);
-    const requestPermission = (
-      window.DeviceOrientationEvent as unknown as DeviceOrientationEventiOS
-    )?.requestPermission;
-    if (
-      typeof DeviceMotionEvent !== 'undefined' &&
-      typeof requestPermission === 'function'
-    ) {
-      requestPermission().then(response => {
-        if (response === 'granted') {
-          window.addEventListener('devicemotion', handleOrientation);
-        }
-      });
-    }
-
+    addOrientationEvent(handleOrientation);
     window.addEventListener(
       'touchstart',
       () => {
-        window.removeEventListener('deviceorientation', handleOrientation);
-        window.removeEventListener('devicemotion', handleOrientation);
-        stateStore.setReady();
-        angle = null;
-
-        this.removeChild(this.grid);
-        const plane = new PlaneObject();
-        plane.position.set(0, -1, 0);
-        // plane.position.set(this.modelGroup.position.x, this.modelGroup.position.y, this.modelGroup.position.z);
-        this.appendChild(plane);
-
+        removeOrientationEvent(handleOrientation);
+        this.initAfterTouch();
         callback();
         ArManager.setReady();
       },
@@ -88,7 +70,7 @@ export class MainGroup extends XrObject {
   }
   initAfterTouch() {
     stateStore.setReady();
-    angle = 0;
+    angle = null;
     this.modelGroup.visible = true;
     this.removeChild(this.grid);
     const plane = new PlaneObject();
@@ -98,7 +80,7 @@ export class MainGroup extends XrObject {
   }
   update() {
     super.update();
-    this.modules.forEach(module => module.update());
+    // this.modules.forEach(module => module.update());
     if (angle !== null) {
       if (window.innerWidth < 1280) {
         const pos = this.parent.camera.position;
