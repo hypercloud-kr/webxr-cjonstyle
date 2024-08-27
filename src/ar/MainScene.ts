@@ -3,13 +3,15 @@ import { XrSceneConfig } from '@hypercloud-kr/webxr-node/dist/XrScene.ts';
 import { MainObject } from '@/ar/objects/MainObject';
 import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { setEnvironment } from './background/background';
-import Environment from '@/assets/imgs/environment.jpg';
+import Environment from '@/assets/imgs/Bluesky (1).jpg'; //'@/assets/imgs/environment.jpg';
 import { Loader } from './background/loader';
 import { objectArr } from './constants/constants';
 import { stateStore } from '@/ar/storage';
 // import { PlaneObject } from './objects/PlaneObjet';
 import { MainGroup } from './objects/MainGroup';
 import { PlaneGrid } from './objects/PlaneGrid';
+// import { addLight } from '@/utils/threeUtil';
+// import { ShaderObject } from './objects/ShaderObject';
 
 type SampleSceneConfig = XrSceneConfig & {
   someProps?: string;
@@ -63,8 +65,14 @@ export class MainScene extends XrScene {
     group.appendChild(sampleObject5);
     group.appendChild(plane);
     this.appendChild(group);
+    // addLight(this.scene);
+    // const a = new ShaderObject(this.scene)
+    // this.appendChild(a);
   }
   release(): void {
     super.release();
+  }
+  render(): void {
+    super.render();
   }
 }

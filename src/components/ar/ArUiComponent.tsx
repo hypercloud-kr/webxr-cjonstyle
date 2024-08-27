@@ -34,7 +34,7 @@ function ArUiComponent() {
               if (child.runAnimationOpen) child.runAnimationOpen();
             });
             setTimeCount(null);
-            startProgressBar(30000, () => {
+            startProgressBar(300000, () => {
               setIsFinishingGame(true);
               setTimeout(() => {
                 stateStore.setGameState('end');

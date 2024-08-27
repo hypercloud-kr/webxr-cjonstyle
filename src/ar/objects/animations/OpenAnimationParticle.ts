@@ -1,34 +1,33 @@
 import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { XrObject } from '@hypercloud-kr/webxr-node/dist/XrObject';
 import * as THREE from 'three';
-import clickFailEffect from '../../../assets/models/ClickFailEffect.glb';
+import openParticleAnimationModel from '../../../assets/models/BoxOpenGradationParticle2Only.glb';
 import { deltaTime } from '@/ar/ArManager';
 
-export class WrongAnimation extends XrObject {
+export class OpenAnimationParticle extends XrObject {
   constructor() {
     super();
     // 오브젝트 기본값 설정
     ResourceManager.instance
-      .loadGLTF(clickFailEffect)
+      .loadGLTF(openParticleAnimationModel)
       .then(this.onLoadModel.bind(this));
   }
 
   protected onLoadModelFinished() {
-    this.modelGroup.visible = false;
     this.modelGroup.userData.id = null;
+    // this.modelGroup.scale.set(0.5, 0.5, 0.5);
     this.setAnimation({
-      mode: THREE.LoopOnce,
-      repetitions: 1,
+      mode: THREE.LoopRepeat,
+      timeScale: 1.5,
     });
   }
 
   runAnimation() {
-    this.modelGroup.visible = true;
-    const action = this.animationsMap.get('Animation');
-    action?.reset();
-    this.animate('Animation').then(() => {
-      this.modelGroup.visible = false;
-    });
+    this.animate('Animation');
+  }
+
+  stopAnimation() {
+    this.modelMixer?.stopAllAction();
   }
 
   update() {}

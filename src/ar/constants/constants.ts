@@ -1,30 +1,35 @@
-import UggBox from '../../assets/models/box_ugg.glb';
+import UggBox from '../../assets/models/CJbox.glb';
 import img1 from '../../assets/imgs/background.jpg';
 import backImg1 from '../../assets/imgs/environment.jpg';
 
 export const objectArr = [
   {
     name: 'item1',
+    aniName: 'ani_1',
     url: UggBox,
     animateDelay: 0,
   },
   {
     name: 'item2',
+    aniName: 'ani_2',
     url: UggBox,
     animateDelay: 0.1,
   },
   {
     name: 'item3',
+    aniName: 'ani_3',
     url: UggBox,
     animateDelay: 0.2,
   },
   {
     name: 'item4',
+    aniName: 'ani_4',
     url: UggBox,
     animateDelay: 0.3,
   },
   {
     name: 'item5',
+    aniName: 'ani_5',
     url: UggBox,
     animateDelay: 0.4,
   },
