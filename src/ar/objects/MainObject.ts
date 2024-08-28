@@ -5,8 +5,8 @@ import * as THREE from 'three';
 import { TouchableModelModule } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
 import { stateStore } from '@/ar/storage';
 import { OpenAnimation } from './animations/OpenAnimation';
-import { CorrectAnimation } from './animations/CorrectAnimation';
-import { WrongAnimation } from './animations/WrongAnimation';
+// import { CorrectAnimation } from './animations/CorrectAnimation';
+// import { WrongAnimation } from './animations/WrongAnimation';
 // import axios from 'axios';
 // import { getDeviceId } from '../../util/util';
 
@@ -28,13 +28,13 @@ export class MainObject extends XrObject {
     this.openAnimationObject.position.copy(this.position);
     this.appendChild(this.openAnimationObject);
 
-    this.correctAnimationObject = new CorrectAnimation();
-    this.correctAnimationObject.position.copy(this.position);
-    this.appendChild(this.correctAnimationObject);
+    // this.correctAnimationObject = new CorrectAnimation();
+    // this.correctAnimationObject.position.copy(this.position);
+    // this.appendChild(this.correctAnimationObject);
 
-    this.wrongAnimationObject = new WrongAnimation();
-    this.wrongAnimationObject.position.copy(this.position);
-    this.appendChild(this.wrongAnimationObject);
+    // this.wrongAnimationObject = new WrongAnimation();
+    // this.wrongAnimationObject.position.copy(this.position);
+    // this.appendChild(this.wrongAnimationObject);
     // this.touchableModelModule = new TouchableModelModule(this);
     // this.modules.push(this.touchableModelModule);
     // this.touchableModelModule.onTouch = this.onTouch.bind(this);
@@ -51,9 +51,10 @@ export class MainObject extends XrObject {
     // this.modelGroup.scale.set(5,5,5);
     this.setAnimation({
       mode: THREE.LoopRepeat,
+      timeScale: 1.5,
     });
     setTimeout(() => {
-      this.animate('1');
+      this.animate('box_1');
     }, this.item.animateDelay * 1000);
     // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
     //   this.callBackFinishAnimation();
@@ -66,11 +67,10 @@ export class MainObject extends XrObject {
     this.modules.push(this.touchableModelModule);
     this.touchableModelModule.onTouch = this.onTouch.bind(this);
     // console.log(this.modelGroup.userData, this.modelGroup);
-
-    const action = this.animationsMap.get('1');
+    const action = this.animationsMap.get('box_1');
     action?.stop();
     setTimeout(() => {
-      this.animate('2');
+      this.animate(this.item.aniName);
       this.openAnimationObject.runAnimation();
     }, this.item.animateDelay * 1000);
   }
@@ -78,10 +78,10 @@ export class MainObject extends XrObject {
   onTouch(mesh?: THREE.Intersection[]) {
     console.log(this.model.scene, mesh, this.item.name, stateStore.nextName());
     if (this.item.name !== stateStore.nextName()) {
-      this.wrongAnimationObject.runAnimation();
+      // this.wrongAnimationObject.runAnimation();
       return;
     }
-    this.correctAnimationObject.runAnimation();
+    // this.correctAnimationObject.runAnimation();
     // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
     //   console.log('finish', stateStore.getState());
     // });
@@ -104,19 +104,23 @@ export class MainObject extends XrObject {
     ) {
       this.parent.children.forEach((child, i) => {
         if (i >= 5) return;
-        console.log(i, stateStore.getState().position);
         setTimeout(() => {
           child.modelGroup.position.set(
             stateStore.getState().position[i][0],
             stateStore.getState().position[i][1],
             stateStore.getState().position[i][2]
           );
+          setTimeout(() => {
+            child.animate(child.item.aniName);
+            child.openAnimationObject.runAnimation();
+          }, child.item.animateDelay * 1000);
         }, 1100);
         child.model.animations.forEach(clip => {
           const action = child.modelMixer?.clipAction(clip);
           action.clampWhenFinished = true;
           action?.reset();
           action?.stop();
+          child.openAnimationObject.stopAnimation();
         });
       });
       stateStore.setCount();

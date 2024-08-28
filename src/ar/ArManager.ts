@@ -40,7 +40,6 @@ export class ArManager implements IAnimate {
       return;
     }
     this._instance = new ArManager(config);
-    console.log(config.isFirstStart);
     if (!config.isFirstStart) {
       const mainGroup = this.instance.mainScene.children[0];
       mainGroup.initAfterTouch();
@@ -70,6 +69,7 @@ export class ArManager implements IAnimate {
     const mainGroup = this.instance.mainScene.children.find(
       item => item.id === 'mainGroup'
     );
+
     const callback = () => {
       if (setIsOpenGuide2) setIsOpenGuide2(false);
       ArManager.setReady();

@@ -1,37 +1,32 @@
-import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { XrObject } from '@hypercloud-kr/webxr-node/dist/XrObject';
-import * as THREE from 'three';
-import openAnimationModel from '../../../assets/models/box_ugg.glb';
-import { deltaTime } from '@/ar/ArManager';
+// import { deltaTime } from '@/ar/ArManager';
+import { OpenAnimationLight } from './OpenAnimationLight';
+import { OpenAnimationParticle } from './OpenAnimationParticle';
 
 export class OpenAnimation extends XrObject {
+  lightAnimation: OpenAnimationLight;
+  particleAnimation: OpenAnimationParticle;
   constructor() {
     super();
     // 오브젝트 기본값 설정
-    ResourceManager.instance
-      .loadGLTF(openAnimationModel)
-      .then(this.onLoadModel.bind(this));
-    // const geometry = new THREE.BoxGeometry(10, 0.1, 10);
-    // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  }
-
-  protected onLoadModelFinished() {
-    this.modelGroup.userData.id = null;
-    this.modelGroup.scale.set(0.5, 0.5, 0.5);
-    this.setAnimation({
-      mode: THREE.LoopRepeat,
-    });
+    this.lightAnimation = new OpenAnimationLight();
+    this.appendChild(this.lightAnimation);
+    this.particleAnimation = new OpenAnimationParticle();
+    this.appendChild(this.particleAnimation);
   }
 
   runAnimation() {
-    this.animate('2');
+    this.lightAnimation.runAnimation();
+    this.particleAnimation.runAnimation();
+  }
+
+  stopAnimation() {
+    this.lightAnimation.stopAnimation();
+    this.particleAnimation.stopAnimation();
   }
 
   update() {}
   render(): void {
-    // 모델이 로드되었을때만 렌더링
-    if (this.isLoaded) {
-      this.modelMixer?.update(deltaTime);
-    }
+    super.render();
   }
 }

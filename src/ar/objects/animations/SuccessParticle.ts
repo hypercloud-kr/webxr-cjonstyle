@@ -1,15 +1,15 @@
 import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { XrObject } from '@hypercloud-kr/webxr-node/dist/XrObject';
 import * as THREE from 'three';
-import clickFailEffect from '../../../assets/models/ClickFailEffect.glb';
+import clickParticleModel from '../../../assets/models/ClickCircleParticle.glb';
 import { deltaTime } from '@/ar/ArManager';
 
-export class WrongAnimation extends XrObject {
+export class SuccessParticle extends XrObject {
   constructor() {
     super();
     // 오브젝트 기본값 설정
     ResourceManager.instance
-      .loadGLTF(clickFailEffect)
+      .loadGLTF(clickParticleModel)
       .then(this.onLoadModel.bind(this));
   }
 
@@ -23,11 +23,13 @@ export class WrongAnimation extends XrObject {
   }
 
   runAnimation() {
+    // console.log(this.animationsMap);
     this.modelGroup.visible = true;
     const action = this.animationsMap.get('Animation');
-    action?.reset();
     this.animate('Animation').then(() => {
       this.modelGroup.visible = false;
+      action?.reset();
+      action?.stop();
     });
   }
 
