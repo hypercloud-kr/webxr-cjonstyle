@@ -74,9 +74,24 @@ export class MainGroup extends XrObject {
     this.modelGroup.visible = true;
     this.removeChild(this.grid);
     const plane = new PlaneObject();
-    // plane.position.set(0, -1, 0);
-    // plane.position.set(this.modelGroup.position.x, this.modelGroup.position.y, this.modelGroup.position.z);
     this.appendChild(plane);
+  }
+
+  finishChildAnimation() {
+    //render -> child에서 runAnimation에서 trigger
+  }
+  runChildAnimation() {
+    const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
+    let i = 0;
+    this.children.forEach(child => {
+      if (child.runAnimation) {
+        child.isFinishAnimation = false;
+        setTimeout(() => {
+          i++;
+          child.runAnimation();
+        }, delayArr[i] * 1000);
+      }
+    });
   }
   update() {
     super.update();
@@ -101,12 +116,16 @@ export class MainGroup extends XrObject {
 
   render(): void {
     super.render();
-    this.modules.forEach(module => module.render());
-    // const pos = this.parent.camera.position;
-    // const cameraDirection = new THREE.Vector3();
-    // this.parent.camera.getWorldDirection(cameraDirection);
-    // this.modelGroup.position.set(pos.x + cameraDirection.x * 2, pos.y, pos.z + cameraDirection.z * 2);
-    // this.modelGroup.lookAt(pos);
+    // this.modules.forEach(module => module.render());
+    let finishedAnimation = 0;
+    this.children.forEach(child => {
+      if (child.isFinishAnimation) {
+        finishedAnimation++;
+        if (finishedAnimation === 5) {
+          this.runChildAnimation();
+        }
+      }
+    });
   }
 }
 

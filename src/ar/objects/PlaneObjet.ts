@@ -1,6 +1,6 @@
 import { ResourceManager } from '@hypercloud-kr/graphics-components';
 import { XrObject } from '@hypercloud-kr/webxr-node/dist/XrObject';
-import stage from '@/assets/models/CJ_stage.glb';
+import stage from '@/assets/models/ground.glb';
 
 export class PlaneObject extends XrObject {
   constructor() {

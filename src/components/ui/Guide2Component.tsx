@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import backgroundImg from '@/assets/imgs/background.jpg';
 // import { typography } from '@hypercloud-kr/styling-kit';
 // import { stateStore } from '@/ar/storage';
-// import { ArManager } from '@/ar/ArManager';
+import boxOpenImg from '@/assets/imgs/boxOpenImg.png';
+import handGestureImg from '@/assets/imgs/img_hand gesture.png';
+import tapImg from '@/assets/imgs/img_Tap.png';
 
 // const body700 = typography.body02[700];
 
@@ -11,10 +13,13 @@ const Guide2Component = () => {
   return (
     <StartingWrapper>
       <BoxContainer>
-        <img></img>
-        <div>선물박스를 놓을 평평한 바닥을 찾아 탭하세요!</div>
+        <BoxImg src={boxOpenImg}></BoxImg>
+        <BoxText>선물박스를 놓을 평평한 바닥을 찾아 탭하세요!</BoxText>
       </BoxContainer>
-      <Tap>탭</Tap>
+      <Tap>
+        <img src={handGestureImg}></img>
+        <TapImg src={tapImg}></TapImg>
+      </Tap>
     </StartingWrapper>
   );
 };
@@ -43,27 +48,58 @@ const StartingWrapper = styled.div`
 `;
 
 const BoxContainer = styled.div`
-  display: flex;
-  /* margin: 0 5%; */
-  margin-top: 31px;
-  width: 300px;
-  height: 200px;
-  background-color: white;
-  border: 1px solid;
-  padding: 0px 20px;
-  justify-content: center;
+  margin-top: 43px;
   align-items: center;
-  /* gap: 24px; */
 
-  /* color: var(--white, var(--common-100, #fff)); */
-  color: black;
-  text-align: center;
-  /* font: var(--display01-b); */
-  line-height: 142%;
+  display: flex;
+  width: 350px;
+  height: 108px;
+  padding: 10px 22px 10px 10px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+
+  border-radius: 13px;
+  border: var(--Size-base-size_xxxs, 2px) solid #fff;
+  background: linear-gradient(180deg, #fff 24.28%, #efdffb 91.4%);
+  box-shadow:
+    0px 4px 0px 0px rgba(0, 0, 0, 0.25),
+    0px -5px 4px 0px rgba(162, 130, 194, 0.5) inset;
 `;
 
+const BoxImg = styled.img`
+  /* width: 123px;
+  height: 94.566px;
+  flex-shrink: 0; */
+`;
+
+const BoxText = styled.div`
+  color: #6e15ce;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px; /* 133.333% */
+  text-transform: uppercase;
+`;
+
+// const HighLightText = styled.span`
+//   color: #4feeab;
+//   font-family: 'Cafe24 Ssurround OTF';
+//   font-size: 18px;
+//   font-style: normal;
+//   font-weight: 700;
+//   line-height: 27px;
+//   text-transform: uppercase;
+// `;
 const Tap = styled.div`
   position: fixed;
-  right: 30px;
-  bottom: 30px;
+  right: 63px;
+  bottom: 132px;
+`;
+
+const TapImg = styled.img`
+  position: absolute;
+  right: 0;
 `;

@@ -7,8 +7,6 @@ import { stateStore } from '@/ar/storage';
 import { OpenAnimation } from './animations/OpenAnimation';
 import { CorrectAnimation } from './animations/CorrectAnimation';
 import { WrongAnimation } from './animations/WrongAnimation';
-// import axios from 'axios';
-// import { getDeviceId } from '../../util/util';
 
 export class MainObject extends XrObject {
   touchableModelModule;
@@ -16,6 +14,7 @@ export class MainObject extends XrObject {
   openAnimationObject;
   correctAnimationObject;
   wrongAnimationObject;
+  isFinishAnimation = false;
   constructor(item) {
     super();
     this.item = item;
@@ -39,18 +38,14 @@ export class MainObject extends XrObject {
     // this.modules.push(this.touchableModelModule);
     // this.touchableModelModule.onTouch = this.onTouch.bind(this);
     // console.log(this.modelGroup.userData, this.modelGroup);
-    // axios.post(`https://custom.dev.hars.kr/client/campaign/${campaignId}/played`,{
-    //   score: 0,
-    //   deviceId: getDeviceId(),
-    //   userId: userId
-    // });
   }
 
   protected onLoadModelFinished() {
     // 모델 로드 완료 후 처리
     // this.modelGroup.scale.set(5,5,5);
     this.setAnimation({
-      mode: THREE.LoopRepeat,
+      mode: THREE.LoopOnce,
+      repetitions: 1,
       timeScale: 1.5,
     });
     setTimeout(() => {
@@ -70,9 +65,33 @@ export class MainObject extends XrObject {
     const action = this.animationsMap.get('box_1');
     action?.stop();
     setTimeout(() => {
-      this.animate(this.item.aniName);
+      this.animate(this.item.aniName).then(() => {
+        this.isFinishAnimation = true;
+        this.openAnimationObject.stopAnimation();
+      });
       this.openAnimationObject.runAnimation();
     }, this.item.animateDelay * 1000);
+  }
+
+  public runAnimation() {
+    const action = this.animationsMap.get(this.item.aniName);
+    // action?.stop();
+    // action?.play();
+    if (action) {
+      // action.time = 0;
+      // action.clampWhenFinished = true;
+      // action.setLoop(THREE.LoopOnce, 1);
+    }
+    // const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
+    const delay = Math.random() * 0.5;
+    setTimeout(() => {
+      action?.reset();
+      this.animate(this.item.aniName).then(() => {
+        this.isFinishAnimation = true;
+        this.openAnimationObject.stopAnimation();
+      });
+      this.openAnimationObject.runAnimation();
+    }, delay * 1000);
   }
 
   onTouch(mesh?: THREE.Intersection[]) {
