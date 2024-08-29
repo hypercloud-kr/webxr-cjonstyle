@@ -5,8 +5,8 @@ import * as THREE from 'three';
 import { TouchableModelModule } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
 import { stateStore } from '@/ar/storage';
 import { OpenAnimation } from './animations/OpenAnimation';
-// import { CorrectAnimation } from './animations/CorrectAnimation';
-// import { WrongAnimation } from './animations/WrongAnimation';
+import { CorrectAnimation } from './animations/CorrectAnimation';
+import { WrongAnimation } from './animations/WrongAnimation';
 // import axios from 'axios';
 // import { getDeviceId } from '../../util/util';
 
@@ -28,13 +28,13 @@ export class MainObject extends XrObject {
     this.openAnimationObject.position.copy(this.position);
     this.appendChild(this.openAnimationObject);
 
-    // this.correctAnimationObject = new CorrectAnimation();
-    // this.correctAnimationObject.position.copy(this.position);
-    // this.appendChild(this.correctAnimationObject);
+    this.correctAnimationObject = new CorrectAnimation();
+    this.correctAnimationObject.position.copy(this.position);
+    this.appendChild(this.correctAnimationObject);
 
-    // this.wrongAnimationObject = new WrongAnimation();
-    // this.wrongAnimationObject.position.copy(this.position);
-    // this.appendChild(this.wrongAnimationObject);
+    this.wrongAnimationObject = new WrongAnimation();
+    this.wrongAnimationObject.position.copy(this.position);
+    this.appendChild(this.wrongAnimationObject);
     // this.touchableModelModule = new TouchableModelModule(this);
     // this.modules.push(this.touchableModelModule);
     // this.touchableModelModule.onTouch = this.onTouch.bind(this);
@@ -78,10 +78,10 @@ export class MainObject extends XrObject {
   onTouch(mesh?: THREE.Intersection[]) {
     console.log(this.model.scene, mesh, this.item.name, stateStore.nextName());
     if (this.item.name !== stateStore.nextName()) {
-      // this.wrongAnimationObject.runAnimation();
+      this.wrongAnimationObject.runAnimation();
       return;
     }
-    // this.correctAnimationObject.runAnimation();
+    this.correctAnimationObject.runAnimation();
     // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
     //   console.log('finish', stateStore.getState());
     // });

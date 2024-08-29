@@ -74,7 +74,7 @@ export class MainGroup extends XrObject {
     this.modelGroup.visible = true;
     this.removeChild(this.grid);
     const plane = new PlaneObject();
-    plane.position.set(0, -1, 0);
+    // plane.position.set(0, -1, 0);
     // plane.position.set(this.modelGroup.position.x, this.modelGroup.position.y, this.modelGroup.position.z);
     this.appendChild(plane);
   }
@@ -115,13 +115,13 @@ const handleOrientation = event => {
   if (angle !== null) {
     angle = beta - 50; //-(beta - 90);
   }
-  let div;
-  if (!document.getElementById('test')) {
-    div = document.createElement('div');
-    document.body.appendChild(div);
-  } else {
-    div = document.getElementById('test');
-  }
+  // let div;
+  // if (!document.getElementById('test')) {
+  //   div = document.createElement('div');
+  //   document.body.appendChild(div);
+  // } else {
+  //   div = document.getElementById('test');
+  // }
   // div.id = 'test';
   // div.innerHTML = `absolute: ${absolute}, alpha: ${alpha}, beta: ${beta}, gamma: ${gamma}`;
   // div.style.cssText =

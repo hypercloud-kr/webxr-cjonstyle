@@ -13,6 +13,7 @@ export class OpenAnimation extends XrObject {
     this.appendChild(this.lightAnimation);
     this.particleAnimation = new OpenAnimationParticle();
     this.appendChild(this.particleAnimation);
+    this.modelGroup.userData.id = null;
   }
 
   runAnimation() {
