@@ -3,6 +3,10 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import { stateStore } from '@/ar/storage';
 import { ArManager } from '@/ar/ArManager';
 import { css } from '@emotion/react';
+import scoreImg from '@/assets/imgs/timer.png';
+// import rightArrow from '@/assets/svg/rightArrow.svg';
+import timerGreenImg from '@/assets/imgs/clock_green.png';
+// import timerRedImg from '@/assets/imgs/clock_red.png';
 
 function ArUiComponent() {
   //   const [time, setTime] = useState(2000);
@@ -12,8 +16,10 @@ function ArUiComponent() {
   const [timeCount, setTimeCount] = useState(null);
   const [isOpenSuccess, setIsOpenSuccess] = useState(false);
   const [isFinishingGame, setIsFinishingGame] = useState(false);
+  const [timerImg, setTimerImg] = useState(timerGreenImg);
+  const [timerSpeed, setTimerSpeed] = useState(0);
   const state = useSyncExternalStore(stateStore.subscribe, stateStore.getState);
-
+  console.log(setTimerImg);
   useEffect(() => {
     //   const id: any = setInterval(() => {
     //       setTime((t) => t - 1);
@@ -34,7 +40,8 @@ function ArUiComponent() {
               if (child.runAnimationOpen) child.runAnimationOpen();
             });
             setTimeCount(null);
-            startProgressBar(300000, () => {
+            setTimerSpeed(1);
+            startProgressBar(30000, () => {
               setIsFinishingGame(true);
               setTimeout(() => {
                 stateStore.setGameState('end');
@@ -105,6 +112,14 @@ function ArUiComponent() {
         return;
       }
       //   progressBar.style.width = progressPercentage + '%';
+
+      // if (duration - elapsedTime < 3000) {
+      //   setTimerSpeed(3);
+      // } else if (duration - elapsedTime < 5000) {
+      //   setTimerImg(timerRedImg);
+      //   setTimerSpeed(2);
+      // }
+
       if (elapsedTime < duration) {
         requestAnimationFrame(animateProgressBar);
       } else if (callback) {
@@ -119,19 +134,34 @@ function ArUiComponent() {
     <>
       <TopBar>
         <TimerBarContainer>
+          <TimerImg src={timerImg} speed={timerSpeed}></TimerImg>
           <TimerBar
             id="progress-bar"
             style={{ width: `${timerWidth}%` }}
+            speed={timerSpeed}
           ></TimerBar>
         </TimerBarContainer>
         <ScoreContainer>
-          <CountDiv>{stateStore.getState().count}</CountDiv>
-          <ScoreDiv>{stateStore.getState().score}</ScoreDiv>
+          <ScoreImg src={scoreImg}></ScoreImg>
+          {/* <CountDiv>
+            미션 성공<ColorSpan>X{stateStore.getState().count}</ColorSpan>
+          </CountDiv>
+          <VBar></VBar> */}
+          <ScoreDiv>
+            SCORE<ColorSpan>{stateStore.getState().score}</ColorSpan>
+          </ScoreDiv>
         </ScoreContainer>
       </TopBar>
       {isOpenSuccess && <SuccessDiv>Success</SuccessDiv>}
       <CardContainer>
-        <Round>{stateStore.getState().count}</Round>
+        <Round>
+          <RoundText
+            key={stateStore.getState().count}
+            count={stateStore.getState().count}
+          >
+            ROUND{stateStore.getState().count + 1}
+          </RoundText>
+        </Round>
         {stateStore.getState().items.map(item => {
           // if (item.isCollected)
           return (
@@ -143,11 +173,15 @@ function ArUiComponent() {
             </CardOuter>
           );
         })}
+        <MissionDiv>미션</MissionDiv>
       </CardContainer>
       {!isStartingGame && (
         <ImgWrapper>
           {/* <Img src={mainImg} alt="" /> */}
-          <Button onClick={onClick}>게임 시작하기</Button>
+          <Button onClick={onClick}>
+            <span>게임 시작하기</span>
+            {/* <img src={rightArrow}></img> */}
+          </Button>
         </ImgWrapper>
       )}
       {timeCount && <TimeCountDiv key={timeCount}>{timeCount}</TimeCountDiv>}
@@ -160,24 +194,27 @@ export default ArUiComponent;
 
 const TopBar = styled.div`
   position: fixed;
-  top: 20px;
+  /* top: 28px; */
   left: 0;
   display: flex;
   z-index: 50;
   width: 100%;
+  gap: 88px;
+  align-items: center;
+  padding: 28px 21px 21px 40px;
 `;
 const TimerBarContainer = styled.div`
-  /* position: fixed;
-  left: 0;
-  top: 20px;
-  z-index: 50;*/
-  width: 50%;
+  flex: 1;
   background-color: #e0e0e0; /* 배경 색상 */
   border-radius: 25px; /* 둥근 모서리 */
   overflow: hidden; /* 내용이 넘치지 않게 하기 */
-  height: 30px; /* 높이 */
+  height: 24px; /* 높이 */
   /* position: relative; */
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+  border-radius: 999px;
+  border: var(--Size-base-size_xxxs, 2px) solid var(--Cool-Neutral-90, #c4cbd7);
+  background: var(--Common-100, #fff);
 `;
 
 const TimerBar = styled.div`
@@ -186,27 +223,138 @@ const TimerBar = styled.div`
   background-color: #76c7c0; /* 진행 바 색상 */
   border-radius: 25px 0 0 25px;
   /* transition: width 0.4s ease; 부드러운 진행 애니메이션 */
+  border-radius: 78px;
+  background: #7515d8;
+  box-shadow: 0px -3px 0px 0px #3f0892 inset;
+
+  ${props =>
+    props.speed >= 2 &&
+    css`
+      border-radius: 999px;
+      background: #da10f8;
+      box-shadow: 0px -3px 0px 0px #a300bd inset;
+    `};
 `;
 
 const ScoreContainer = styled.div`
+  flex: 1;
   display: flex;
-  width: 50%;
+  position: relative;
+  border-radius: 13px;
+  background-color: white;
+  border: 2px solid #c4cbd7;
+  height: 24px;
+  justify-content: center;
+  /* width: 50%; */
   /* justify-content: space-between;
   padding: 0px 20px; */
 `;
 
-const CountDiv = styled.div`
-  /* position: fixed;
-  top: 20px;
-  left: 20px; */
-  z-index: 50;
+const TimerImg = styled.img`
+  position: absolute;
+  width: 29px;
+  height: 35px;
+  top: 21px;
+  left: 28px;
+  align-items: center;
+  justify-content: center;
+  ${props =>
+    props.speed === 1 &&
+    css`
+      animation: rotateTimer 1.5s infinite;
+    `};
+  ${props =>
+    props.speed === 2 &&
+    css`
+      animation: rotateTimer 0.75s infinite;
+    `}
+  ${props =>
+    props.speed === 3 &&
+    css`
+      animation: rotateTimer 0.5s infinite;
+    `}
+  ${css`
+    @keyframes rotateTimer {
+      0% {
+        transform: rotate(0);
+      }
+      25% {
+        transform: rotate(15deg);
+      }
+      75% {
+        transform: rotate(-15deg);
+      }
+      100% {
+        transform: rotate(0);
+      }
+    }
+  `}
 `;
+const ScoreImg = styled.img`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: -10px;
+  left: -20px;
+  align-items: center;
+  justify-content: center;
+`;
+// const CountDiv = styled.div`
+//   /* position: fixed;
+//   top: 20px;
+//   left: 20px; */
+//   z-index: 50;
+//   color: black;
+//   flex: 0 0 50%;
+//   display: flex;
+//   justify-content: center;
+
+//   color: var(--Cool-Neutral-5, #1d1e21);
+//   text-shadow: 0px 0.884px 0px rgba(0, 0, 0, 0.15);
+//   font-family: 'Cafe24 Ssurround OTF';
+//   font-size: 10.607px;
+//   font-style: normal;
+//   font-weight: 700;
+//   line-height: 12.375px; /* 116.667% */
+//   letter-spacing: 0.212px;
+//   text-transform: uppercase;
+//   align-items: center;
+// `;
+const ColorSpan = styled.span`
+  padding: 0 7px;
+  color: #903bd1;
+`;
+
+// const VBar = styled.div`
+//   position: absolute;
+//   left: 50%;
+//   top: 5px;
+//   width: 1px;
+//   height: 12px;
+//   background-color: transparent;
+//   border-left: 2px solid #646878;
+//   border-radius: 1px;
+//   display: inline-flex;
+// `;
 
 const ScoreDiv = styled.div`
   /* position: fixed;
   top: 20px;
   left: 40px; */
   z-index: 50;
+  color: black;
+  /* flex: 0 0 50%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #252525;
+  font-family: Pretendard;
+  font-size: 10.607px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 12.375px; /* 116.667% */
+  letter-spacing: 0.212px;
+  text-transform: uppercase;
 `;
 
 const SuccessDiv = styled.div`
@@ -222,30 +370,81 @@ const SuccessDiv = styled.div`
 
 const CardContainer = styled.div`
   position: fixed;
-  top: 70px;
+  top: 100px;
   left: 0;
-  width: 100%;
+  width: calc(100% - 40px);
+  margin: 0 20px;
+  padding: 0 29px;
+  height: 108px;
   z-index: 50;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  /* border: 1px solid var(--Cool-Neutral-60, #8D929F); */
+  background: #6e15ce;
+  box-shadow: 0px 4px 0px 0px #3f0892;
 `;
 const Round = styled.div`
   position: absolute;
-  top: -30px;
-  width: 50px;
-  height: 30px;
+  top: -20px;
+  width: 158px;
+  height: 39px;
+
+  border-radius: 10px;
+  /* border: 1px solid var(--Cool-Neutral-60, #8D929F); */
+  background: #fff;
+
   background: aliceblue;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background: #6e15ce;
+`;
+const RoundText = styled.div`
+  color: #14fea2;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 27px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 31.511px; /* 116.707% */
+  text-transform: uppercase;
+
+  position: absolute;
+  top: 7px;
+  /* ${props =>
+    props.count >= 1 &&
+    css`
+      animation: bottomToTop 0.5s;
+    `} */
+  ${css`
+    @keyframes bottomToTop {
+      0% {
+        top: 1000px;
+      }
+      80% {
+        top: -70px;
+      }
+      100% {
+        top: 7px;
+      }
+    }
+  `}
 `;
 const CardOuter = styled.div`
-  width: 100px;
-  height: 100px;
+  flex: 0 0 20%;
+  /* width: 100px; */
+  height: 60px;
   perspective: 600px;
+  margin-top: 8px;
 `;
 const CardInner = styled.div`
+  max-width: 100px;
+  display: flex;
+  justify-content: center;
   width: 100%;
   height: 100%;
   position: relative;
@@ -273,6 +472,31 @@ const Card = styled.img`
       transform: rotateY(180deg);
     `}
 `;
+const MissionDiv = styled.div`
+  position: absolute;
+  bottom: -23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 19.78px;
+  flex-shrink: 0;
+
+  border-radius: 0px 0px 30px 30px;
+  background: #14fea2;
+  box-shadow: 0px 2px 0px #3f0892;
+
+  color: #3f0892;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14.032px; /* 116.935% */
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+`;
 const ImgWrapper = styled.div`
   display: inline-flex;
   position: fixed;
@@ -294,21 +518,30 @@ const ImgWrapper = styled.div`
 
 const Button = styled.button`
   display: flex;
-  bottom: 24px;
-  width: calc(100% - 40px);
+  bottom: 57px;
+  /* width: calc(100% - 40px); */
+  width: 297px;
+  height: 50px;
+
   padding: 16px 0px;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
   z-index: 50;
 
-  border-radius: 16px;
-  background: var(--blue-60, #3285fa);
+  border-radius: 8px;
+  background: #6e15ce;
+  border: var(--Size-base-size_xxxs, 2px) solid 6e15CE;
+  /* box-shadow: 0px 10px 0px 0px #640faf; // rgba(0, 0, 0, 0.20); */
 
+  color: var(--Common-100, #fff);
   text-align: center;
-  border-width: 0px;
-  color: var(--common-100, #fff);
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 30px */
+  letter-spacing: -0.2px;
 `;
 
 const TimeCountDiv = styled.div`
@@ -316,12 +549,31 @@ const TimeCountDiv = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  bottom: 30px;
+  bottom: 68px;
   z-index: 50;
   left: 0;
   width: 100%;
   animation: grow 0.5s;
   transform: scale(2);
+
+  color: #fff;
+  text-align: center;
+  text-shadow: 0px 4px 0px #3f0892;
+  -webkit-text-stroke-width: 6px;
+  -webkit-text-stroke-color: #6e15ce;
+  font-family: Pretendard;
+  font-size: 80px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 124.956px; /* 156.195% */
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  /* 
+  background: linear-gradient(180deg, #fff 23.98%, #4feeab 48.23%, #fff 72.78%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+
   ${css`
     /* transform: scale(2); */
     @keyframes grow {

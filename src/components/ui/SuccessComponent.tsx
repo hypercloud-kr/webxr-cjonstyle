@@ -1,11 +1,35 @@
 import styled from '@emotion/styled';
 import { stateStore } from '@/ar/storage';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { getDeviceId } from '../../util/util';
 
 export const SuccessComponent = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
+  useEffect(() => {
+    //appkey는 헤더에 필요
+    let appKey;
+    let campaignId;
+    let url;
+    if (process.env.NODE_ENV === 'production') {
+      appKey = 'aa32beb9-5c79-4016-a0f4-b2a0bb489c42';
+      campaignId = 56;
+      url = `https://api.hars.kr/client/campaign/${campaignId}/played`;
+    } else {
+      appKey = 'bdc1ebfa-d33d-4ea1-9297-d0b114aef4c8';
+      campaignId = 401;
+      url = `https://api.stg.hars.kr/client/campaign/${campaignId}/played`;
+    }
+    axios.post(url, {
+      headers: {
+        appKey,
+      },
+      score: stateStore.getState().score,
+      deviceId: getDeviceId(),
+    });
+  }, []);
   useEffect(() => {
     setResultState(stateStore.getState().score);
   }, [stateStore.getState().score]);
