@@ -10,7 +10,7 @@ import { stateStore } from '@/ar/storage';
 // import { PlaneObject } from './objects/PlaneObjet';
 import { MainGroup } from './objects/MainGroup';
 import { PlaneGrid } from './objects/PlaneGrid';
-import { addLight } from '@/utils/threeUtil';
+// import { addLight } from '@/utils/threeUtil';
 // import { ShaderObject } from './objects/ShaderObject';
 
 type SampleSceneConfig = XrSceneConfig & {
@@ -27,7 +27,7 @@ export class MainScene extends XrScene {
     setEnvironment(
       this.scene,
       this.renderer,
-      'img',
+      'room',
       Environment,
       Loader.textureLoader
     );
@@ -65,7 +65,7 @@ export class MainScene extends XrScene {
     group.appendChild(sampleObject5);
     group.appendChild(plane);
     this.appendChild(group);
-    addLight(this.scene);
+    // addLight(this.scene);
     // const a = new ShaderObject(this.scene)
     // this.appendChild(a);
   }

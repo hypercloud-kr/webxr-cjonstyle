@@ -41,9 +41,10 @@ export class ArManager implements IAnimate {
     }
     this._instance = new ArManager(config);
     if (!config.isFirstStart) {
-      const mainGroup = this.instance.mainScene.children[0];
-      mainGroup.initAfterTouch();
-      this.setReady();
+      this.initGroup(config.setIsOpenGuide2);
+      // const mainGroup = this.instance.mainScene.children[0];
+      // mainGroup.initAfterTouch();
+      // this.setReady();
     }
     // Solve InitCallback
     this.initCallbacks.forEach(callback => callback());
@@ -128,6 +129,10 @@ export class ArManager implements IAnimate {
     // this.mainScene.children[0].modelGroup.position.z = +beta - 90;
   };
   release() {
+    const mainGroup = this.mainScene.children.find(
+      item => item.id === 'mainGroup'
+    );
+    mainGroup.initialize();
     this.mainScene.release();
     removeTouchEvent();
     ArManager.initialize();

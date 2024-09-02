@@ -1,12 +1,12 @@
 import UggBox from '../../assets/models/CJbox.glb';
 import img5 from '../../assets/svg/img_card 1.svg';
-import img3 from '../../assets/svg/img_card 2.svg';
-import img4 from '../../assets/svg/img_card 3.svg';
+import img4 from '../../assets/svg/img_card 2.svg';
+import img3 from '../../assets/svg/img_card 3.svg';
 import img1 from '../../assets/svg/img_card 4.svg';
 import img2 from '../../assets/svg/img_card 5.svg';
 import backImg5 from '../../assets/svg/img_card check 1.svg';
-import backImg3 from '../../assets/svg/img_card check 2.svg';
-import backImg4 from '../../assets/svg/img_card check 3.svg';
+import backImg4 from '../../assets/svg/img_card check 2.svg';
+import backImg3 from '../../assets/svg/img_card check 3.svg';
 import backImg1 from '../../assets/svg/img_card check 4.svg';
 import backImg2 from '../../assets/svg/img_card check 5.svg';
 

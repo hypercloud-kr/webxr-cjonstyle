@@ -3,10 +3,11 @@ import { stateStore } from '@/ar/storage';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getDeviceId } from '../../util/util';
-
+import ellipse from '@/assets/svg/elipse.svg';
 export const SuccessComponent = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  // const [isCopiedLink, setIsCopiedLink] = useState(false);
 
   useEffect(() => {
     //appkey는 헤더에 필요
@@ -53,21 +54,38 @@ export const SuccessComponent = () => {
     stateStore.setScore(true);
     stateStore.setCount(true);
     stateStore.setGameState('running');
+    stateStore.setReady(false);
+  };
+  const copyLink = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        console.log('URL이 복사되었습니다.');
+
+        // setIsCopiedLink(true);
+        // setTimeout(() => {
+        //   setIsCopiedLink(false);
+        // }, 300000);
+      },
+      err => {
+        console.error('URL 복사에 실패했습니다.', err);
+      }
+    );
   };
   const setResultState = score => {
     // const score = stateStore.getState().score;
     if (10 <= score && score < 40) {
       setTitle('쇼핑뉴비');
-      setDescription('쇼핑의 시작은 당신과 함께!');
+      setDescription('핫템을 겟하기에는 스피드가 부족했어요!');
     } else if (40 <= score && score < 60) {
       setTitle('쇼핑초보');
-      setDescription('쇼핑의 시작은 당신과 함께!');
+      setDescription('쇼핑 고수가 되기엔 아직 멀고도 험하군요!');
     } else if (60 <= score && score < 90) {
       setTitle('쇼핑고수');
-      setDescription('쇼핑의 시작은 당신과 함께!');
+      setDescription('행운의 기회가 가까워지고 있어요!');
     } else if (90 <= score) {
       setTitle('쇼핑달인');
-      setDescription('쇼핑의 시작은 당신과 함께!');
+      setDescription('WOW! 핫템을 놓치지 않는 놀라운 실력의 소유자!');
     }
   };
   return (
@@ -78,10 +96,38 @@ export const SuccessComponent = () => {
         ) : (
           <div>{title}</div>
         )}
-
-        {stateStore.getState().score}
-        <div>티어</div>
-        <div>{description}</div>
+        <ScoreDiv>{stateStore.getState().score}</ScoreDiv>
+        <ScoreSectionContainer>
+          <ScoreSection>
+            <ColumnFlex>
+              <div>뉴비</div>
+              <img src={ellipse}></img>
+              <>10~30점</>
+            </ColumnFlex>
+          </ScoreSection>
+          <ScoreSection>
+            <ColumnFlex>
+              <div>뉴비</div>
+              <img src={ellipse}></img>
+              <>10~30점</>
+            </ColumnFlex>
+          </ScoreSection>
+          <ScoreSection>
+            <ColumnFlex>
+              <div>뉴비</div>
+              <img src={ellipse}></img>
+              <>10~30점</>
+            </ColumnFlex>
+          </ScoreSection>
+          <ScoreSection>
+            <ColumnFlex>
+              <div>뉴비</div>
+              <img src={ellipse}></img>
+              <>10~30점</>
+            </ColumnFlex>
+          </ScoreSection>
+        </ScoreSectionContainer>
+        <DescriptionDiv>{description}1</DescriptionDiv>
       </ResultContainer>
       <ChoiceContainer>
         <BtnGroup>
@@ -91,6 +137,8 @@ export const SuccessComponent = () => {
         <ShareGroup>
           <ShareBtn onClick={share}>share</ShareBtn>
         </ShareGroup>
+        <CopyBtn onClick={copyLink}>copy link</CopyBtn>
+        {/* {isCopiedLink && <CopyText>링크 복사 완료</CopyText>} */}
       </ChoiceContainer>
     </SuccessContainer>
   );
@@ -109,11 +157,55 @@ const SuccessContainer = styled.div`
 `;
 const ResultContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: calc(100% - 60px);
+  margin: 90px 30px 0 30px;
   height: 300px;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+  flex-direction: column;
+  align-items: center;
+  padding: 0 18px;
+  gap: 21px;
+  /* justify-content: center;
+  align-items: center;
+  flex-direction: column; */
+`;
+const ScoreDiv = styled.div`
+  font-size: 33px;
+  flex-shrink: 0;
+  color: #6e15ce;
+`;
+const ScoreSectionContainer = styled.div`
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-shrink: 0;
+  border-radius: 10.941px;
+  background: #14fea2;
+  box-shadow: 0px 4.376px 0px 0px rgba(0, 0, 0, 0.25);
+  flex-direction: row;
+`;
+const ScoreSection = styled.div`
+  display: flex;
+  flex: 0 0 25%;
+  justify-content: center;
+  align-items: center;
+`;
+const ColumnFlex = styled.div`
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+`;
+const DescriptionDiv = styled.div`
+  color: #000;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px; /* 137.5% */
 `;
 const ChoiceContainer = styled.div`
   display: flex;
@@ -155,3 +247,15 @@ const ShareGroup = styled.div`
 const ShareBtn = styled.button`
   border-radius: 50%;
 `;
+const CopyBtn = styled.button`
+  border-radius: 50%;
+`;
+// const CopyText = styled.div`
+//   position: fixed;
+//   width: 100%;
+//   height: 100%;
+//   display: inline-flex;
+//   justify-content: center;
+//   align-items: center;
+//   bottom: 30px;
+// `;

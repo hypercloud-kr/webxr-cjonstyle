@@ -13,7 +13,14 @@ export class PlaneObject extends XrObject {
     // this.modelGroup.add(new THREE.Mesh(geometry, material));
   }
 
-  protected onLoadModelFinished() {}
+  protected onLoadModelFinished() {
+    this.modelGroup.traverse(item => {
+      if (item.isMesh) {
+        // item.castShadow = true;
+        item.receiveShadow = true;
+      }
+    });
+  }
 
   update() {}
   render(): void {

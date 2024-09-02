@@ -19,8 +19,8 @@ export const stateStore = {
     state = { ...state, isModelLoaded: true };
     emitChange();
   },
-  setReady() {
-    state = { ...state, ready: true };
+  setReady(ready) {
+    state = { ...state, ready };
     emitChange();
   },
   setItems(name) {

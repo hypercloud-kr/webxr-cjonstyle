@@ -8,6 +8,7 @@ import {
   addOrientationEvent,
   removeOrientationEvent,
 } from '@/utils/CustomEvent';
+import { addLight } from '@/utils/threeUtil';
 let angle;
 export class MainGroup extends XrObject {
   grid;
@@ -69,54 +70,43 @@ export class MainGroup extends XrObject {
     );
   }
   initAfterTouch() {
-    stateStore.setReady();
+    stateStore.setReady(true);
     angle = null;
     this.modelGroup.visible = true;
     this.removeChild(this.grid);
     const plane = new PlaneObject();
     this.appendChild(plane);
+
+    const cameraDirection = new THREE.Vector3();
+    this.parent.camera.getWorldDirection(cameraDirection);
+
+    const light = addLight(this.modelGroup);
+    light.target.position.copy(this.modelGroup.position);
+    light.position.set(
+      this.modelGroup.position.x - 8,
+      this.modelGroup.position.y + 9,
+      this.modelGroup.position.z + 12
+    );
+  }
+
+  initialize() {
+    angle = undefined;
+  }
+
+  moveModel() {
+    const pos = this.parent.camera.position;
+    const cameraDirection = new THREE.Vector3();
+    this.parent.camera.getWorldDirection(cameraDirection);
+    this.modelGroup.position.set(
+      pos.x + cameraDirection.x * angle,
+      pos.y + cameraDirection.y * angle,
+      pos.z + cameraDirection.z * angle
+    );
+    this.modelGroup.lookAt(pos);
+    this.modelGroup.rotateX(Math.PI / 6);
   }
 
   finishChildAnimation() {
-    //render -> child에서 runAnimation에서 trigger
-  }
-  runChildAnimation() {
-    const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
-    let i = 0;
-    this.children.forEach(child => {
-      if (child.runAnimation) {
-        child.isFinishAnimation = false;
-        setTimeout(() => {
-          i++;
-          child.runAnimation();
-        }, delayArr[i] * 1000);
-      }
-    });
-  }
-  update() {
-    super.update();
-    // this.modules.forEach(module => module.update());
-    if (angle !== null) {
-      if (window.innerWidth < 1280) {
-        const pos = this.parent.camera.position;
-        const cameraDirection = new THREE.Vector3();
-        this.parent.camera.getWorldDirection(cameraDirection);
-        this.modelGroup.position.set(
-          pos.x + cameraDirection.x * angle,
-          pos.y + cameraDirection.y * angle,
-          pos.z + cameraDirection.z * angle
-        );
-        this.modelGroup.lookAt(pos);
-        this.modelGroup.rotateX(Math.PI / 6);
-      } else {
-        this.modelGroup.position.set(0, 1, 0);
-      }
-    }
-  }
-
-  render(): void {
-    super.render();
-    // this.modules.forEach(module => module.render());
     let finishedAnimation = 0;
     this.children.forEach(child => {
       if (child.isFinishAnimation) {
@@ -126,6 +116,45 @@ export class MainGroup extends XrObject {
         }
       }
     });
+  }
+  runChildAnimation() {
+    // const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
+    // let i = 0;
+    this.children.forEach(child => {
+      if (child.runAnimation) {
+        child.isFinishAnimation = false;
+        // setTimeout(() => {
+        // i++;
+        child.runAnimation();
+        // }, delayArr[i] * 1000);
+      }
+    });
+  }
+
+  update() {
+    super.update();
+    // this.modules.forEach(module => module.update());
+    if (angle !== null) {
+      if (window.innerWidth < 1280) {
+        this.moveModel();
+      } else {
+        this.modelGroup.position.set(0, 1, 0);
+      }
+    }
+  }
+
+  render(): void {
+    super.render();
+    // this.modules.forEach(module => module.render());
+    // let finishedAnimation = 0;
+    // this.children.forEach(child => {
+    //   if (child.isFinishAnimation) {
+    //     finishedAnimation++;
+    //     if (finishedAnimation === 5) {
+    //       this.runChildAnimation();
+    //     }
+    //   }
+    // });
   }
 }
 

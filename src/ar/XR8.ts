@@ -9,7 +9,11 @@ declare global {
   }
 }
 
-export const load8ThWall = (canvas: HTMLCanvasElement, isFirstStart) => {
+export const load8ThWall = (
+  canvas: HTMLCanvasElement,
+  isFirstStart,
+  setIsOpenGuide2
+) => {
   XR8.addCameraPipelineModules([
     // 여기에 XR8 설정을 추가해주세요
     XR8.GlTextureRenderer.pipelineModule(), // Draws the camera feed.
@@ -19,7 +23,7 @@ export const load8ThWall = (canvas: HTMLCanvasElement, isFirstStart) => {
     // XRExtras.FullWindowCanvas.pipelineModule(), // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(), // Manages the loading screen on startup.
     XRExtras.RuntimeError.pipelineModule(), // Shows an error image on runtime error.
-    XR8Renderer(canvas, isFirstStart),
+    XR8Renderer(canvas, isFirstStart, setIsOpenGuide2),
   ]);
   const allowedDevices = XR8.XrConfig.device().ANY;
   XR8.XrController.configure({ imageTargets: [] });
@@ -27,7 +31,11 @@ export const load8ThWall = (canvas: HTMLCanvasElement, isFirstStart) => {
   XR8.run({ canvas, allowedDevices });
 };
 
-const XR8Renderer = (canvas: HTMLCanvasElement, isFirstStart) => ({
+const XR8Renderer = (
+  canvas: HTMLCanvasElement,
+  isFirstStart,
+  setIsOpenGuide2
+) => ({
   name: 'webxr-boilerplate',
   onStart: () => {
     XR8.Threejs.configure({ renderCameraTexture: true });
@@ -35,6 +43,7 @@ const XR8Renderer = (canvas: HTMLCanvasElement, isFirstStart) => ({
     if (!xrScene) location.reload();
     xrScene.renderer.antialias = true;
     xrScene.renderer.alpha = true;
+    xrScene.renderer.shadowMap.enabled = true;
     // Scene 관련 로직
     ArManager.init({
       canvas,
@@ -42,6 +51,7 @@ const XR8Renderer = (canvas: HTMLCanvasElement, isFirstStart) => ({
       camera: xrScene.camera,
       renderer: xrScene.renderer,
       isFirstStart,
+      setIsOpenGuide2,
     });
     XR8.XrController.updateCameraProjectionMatrix({
       origin: ArManager.instance.xr8Camera.position,

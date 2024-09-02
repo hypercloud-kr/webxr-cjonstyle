@@ -1,18 +1,18 @@
 import * as THREE from 'three';
 
 export const addLight = scene => {
-  const directLight = new THREE.DirectionalLight('#FFFFFF', 6);
+  const directLight = new THREE.DirectionalLight('#FFFFFF', 1);
   scene.add(directLight);
-  directLight.position.set(30, 50, 0);
-  directLight.color.set('#DBDFFF');
-  directLight.name = 'main_light';
+  // directLight.position.set(-8, 9, 12);
+  // directLight.color.set('#DBDFFF');
+  // directLight.name = 'main_light';
   directLight.castShadow = true;
   directLight.shadow.mapSize.width = 512 * 4; // default
   directLight.shadow.mapSize.height = 512 * 4; // default
   directLight.shadow.camera.near = 0.5; // default
   directLight.shadow.camera.far = 100000; // default
-  directLight.shadow.camera.fov = 50; // default
-  // directLight.shadow.radius = 1; // default
+  // directLight.shadow.camera.fov = 50; // default
+  // // directLight.shadow.radius = 1; // default
   directLight.shadow.camera.left = 150;
   directLight.shadow.camera.right = -150;
   directLight.shadow.camera.top = 150;

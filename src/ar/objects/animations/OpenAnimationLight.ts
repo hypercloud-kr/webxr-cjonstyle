@@ -18,7 +18,7 @@ export class OpenAnimationLight extends XrObject {
     // this.modelGroup.scale.set(0.5, 0.5, 0.5);
     this.setAnimation({
       mode: THREE.LoopRepeat,
-      timeScale: 1.5,
+      timeScale: 2,
     });
   }
 
