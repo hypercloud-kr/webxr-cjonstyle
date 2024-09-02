@@ -18,7 +18,9 @@ function ArComponent() {
   const [isOpenGuide, setIsOpenGuide] = useState(
     stateStore.getState().firstStart
   );
-  const [isOpenGuide2, setIsOpenGuide2] = useState(false);
+  const [isOpenGuide2, setIsOpenGuide2] = useState(
+    !stateStore.getState().firstStart
+  );
   useEffect(() => {
     const canvas = document.getElementById('arCanvas') as HTMLCanvasElement;
     if (!canvas) return;
@@ -26,7 +28,7 @@ function ArComponent() {
     canvas.height = window.innerHeight;
 
     const loadXr = () => {
-      load8ThWall(canvas, stateStore.getState().firstStart);
+      load8ThWall(canvas, stateStore.getState().firstStart, setIsOpenGuide2);
     };
     if (XR8_MODE) {
       window.XR8 ? loadXr() : window.addEventListener('xrloaded', loadXr);

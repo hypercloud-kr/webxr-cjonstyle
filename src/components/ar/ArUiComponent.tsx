@@ -6,10 +6,10 @@ import { css } from '@emotion/react';
 import scoreImg from '@/assets/imgs/timer.png';
 // import rightArrow from '@/assets/svg/rightArrow.svg';
 import timerGreenImg from '@/assets/imgs/clock_green.png';
-// import timerRedImg from '@/assets/imgs/clock_red.png';
+import timerRedImg from '@/assets/imgs/clock_red.png';
 
 function ArUiComponent() {
-  //   const [time, setTime] = useState(2000);
+  // const [time, setTime] = useState(2000);
   const [timerWidth, setTimerWidth] = useState(2000);
   // const [score, setScore] = useState(0);
   const [isStartingGame, setIsStartingGame] = useState(false);
@@ -19,7 +19,7 @@ function ArUiComponent() {
   const [timerImg, setTimerImg] = useState(timerGreenImg);
   const [timerSpeed, setTimerSpeed] = useState(0);
   const state = useSyncExternalStore(stateStore.subscribe, stateStore.getState);
-  console.log(setTimerImg);
+
   useEffect(() => {
     //   const id: any = setInterval(() => {
     //       setTime((t) => t - 1);
@@ -113,12 +113,12 @@ function ArUiComponent() {
       }
       //   progressBar.style.width = progressPercentage + '%';
 
-      // if (duration - elapsedTime < 3000) {
-      //   setTimerSpeed(3);
-      // } else if (duration - elapsedTime < 5000) {
-      //   setTimerImg(timerRedImg);
-      //   setTimerSpeed(2);
-      // }
+      if (duration - elapsedTime < 3000) {
+        setTimerSpeed(3);
+      } else if (duration - elapsedTime < 5000) {
+        setTimerImg(timerRedImg);
+        setTimerSpeed(2);
+      }
 
       if (elapsedTime < duration) {
         requestAnimationFrame(animateProgressBar);
@@ -415,11 +415,11 @@ const RoundText = styled.div`
 
   position: absolute;
   top: 7px;
-  /* ${props =>
+  ${props =>
     props.count >= 1 &&
     css`
       animation: bottomToTop 0.5s;
-    `} */
+    `}
   ${css`
     @keyframes bottomToTop {
       0% {

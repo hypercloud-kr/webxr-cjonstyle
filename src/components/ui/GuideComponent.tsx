@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import backgroundImg from '@/assets/imgs/background.jpg';
 import { typography } from '@hypercloud-kr/styling-kit';
 import { ArManager } from '@/ar/ArManager';
+import guideImg from '@/assets/imgs/img_game guide.png';
 
 const body700 = typography.body02[700];
 
@@ -15,16 +16,17 @@ const GuideComponent = ({ setIsOpenGuide, setIsOpenGuide2 }) => {
   };
   return (
     <StartingWrapper>
-      <BoxContainer>
-        <span>최대한 많은</span>
+      {/* <BoxContainer> */}
+      <GuideImg src={guideImg}></GuideImg>
+      {/* <span>최대한 많은</span>
         <span>미션판을 완성하라!</span>
         <div>
           이미지
           <img></img>
         </div>
-        <span>제시 상품을 순서대로 맞추면 미션 1개 성공!</span>
-        <Button onClick={onClick}>확인</Button>
-      </BoxContainer>
+        <span>제시 상품을 순서대로 맞추면 미션 1개 성공!</span> */}
+      <Button onClick={onClick}>확인</Button>
+      {/* </BoxContainer> */}
     </StartingWrapper>
   );
 };
@@ -48,28 +50,35 @@ const StartingWrapper = styled.div`
   object-fit: cover;
   background-position: center;
   background-size: cover;
-`;
-
-const BoxContainer = styled.div`
-  display: flex;
-  margin: 0 5%;
-  margin-top: 111px;
-  width: 90%;
-  height: 300px;
-  background-color: white;
-  border: 1px solid;
-  padding: 0px 20px;
-  flex-direction: column;
+  height: calc(100% - 80px);
+  justify-content: center;
   align-items: center;
-  /* gap: 24px; */
-
-  /* color: var(--white, var(--common-100, #fff)); */
-  color: black;
-  text-align: center;
-  /* font: var(--display01-b); */
-  line-height: 142%;
 `;
 
+// const BoxContainer = styled.div`
+//   display: flex;
+//   margin: 0 5%;
+//   margin-top: 111px;
+//   width: 90%;
+//   height: 300px;
+//   background-color: white;
+//   border: 1px solid;
+//   padding: 0px 20px;
+//   flex-direction: column;
+//   align-items: center;
+//   /* gap: 24px; */
+
+//   /* color: var(--white, var(--common-100, #fff)); */
+//   color: black;
+//   text-align: center;
+//   /* font: var(--display01-b); */
+//   line-height: 142%;
+// `;
+
+const GuideImg = styled.img`
+  width: 350px;
+  height: 486px;
+`;
 const Button = styled.button`
   position: fixed;
   display: flex;

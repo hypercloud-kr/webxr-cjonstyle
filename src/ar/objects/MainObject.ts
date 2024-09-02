@@ -43,10 +43,16 @@ export class MainObject extends XrObject {
   protected onLoadModelFinished() {
     // 모델 로드 완료 후 처리
     // this.modelGroup.scale.set(5,5,5);
+    this.modelGroup.traverse(item => {
+      if (item.isMesh) {
+        item.castShadow = true;
+        item.receiveShadow = true;
+      }
+    });
     this.setAnimation({
       mode: THREE.LoopOnce,
       repetitions: 1,
-      timeScale: 1.5,
+      timeScale: 2,
     });
     setTimeout(() => {
       this.animate('box_1');
@@ -68,6 +74,7 @@ export class MainObject extends XrObject {
       this.animate(this.item.aniName).then(() => {
         this.isFinishAnimation = true;
         this.openAnimationObject.stopAnimation();
+        this.parent.finishChildAnimation();
       });
       this.openAnimationObject.runAnimation();
     }, this.item.animateDelay * 1000);
@@ -89,6 +96,7 @@ export class MainObject extends XrObject {
       this.animate(this.item.aniName).then(() => {
         this.isFinishAnimation = true;
         this.openAnimationObject.stopAnimation();
+        this.parent.finishChildAnimation();
       });
       this.openAnimationObject.runAnimation();
     }, delay * 1000);
