@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 // import mainImg from '/@assets/img/img_tit-logo.svg';
 import backgroundImg from '@/assets/imgs/background.jpg';
-import { typography } from '@hypercloud-kr/styling-kit';
+// import { typography } from '@hypercloud-kr/styling-kit';
 import { ArManager } from '@/ar/ArManager';
 import guideImg from '@/assets/imgs/img_game guide.png';
 
-const body700 = typography.body02[700];
+// const body700 = typography.body02[700];
 
 const GuideComponent = ({ setIsOpenGuide, setIsOpenGuide2 }) => {
   const onClick = () => {
@@ -83,19 +83,25 @@ const Button = styled.button`
   position: fixed;
   display: flex;
   bottom: 24px;
-  width: calc(100% - 40px);
+  width: calc(100% - 60px);
   padding: 16px 0px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
 
-  border-radius: 16px;
-  background: var(--blue-60, #3285fa);
+  border-radius: 8px;
+  background: #7515d8;
 
+  color: var(--Common-100, #fff);
   text-align: center;
-  border-width: 0px;
-  color: var(--common-100, #fff);
-  font: ${body700};
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 30px */
+  letter-spacing: -0.2px;
+
+  border-width: 0;
   /* Body_01/700 */
 `;

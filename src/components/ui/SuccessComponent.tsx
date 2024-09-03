@@ -4,10 +4,22 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getDeviceId } from '../../util/util';
 import ellipse from '@/assets/svg/elipse.svg';
+import ellipseCheck from '@/assets/svg/ellipse_check.svg';
+import backgroundImg from '@/assets/imgs/img_score results_bg.png';
+import imgScore1 from '@/assets/imgs/img_score1.png';
+import imgScore2 from '@/assets/imgs/img_score2.png';
+import imgScore3 from '@/assets/imgs/img_score3.png';
+import imgScore4 from '@/assets/imgs/img_score4.png';
+import kakaoTalkImg from '@/assets/imgs/kakao-talk 1.png';
+import { css } from '@emotion/react';
+
 export const SuccessComponent = () => {
-  const [title, setTitle] = useState('');
+  // const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  // const [isCopiedLink, setIsCopiedLink] = useState(false);
+  const [description2, setDescription2] = useState('');
+  const [titleImg, setTitleImg] = useState('');
+  const [playedUuid, setPlayedUuid] = useState('');
+  const [isCopiedLink, setIsCopiedLink] = useState(false);
 
   useEffect(() => {
     //appkey는 헤더에 필요
@@ -23,13 +35,17 @@ export const SuccessComponent = () => {
       campaignId = 401;
       url = `https://api.stg.hars.kr/client/campaign/${campaignId}/played`;
     }
-    axios.post(url, {
-      headers: {
-        appKey,
-      },
-      score: stateStore.getState().score,
-      deviceId: getDeviceId(),
-    });
+    axios
+      .post(url, {
+        headers: {
+          appKey,
+        },
+        score: stateStore.getState().score,
+        deviceId: getDeviceId(),
+      })
+      .then(res => {
+        setPlayedUuid(res.data);
+      });
   }, []);
   useEffect(() => {
     setResultState(stateStore.getState().score);
@@ -62,83 +78,186 @@ export const SuccessComponent = () => {
       () => {
         console.log('URL이 복사되었습니다.');
 
-        // setIsCopiedLink(true);
-        // setTimeout(() => {
-        //   setIsCopiedLink(false);
-        // }, 300000);
+        setIsCopiedLink(true);
+        setTimeout(() => {
+          setIsCopiedLink(false);
+        }, 2000);
       },
       err => {
         console.error('URL 복사에 실패했습니다.', err);
       }
     );
   };
+  const apply = () => {
+    window.location.href = 'https://naver.com';
+    console.log(playedUuid);
+  };
   const setResultState = score => {
     // const score = stateStore.getState().score;
     if (10 <= score && score < 40) {
-      setTitle('쇼핑뉴비');
-      setDescription('핫템을 겟하기에는 스피드가 부족했어요!');
+      // setTitle('쇼핑뉴비');
+      setDescription('핫템을 겟하기에는');
+      setDescription2('스피드가 부족했어요!');
+      setTitleImg(imgScore1);
     } else if (40 <= score && score < 60) {
-      setTitle('쇼핑초보');
-      setDescription('쇼핑 고수가 되기엔 아직 멀고도 험하군요!');
+      // setTitle('쇼핑초보');
+      setDescription('쇼핑 고수가 되기엔 ');
+      setDescription2('아직 멀고도 험하군요!');
+      setTitleImg(imgScore2);
     } else if (60 <= score && score < 90) {
-      setTitle('쇼핑고수');
-      setDescription('행운의 기회가 가까워지고 있어요!');
+      // setTitle('쇼핑고수');
+      setDescription('행운의 기회가');
+      setDescription2('가까워지고 있어요!');
+      setTitleImg(imgScore3);
     } else if (90 <= score) {
-      setTitle('쇼핑달인');
-      setDescription('WOW! 핫템을 놓치지 않는 놀라운 실력의 소유자!');
+      // setTitle('쇼핑달인');
+      setDescription('WOW! 핫템을 놓치지 않는');
+      setDescription2('놀라운 실력의 소유자!');
+      setTitleImg(imgScore4);
     }
   };
   return (
     <SuccessContainer>
       <ResultContainer>
-        {stateStore.getState().score === 0 ? (
-          <div>Time out</div>
-        ) : (
-          <div>{title}</div>
-        )}
-        <ScoreDiv>{stateStore.getState().score}</ScoreDiv>
+        <TitleDiv>
+          {stateStore.getState().score === 0 && !titleImg ? (
+            <div>Time out</div>
+          ) : (
+            <img src={titleImg} />
+          )}
+        </TitleDiv>
+        <ScoreDiv>{stateStore.getState().score}점</ScoreDiv>
         <ScoreSectionContainer>
           <ScoreSection>
             <ColumnFlex>
-              <div>뉴비</div>
-              <img src={ellipse}></img>
-              <>10~30점</>
+              <ColumnTitle
+                check={
+                  0 < stateStore.getState().score &&
+                  stateStore.getState().score <= 30
+                    ? true
+                    : false
+                }
+              >
+                뉴비
+              </ColumnTitle>
+              <ColumnImg
+                src={
+                  0 < stateStore.getState().score &&
+                  stateStore.getState().score <= 30
+                    ? ellipseCheck
+                    : ellipse
+                }
+              ></ColumnImg>
+              <ColumnScore
+                check={
+                  0 < stateStore.getState().score &&
+                  stateStore.getState().score <= 30
+                    ? true
+                    : false
+                }
+              >
+                10~30점
+              </ColumnScore>
             </ColumnFlex>
           </ScoreSection>
           <ScoreSection>
             <ColumnFlex>
-              <div>뉴비</div>
-              <img src={ellipse}></img>
-              <>10~30점</>
+              <ColumnTitle
+                check={
+                  40 <= stateStore.getState().score &&
+                  stateStore.getState().score <= 50
+                    ? true
+                    : false
+                }
+              >
+                초보
+              </ColumnTitle>
+              <ColumnImg
+                src={
+                  40 < stateStore.getState().score &&
+                  stateStore.getState().score <= 50
+                    ? ellipseCheck
+                    : ellipse
+                }
+              ></ColumnImg>
+              <ColumnScore
+                check={
+                  40 <= stateStore.getState().score &&
+                  stateStore.getState().score <= 50
+                    ? true
+                    : false
+                }
+              >
+                40~50점
+              </ColumnScore>
             </ColumnFlex>
           </ScoreSection>
           <ScoreSection>
             <ColumnFlex>
-              <div>뉴비</div>
-              <img src={ellipse}></img>
-              <>10~30점</>
+              <ColumnTitle
+                check={
+                  60 <= stateStore.getState().score &&
+                  stateStore.getState().score <= 80
+                    ? true
+                    : false
+                }
+              >
+                고수
+              </ColumnTitle>
+              <ColumnImg
+                src={
+                  60 < stateStore.getState().score &&
+                  stateStore.getState().score <= 80
+                    ? ellipseCheck
+                    : ellipse
+                }
+              ></ColumnImg>
+              <ColumnScore
+                check={
+                  60 <= stateStore.getState().score &&
+                  stateStore.getState().score <= 80
+                    ? true
+                    : false
+                }
+              >
+                60~80점
+              </ColumnScore>
             </ColumnFlex>
           </ScoreSection>
           <ScoreSection>
             <ColumnFlex>
-              <div>뉴비</div>
-              <img src={ellipse}></img>
-              <>10~30점</>
+              <ColumnTitle
+                check={90 <= stateStore.getState().score ? true : false}
+              >
+                달인
+              </ColumnTitle>
+              <ColumnImg
+                src={90 < stateStore.getState().score ? ellipseCheck : ellipse}
+              ></ColumnImg>
+              <ColumnScore
+                check={90 <= stateStore.getState().score ? true : false}
+              >
+                90점~
+              </ColumnScore>
             </ColumnFlex>
           </ScoreSection>
         </ScoreSectionContainer>
-        <DescriptionDiv>{description}1</DescriptionDiv>
+        <DescriptionDiv>
+          <div>{description}</div>
+          <div>{description2}</div>
+        </DescriptionDiv>
       </ResultContainer>
       <ChoiceContainer>
-        <BtnGroup>
-          <ApplyProduct>상품 응모하기</ApplyProduct>
-          <ReplayBtn onClick={replay}>replay</ReplayBtn>
-        </BtnGroup>
+        <InfoGroup>
+          <InfoDiv>점수가 높을수록 당첨 확률 UP!</InfoDiv>
+          <ApplyProduct onClick={apply}>상품 응모하기</ApplyProduct>
+        </InfoGroup>
+        <ReplayBtn onClick={replay}>다시 플레이하기</ReplayBtn>
         <ShareGroup>
-          <ShareBtn onClick={share}>share</ShareBtn>
+          <ShareBtn src={kakaoTalkImg} onClick={share} />
+          <CopyBtn onClick={copyLink}>URL</CopyBtn>
         </ShareGroup>
-        <CopyBtn onClick={copyLink}>copy link</CopyBtn>
-        {/* {isCopiedLink && <CopyText>링크 복사 완료</CopyText>} */}
+        {isCopiedLink && <CopyText>링크 복사 완료</CopyText>}
       </ChoiceContainer>
     </SuccessContainer>
   );
@@ -153,32 +272,53 @@ const SuccessContainer = styled.div`
   height: 100%;
   z-index: 100;
   flex-direction: column;
+  gap: 60px;
   align-items: center;
+  background-image: url(${backgroundImg});
 `;
 const ResultContainer = styled.div`
   display: flex;
   width: calc(100% - 60px);
   margin: 90px 30px 0 30px;
-  height: 300px;
+  /* height: 300px; */
   border-radius: 13px;
   background: #fff;
   box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   flex-direction: column;
   align-items: center;
-  padding: 0 18px;
+  padding: 45px 0 20px 0;
   gap: 21px;
   /* justify-content: center;
   align-items: center;
   flex-direction: column; */
 `;
+const TitleDiv = styled.div`
+  /* width: 146.104px;
+  height: 74.011px;
+  flex-shrink: 0;
+  background-color: #43107A;
+  border-radius: 50%; */
+  position: absolute;
+  top: 32px;
+  /* color: white; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const ScoreDiv = styled.div`
-  font-size: 33px;
+  display: flex;
+  align-items: center;
+  font-size: 59px;
+  height: 61px;
   flex-shrink: 0;
   color: #6e15ce;
+  font-family: “yoon-a-yoonche”, sans-serif;
+  font-weight: 400;
+  font-style: normal;
 `;
 const ScoreSectionContainer = styled.div`
-  width: 100%;
-  height: 30%;
+  width: calc(100% - 40px);
+  height: 90px;
   display: flex;
   flex-shrink: 0;
   border-radius: 10.941px;
@@ -202,8 +342,8 @@ const ScoreSection = styled.div`
     width: 100%;
     height: 2px;
     background: #640faf;
-    left: 50%;
-    top: 50%;
+    left: 49%;
+    top: 59%;
     z-index: 0;
     transform: translateY(-50%);
   }
@@ -213,7 +353,55 @@ const ColumnFlex = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 5px;
 `;
+
+const ColumnTitle = styled.div`
+  color: #640faf;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 27.063px; /* 150.351% */
+  ${props =>
+    props.check &&
+    css`
+      border-radius: 5.471px;
+      background: #640faf;
+      padding: 0 5px;
+      /* width: 51px;
+    height: 17px; */
+      color: #fff;
+      text-align: center;
+      font-family: Pretendard;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 27.063px; /* 150.351% */
+    `}
+`;
+const ColumnImg = styled.img``;
+const ColumnScore = styled.div`
+  display: flex;
+  align-items: center;
+  color: #252525;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 27.063px; /* 208.178% */
+  height: 10px;
+  padding-top: 5px;
+  ${props =>
+    props.check &&
+    css`
+      font-weight: 700;
+      padding-top: 0;
+    `}
+`;
+
 const DescriptionDiv = styled.div`
   color: #000;
   text-align: center;
@@ -225,53 +413,123 @@ const DescriptionDiv = styled.div`
 `;
 const ChoiceContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: calc(100% - 60px);
   justify-content: center;
   align-items: center;
   flex-direction: column;
 `;
-const BtnGroup = styled.div`
+// const BtnGroup = styled.div`
+//   display: flex;
+//   width: 100%;
+//   justify-content: center;
+//   align-items: center;
+// `;
+const ReplayBtn = styled.button`
+  width: 330px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: #6e00ce;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: -0.2px;
+  border: none;
+`;
+
+const InfoGroup = styled.div`
+  position: relative;
+`;
+const InfoDiv = styled.div`
+  position: absolute;
+  width: 177.51px;
+  height: 38px;
+  top: -43px;
+  right: 15px;
+  background-color: #c49fff;
+  border-radius: 10px;
   display: flex;
-  width: 100%;
   justify-content: center;
   align-items: center;
-`;
-const ReplayBtn = styled.button`
-  background-color: #f00;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  margin-top: 20px;
+
+  color: #252525;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 12.078px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17.255px; /* 142.857% */
+  letter-spacing: -0.173px;
+  &::after {
+    border-top: 10px solid #c49fff;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: '';
+    position: absolute;
+    top: 38px;
+    left: 145px;
+  }
 `;
 const ApplyProduct = styled.button`
-  background-color: #f00;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
+  width: 330px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #14fea2;
+  color: #6e00ce;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: -0.2px;
   border: none;
-  cursor: pointer;
-  margin-top: 20px;
+  margin-bottom: 11px;
 `;
 const ShareGroup = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
+  padding: 20px 0;
+  gap: 17px;
 `;
-const ShareBtn = styled.button`
-  border-radius: 50%;
-`;
+const ShareBtn = styled.img``;
 const CopyBtn = styled.button`
   border-radius: 50%;
+  background-color: #adadad;
+  width: 38px;
+  height: 38px;
+  border: none;
+
+  color: #3f0892;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 19.5px */
+  letter-spacing: -0.143px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-// const CopyText = styled.div`
-//   position: fixed;
-//   width: 100%;
-//   height: 100%;
-//   display: inline-flex;
-//   justify-content: center;
-//   align-items: center;
-//   bottom: 30px;
-// `;
+const CopyText = styled.div`
+  position: fixed;
+  /* width: 100%;
+  height: 100%; */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 30px;
+  padding: 10px;
+  background-color: black;
+  font: white;
+`;
