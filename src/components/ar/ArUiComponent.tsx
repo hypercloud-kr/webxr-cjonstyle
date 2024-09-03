@@ -7,17 +7,21 @@ import scoreImg from '@/assets/imgs/timer.png';
 // import rightArrow from '@/assets/svg/rightArrow.svg';
 import timerGreenImg from '@/assets/imgs/clock_green.png';
 import timerRedImg from '@/assets/imgs/clock_red.png';
+import SuccessLottie from '../ui/SuccessLottie';
+import scoreEffect from '@/assets/video/scoreEffect.gif';
+import timeoutEffect from '@/assets/video/timeout.gif';
 
 function ArUiComponent() {
   // const [time, setTime] = useState(2000);
   const [timerWidth, setTimerWidth] = useState(2000);
   // const [score, setScore] = useState(0);
   const [isStartingGame, setIsStartingGame] = useState(false);
-  const [timeCount, setTimeCount] = useState(null);
+  const [timeCount, setTimeCount] = useState('');
   const [isOpenSuccess, setIsOpenSuccess] = useState(false);
   const [isFinishingGame, setIsFinishingGame] = useState(false);
   const [timerImg, setTimerImg] = useState(timerGreenImg);
   const [timerSpeed, setTimerSpeed] = useState(0);
+  const [isShowScoreEffect, setIsShowScoreEffect] = useState(false);
   const state = useSyncExternalStore(stateStore.subscribe, stateStore.getState);
 
   useEffect(() => {
@@ -27,7 +31,13 @@ function ArUiComponent() {
     //   setIntervalId(id);
     // setTimeout(() => {
     // }, 500)
-  }, []);
+    if (stateStore.getState().score > 0) {
+      setIsShowScoreEffect(true);
+      setTimeout(() => {
+        setIsShowScoreEffect(false);
+      }, 1000);
+    }
+  }, [stateStore.getState().score]);
   const onClick = () => {
     setIsStartingGame(true);
     if (!timeCount) setTimeCount(3);
@@ -48,7 +58,7 @@ function ArUiComponent() {
               }, 1000);
             });
           }, 1000);
-          return '시작!';
+          return 'START!';
         }
         return count - 1;
       });
@@ -115,7 +125,7 @@ function ArUiComponent() {
 
       if (duration - elapsedTime < 3000) {
         setTimerSpeed(3);
-      } else if (duration - elapsedTime < 5000) {
+      } else if (duration - elapsedTime < 10000) {
         setTimerImg(timerRedImg);
         setTimerSpeed(2);
       }
@@ -147,13 +157,14 @@ function ArUiComponent() {
             미션 성공<ColorSpan>X{stateStore.getState().count}</ColorSpan>
           </CountDiv>
           <VBar></VBar> */}
+          {isShowScoreEffect && <ScoreEffect src={scoreEffect}></ScoreEffect>}
           <ScoreDiv>
             SCORE<ColorSpan>{stateStore.getState().score}</ColorSpan>
           </ScoreDiv>
         </ScoreContainer>
       </TopBar>
-      {isOpenSuccess && <SuccessDiv>Success</SuccessDiv>}
       <CardContainer>
+        {isOpenSuccess && <SuccessLottie></SuccessLottie>}
         <Round>
           <RoundText
             key={stateStore.getState().count}
@@ -162,10 +173,10 @@ function ArUiComponent() {
             ROUND{stateStore.getState().count + 1}
           </RoundText>
         </Round>
-        {stateStore.getState().items.map(item => {
+        {stateStore.getState().items.map((item, i) => {
           // if (item.isCollected)
           return (
-            <CardOuter>
+            <CardOuter key={i}>
               <CardInner flip={item.isCollected ? true : false}>
                 <Card src={item.img}></Card>
                 <Card src={item.backImg} flip={true}></Card>
@@ -184,8 +195,13 @@ function ArUiComponent() {
           </Button>
         </ImgWrapper>
       )}
+      {timeCount && (
+        <TimeCountDivOutline key={`${timeCount}1`}>
+          {timeCount}
+        </TimeCountDivOutline>
+      )}
       {timeCount && <TimeCountDiv key={timeCount}>{timeCount}</TimeCountDiv>}
-      {isFinishingGame && <TimeOutDiv>Time out</TimeOutDiv>}
+      {isFinishingGame && <TimeOutDiv src={timeoutEffect} />}
     </>
   );
 }
@@ -299,6 +315,12 @@ const ScoreImg = styled.img`
   align-items: center;
   justify-content: center;
 `;
+const ScoreEffect = styled.img`
+  position: absolute;
+  top: -37px;
+  width: 100px;
+  height: 100px;
+`;
 // const CountDiv = styled.div`
 //   /* position: fixed;
 //   top: 20px;
@@ -357,16 +379,16 @@ const ScoreDiv = styled.div`
   text-transform: uppercase;
 `;
 
-const SuccessDiv = styled.div`
-  position: fixed;
-  top: 70px;
-  left: 0;
-  width: 100%;
-  z-index: 60;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const SuccessDiv = styled.div`
+//   position: fixed;
+//   top: 70px;
+//   left: 0;
+//   width: 100%;
+//   z-index: 60;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
 const CardContainer = styled.div`
   position: fixed;
@@ -544,6 +566,48 @@ const Button = styled.button`
   letter-spacing: -0.2px;
 `;
 
+const TimeCountDivOutline = styled.div`
+  position: fixed;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 68px;
+  z-index: 50;
+  left: 0;
+  width: 100%;
+  animation: grow2 0.5s;
+  transform: scale(1);
+
+  color: #fff;
+  text-align: center;
+  text-shadow: 0px 4px 0px #3f0892;
+  -webkit-text-stroke-width: 17px;
+  -webkit-text-stroke-color: #6e15ce;
+  font-family: Pretendard;
+  font-size: 80px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 124.956px; /* 156.195% */
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  /* 
+  background: linear-gradient(180deg, #fff 23.98%, #4feeab 48.23%, #fff 72.78%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+
+  ${css`
+    /* transform: scale(2); */
+    @keyframes grow2 {
+      0% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  `}
+`;
 const TimeCountDiv = styled.div`
   position: fixed;
   display: inline-flex;
@@ -554,12 +618,11 @@ const TimeCountDiv = styled.div`
   left: 0;
   width: 100%;
   animation: grow 0.5s;
-  transform: scale(2);
+  transform: scale(1);
 
   color: #fff;
   text-align: center;
   text-shadow: 0px 4px 0px #3f0892;
-  -webkit-text-stroke-width: 6px;
   -webkit-text-stroke-color: #6e15ce;
   font-family: Pretendard;
   font-size: 80px;
@@ -581,13 +644,13 @@ const TimeCountDiv = styled.div`
         transform: scale(0);
       }
       100% {
-        transform: scale(2);
+        transform: scale(1);
       }
     }
   `}
 `;
 
-const TimeOutDiv = styled.div`
+const TimeOutDiv = styled.img`
   position: fixed;
   top: 0;
   left: 0;
