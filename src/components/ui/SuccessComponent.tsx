@@ -191,6 +191,22 @@ const ScoreSection = styled.div`
   flex: 0 0 25%;
   justify-content: center;
   align-items: center;
+  position: relative;
+  & > div {
+    z-index: 1;
+  }
+  &:not(:last-child)::after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #640faf;
+    left: 50%;
+    top: 50%;
+    z-index: 0;
+    transform: translateY(-50%);
+  }
 `;
 const ColumnFlex = styled.div`
   display: flex;
