@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import backgroundImg from '@/assets/imgs/background.jpg';
 // import { typography } from '@hypercloud-kr/styling-kit';
 // import { stateStore } from '@/ar/storage';
-import boxOpenImg from '@/assets/imgs/boxOpenImg.png';
+import boxOpenImg from '@/assets/imgs/img_popup.png';
 import handGestureImg from '@/assets/imgs/img_hand gesture.png';
 import tapImg from '@/assets/imgs/img_Tap.png';
 
@@ -69,9 +69,8 @@ const BoxContainer = styled.div`
 `;
 
 const BoxImg = styled.img`
-  /* width: 123px;
+  width: 123px;
   height: 94.566px;
-  flex-shrink: 0; */
 `;
 
 const BoxText = styled.div`

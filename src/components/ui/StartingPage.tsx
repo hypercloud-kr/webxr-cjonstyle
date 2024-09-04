@@ -4,6 +4,7 @@ import backgroundImg from '@/assets/imgs/background.jpg';
 // import { typography } from '@hypercloud-kr/styling-kit';
 import { stateStore } from '@/ar/storage';
 import { useEffect } from 'react';
+import startingImg from '@/assets/imgs/starting_img.png';
 
 // const body700 = typography.body02[700];
 
@@ -18,8 +19,7 @@ const StartingPage = () => {
   // };
   return (
     <StartingWrapper>
-      우리집에 온 컴온박스
-      {/* <Button onClick={onClick}>시작하기</Button> */}
+      <StartingImg src={startingImg} />
     </StartingWrapper>
   );
 };
@@ -44,8 +44,16 @@ const StartingWrapper = styled.div`
   background-size: cover;
   justify-content: center;
   align-items: center;
+  background: #6e00ce;
 `;
 
+const StartingImg = styled.img`
+  max-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-20px);
+`;
 // const ImgWrapper = styled.div`
 //   display: inline-flex;
 //   margin-top: 111px;

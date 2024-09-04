@@ -47,6 +47,12 @@ export class MainObject extends XrObject {
       if (item.isMesh) {
         item.castShadow = true;
         item.receiveShadow = true;
+        if (item.material.name === 'box_tex_Base_color.004') {
+          item.material.map.anisotropy =
+            this.parent.parent.renderer.capabilities.getMaxAnisotropy();
+          // item.material.map.minFilter = THREE.LinearMipMapLinearFilter;
+          // item.material.refractionRatio = 0.98;
+        }
       }
     });
     this.setAnimation({
@@ -80,7 +86,7 @@ export class MainObject extends XrObject {
     }, this.item.animateDelay * 1000);
   }
 
-  public runAnimation() {
+  public runAnimation(delay) {
     const action = this.animationsMap.get(this.item.aniName);
     // action?.stop();
     // action?.play();
@@ -90,7 +96,7 @@ export class MainObject extends XrObject {
       // action.setLoop(THREE.LoopOnce, 1);
     }
     // const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
-    const delay = Math.random() * 0.5;
+    // const delay = Math.random() * 0.5;
     setTimeout(() => {
       action?.reset();
       this.animate(this.item.aniName).then(() => {

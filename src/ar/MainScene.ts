@@ -9,7 +9,6 @@ import { objectArr } from './constants/constants';
 import { stateStore } from '@/ar/storage';
 // import { PlaneObject } from './objects/PlaneObjet';
 import { MainGroup } from './objects/MainGroup';
-import { PlaneGrid } from './objects/PlaneGrid';
 // import { addLight } from '@/utils/threeUtil';
 // import { ShaderObject } from './objects/ShaderObject';
 
@@ -54,16 +53,13 @@ export class MainScene extends XrScene {
     sampleObject5.position.set(position[4][0], position[4][1], position[4][2]);
     // this.appendChild(sampleObject5);
 
-    const plane = new PlaneGrid();
-    plane.position.set(0, -1, 0);
     // this.appendChild(plane);
-    const group = new MainGroup(plane);
+    const group = new MainGroup();
     group.appendChild(sampleObject);
     group.appendChild(sampleObject2);
     group.appendChild(sampleObject3);
     group.appendChild(sampleObject4);
     group.appendChild(sampleObject5);
-    group.appendChild(plane);
     this.appendChild(group);
     // addLight(this.scene);
     // const a = new ShaderObject(this.scene)

@@ -1,14 +1,14 @@
 import UggBox from '../../assets/models/CJbox.glb';
-import img5 from '../../assets/svg/img_card 1.svg';
-import img4 from '../../assets/svg/img_card 2.svg';
-import img3 from '../../assets/svg/img_card 3.svg';
-import img1 from '../../assets/svg/img_card 4.svg';
-import img2 from '../../assets/svg/img_card 5.svg';
-import backImg5 from '../../assets/svg/img_card check 1.svg';
-import backImg4 from '../../assets/svg/img_card check 2.svg';
-import backImg3 from '../../assets/svg/img_card check 3.svg';
-import backImg1 from '../../assets/svg/img_card check 4.svg';
-import backImg2 from '../../assets/svg/img_card check 5.svg';
+import img5 from '../../assets/imgs/img_card1.png';
+import img4 from '../../assets/imgs/img_card2.png';
+import img3 from '../../assets/imgs/img_card3.png';
+import img1 from '../../assets/imgs/img_card4.png';
+import img2 from '../../assets/imgs/img_card5.png';
+import backImg5 from '../../assets/imgs/img_card1_check.png';
+import backImg4 from '../../assets/imgs/img_card2_check.png';
+import backImg3 from '../../assets/imgs/img_card3_check.png';
+import backImg1 from '../../assets/imgs/img_card4_check.png';
+import backImg2 from '../../assets/imgs/img_card5_check.png';
 
 export const objectArr = [
   {

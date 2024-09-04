@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 // import mainImg from '/@assets/img/img_tit-logo.svg';
 import backgroundImg from '@/assets/imgs/background.jpg';
-import { typography } from '@hypercloud-kr/styling-kit';
+// import { typography } from '@hypercloud-kr/styling-kit';
 import { stateStore } from '@/ar/storage';
+import crownImg from '@/assets/imgs/crown.png';
+import bgImg from '@/assets/imgs/img__co_on_02_bg.png';
 
-const body700 = typography.body02[700];
+// const body700 = typography.body02[700];
 
 const PrecautionsComponent = () => {
   const onClick = () => {
@@ -12,9 +14,10 @@ const PrecautionsComponent = () => {
   };
   return (
     <StartingWrapper>
+      <TitleImg src={crownImg}></TitleImg>
       <PrecautionTitle>유의사항</PrecautionTitle>
       <ImgWrapper>
-        <ul>
+        <PrecautionUl>
           <li>Chrom, Safari 브라우저 사용을 권장합니다.</li>
           <li>
             네트워크 환경에 따라 AR증강현실 로딩에 10초 이상의 시간이 소요될 수
@@ -25,8 +28,8 @@ const PrecautionsComponent = () => {
             수 있습니다.
           </li>
           <li>AR 콘텐츠 사용 시 주변 장애물이나 안전에 주의하시기 바랍니다.</li>
-        </ul>
-        <Button onClick={onClick}>시작하기</Button>
+        </PrecautionUl>
+        <Button onClick={onClick}>확인</Button>
       </ImgWrapper>
     </StartingWrapper>
   );
@@ -50,17 +53,33 @@ const StartingWrapper = styled.div`
   object-fit: cover;
   background-position: center;
   background-size: cover;
+  align-items: center;
+  background: url(${bgImg}) 0 0px;
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
 `;
 
+const TitleImg = styled.img`
+  margin-top: 100px;
+  width: 38.52px;
+  height: 19.52px;
+`;
 const PrecautionTitle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #00ff9c;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 37.987px; /* 146.103% */
+  letter-spacing: 0.52px;
+  text-transform: uppercase;
 `;
 
 const ImgWrapper = styled.div`
   display: inline-flex;
-  margin-top: 111px;
+  margin-top: 31px;
   margin-bottom: 4px;
   padding: 0px 20px;
   flex-direction: column;
@@ -71,6 +90,20 @@ const ImgWrapper = styled.div`
   /* text-align: center; */
   /* font: var(--display01-b); */
   line-height: 142%;
+
+  color: #fff;
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 152%; /* 22.8px */
+`;
+
+const PrecautionUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 300px;
 `;
 
 const Button = styled.button`
@@ -84,12 +117,17 @@ const Button = styled.button`
   align-items: center;
   gap: 10px;
 
-  border-radius: 16px;
-  background: var(--blue-60, #3285fa);
+  border-radius: 8px;
+  background: #fff;
 
   text-align: center;
   border-width: 0px;
-  color: var(--common-100, #fff);
-  font: ${body700};
-  /* Body_01/700 */
+  color: #7515d8;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 30px */
+  letter-spacing: -0.2px;
 `;
