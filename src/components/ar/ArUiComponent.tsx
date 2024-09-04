@@ -215,12 +215,12 @@ const TopBar = styled.div`
   display: flex;
   z-index: 50;
   width: 100%;
-  gap: 88px;
   align-items: center;
   padding: 28px 21px 21px 40px;
+  justify-content: space-between;
 `;
 const TimerBarContainer = styled.div`
-  flex: 1;
+  flex: 0 0 50%;
   background-color: #e0e0e0; /* 배경 색상 */
   border-radius: 25px; /* 둥근 모서리 */
   overflow: hidden; /* 내용이 넘치지 않게 하기 */
@@ -253,7 +253,8 @@ const TimerBar = styled.div`
 `;
 
 const ScoreContainer = styled.div`
-  flex: 1;
+  /* flex: 1; */
+  width: 101px;
   display: flex;
   position: relative;
   border-radius: 13px;
@@ -377,6 +378,7 @@ const ScoreDiv = styled.div`
   line-height: 12.375px; /* 116.667% */
   letter-spacing: 0.212px;
   text-transform: uppercase;
+  padding-left: 15px;
 `;
 
 // const SuccessDiv = styled.div`
@@ -462,9 +464,11 @@ const CardOuter = styled.div`
   height: 60px;
   perspective: 600px;
   margin-top: 8px;
+  display: flex;
+  justify-content: center;
 `;
 const CardInner = styled.div`
-  max-width: 100px;
+  max-width: 60px;
   display: flex;
   justify-content: center;
   width: 100%;

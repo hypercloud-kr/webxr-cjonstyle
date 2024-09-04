@@ -17,6 +17,7 @@ const GuideComponent = ({ setIsOpenGuide, setIsOpenGuide2 }) => {
   return (
     <StartingWrapper>
       {/* <BoxContainer> */}
+      <BackgroundStyle></BackgroundStyle>
       <GuideImg src={guideImg}></GuideImg>
       {/* <span>최대한 많은</span>
         <span>미션판을 완성하라!</span>
@@ -39,7 +40,7 @@ const StartingWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 100;
+  z-index: 51;
   flex-direction: column;
   /* background: 
         rgb(211,211,211)
@@ -50,9 +51,9 @@ const StartingWrapper = styled.div`
   object-fit: cover;
   background-position: center;
   background-size: cover;
-  height: calc(100% - 80px);
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 47px 0px 27px 0px;
 `;
 
 // const BoxContainer = styled.div`
@@ -74,10 +75,18 @@ const StartingWrapper = styled.div`
 //   /* font: var(--display01-b); */
 //   line-height: 142%;
 // `;
-
+const BackgroundStyle = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  background: var(--Neutral-_0, #000);
+`;
 const GuideImg = styled.img`
   width: 350px;
   height: 486px;
+  z-index: 52;
 `;
 const Button = styled.button`
   position: fixed;

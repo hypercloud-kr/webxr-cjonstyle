@@ -12,6 +12,8 @@ import imgScore3 from '@/assets/imgs/img_score3.png';
 import imgScore4 from '@/assets/imgs/img_score4.png';
 import kakaoTalkImg from '@/assets/imgs/kakao-talk 1.png';
 import { css } from '@emotion/react';
+import { toast } from 'react-toastify';
+import { CouponToast } from './CouponToast';
 
 export const SuccessComponent = () => {
   // const [title, setTitle] = useState('');
@@ -19,7 +21,6 @@ export const SuccessComponent = () => {
   const [description2, setDescription2] = useState('');
   const [titleImg, setTitleImg] = useState('');
   const [playedUuid, setPlayedUuid] = useState('');
-  const [isCopiedLink, setIsCopiedLink] = useState(false);
 
   useEffect(() => {
     //appkey는 헤더에 필요
@@ -36,13 +37,18 @@ export const SuccessComponent = () => {
       url = `https://api.stg.hars.kr/client/campaign/${campaignId}/played`;
     }
     axios
-      .post(url, {
-        headers: {
-          appKey,
+      .post(
+        url,
+        {
+          score: stateStore.getState().score,
+          deviceId: getDeviceId(),
         },
-        score: stateStore.getState().score,
-        deviceId: getDeviceId(),
-      })
+        {
+          headers: {
+            appKey,
+          },
+        }
+      )
       .then(res => {
         setPlayedUuid(res.data);
       });
@@ -82,6 +88,16 @@ export const SuccessComponent = () => {
         setTimeout(() => {
           setIsCopiedLink(false);
         }, 2000);
+
+        toast(<CouponToast />, {
+          containerId: 'link-toast',
+          hideProgressBar: true,
+          closeButton: false,
+          closeOnClick: false,
+          autoClose: 2000,
+          position: 'bottom-center',
+          toastId: 'link-toast',
+        });
       },
       err => {
         console.error('URL 복사에 실패했습니다.', err);
@@ -257,7 +273,6 @@ export const SuccessComponent = () => {
           <ShareBtn src={kakaoTalkImg} onClick={share} />
           <CopyBtn onClick={copyLink}>URL</CopyBtn>
         </ShareGroup>
-        {isCopiedLink && <CopyText>링크 복사 완료</CopyText>}
       </ChoiceContainer>
     </SuccessContainer>
   );
@@ -275,8 +290,10 @@ const SuccessContainer = styled.div`
   gap: 60px;
   align-items: center;
   background-image: url(${backgroundImg});
+  justify-content: center;
 `;
 const ResultContainer = styled.div`
+  position: relative;
   display: flex;
   width: calc(100% - 60px);
   margin: 90px 30px 0 30px;
@@ -299,7 +316,7 @@ const TitleDiv = styled.div`
   background-color: #43107A;
   border-radius: 50%; */
   position: absolute;
-  top: 32px;
+  top: -60px;
   /* color: white; */
   display: flex;
   justify-content: center;
@@ -312,7 +329,7 @@ const ScoreDiv = styled.div`
   height: 61px;
   flex-shrink: 0;
   color: #6e15ce;
-  font-family: “yoon-a-yoonche”, sans-serif;
+  font-family: yoon-a-yoonche, sans-serif;
   font-weight: 400;
   font-style: normal;
 `;
@@ -500,7 +517,10 @@ const ShareGroup = styled.div`
   padding: 20px 0;
   gap: 17px;
 `;
-const ShareBtn = styled.img``;
+const ShareBtn = styled.img`
+  width: 38px;
+  height: 38px;
+`;
 const CopyBtn = styled.button`
   border-radius: 50%;
   background-color: #adadad;
@@ -521,15 +541,15 @@ const CopyBtn = styled.button`
   justify-content: center;
   align-items: center;
 `;
-const CopyText = styled.div`
-  position: fixed;
-  /* width: 100%;
-  height: 100%; */
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  bottom: 30px;
-  padding: 10px;
-  background-color: black;
-  font: white;
-`;
+// const CopyText = styled.div`
+//   position: fixed;
+//   /* width: 100%;
+//   height: 100%; */
+//   display: inline-flex;
+//   justify-content: center;
+//   align-items: center;
+//   bottom: 30px;
+//   padding: 10px;
+//   background-color: black;
+//   font: white;
+// `;

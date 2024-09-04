@@ -1,61 +1,27 @@
 import { XrObject } from '@hypercloud-kr/webxr-node/dist/XrObject';
-import { stateStore } from '../storage';
 import { PlaneObject } from './PlaneObjet';
 // import { TouchableModelModule } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
 import { stateStore } from '@/ar/storage';
-import { ArManager } from '../ArManager';
 import {
   addOrientationEvent,
   removeOrientationEvent,
 } from '@/utils/CustomEvent';
 import { addLight } from '@/utils/threeUtil';
-let angle;
+import { PlaneGrid } from '../objects/PlaneGrid';
+
+let angle: number | null | undefined;
 export class MainGroup extends XrObject {
   grid;
   id;
-  touchableModelModule;
-  constructor(grid) {
+  constructor() {
     super();
-    this.grid = grid;
-    // window.addEventListener("deviceorientation", handleOrientation);
-    // const requestPermission = (window.DeviceOrientationEvent as unknown as DeviceOrientationEventiOS)?.requestPermission;
-    // if (typeof (DeviceMotionEvent) !== 'undefined' && typeof (requestPermission) === 'function') {
-    //   requestPermission().then((response) => {
-    //       if (response === 'granted') {
-    //           window.addEventListener('devicemotion', handleOrientation)
-    //       }
-    //   })
-    // }
-
-    // window.addEventListener('touchstart', () => {
-    //   window.removeEventListener('deviceorientation', handleOrientation);
-    //   window.removeEventListener('devicemotion', handleOrientation);
-    //   stateStore.setReady();
-    //   angle = null;
-    // });
+    this.grid = new PlaneGrid();
+    this.grid.position.set(0, -1, 0);
+    this.appendChild(this.grid);
     this.modelGroup.visible = false;
-
-    // this.modelGroup.rotation.x = Math.PI / 4;
-    // this.touchableModelModule = new TouchableModelModule(this);
-    // this.modules.push(this.touchableModelModule);
-    // this.touchableModelModule.onTouch = this.onTouch.bind(this);
-    // if(stateStore.getState().firstStart) {
-    //   this.init(() => {});
-    // };
     this.id = 'mainGroup';
   }
-  // onTouch(mesh?: THREE.Intersection[]) {
-  //   console.log(this.children, this.modelGroup, mesh[0].object);
-  // this.children.forEach(child => {
-  //   const item = mesh.find(
-  //     m => child.nodeId === m.object.parent?.parent?.userData.id
-  //   );
-  //   if (item) {
-  //     child.onTouch();
-  //   }
-  // });
-  // }
-  init(callback) {
+  init(callback: () => void) {
     this.modelGroup.visible = true;
     addOrientationEvent(handleOrientation);
     window.addEventListener(
@@ -64,7 +30,6 @@ export class MainGroup extends XrObject {
         removeOrientationEvent(handleOrientation);
         this.initAfterTouch();
         callback();
-        ArManager.setReady();
       },
       { once: true }
     );
@@ -76,9 +41,6 @@ export class MainGroup extends XrObject {
     this.removeChild(this.grid);
     const plane = new PlaneObject();
     this.appendChild(plane);
-
-    const cameraDirection = new THREE.Vector3();
-    this.parent.camera.getWorldDirection(cameraDirection);
 
     const light = addLight(this.modelGroup);
     light.target.position.copy(this.modelGroup.position);
@@ -118,14 +80,14 @@ export class MainGroup extends XrObject {
     });
   }
   runChildAnimation() {
-    // const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
-    // let i = 0;
+    const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
+    let i = 0;
     this.children.forEach(child => {
       if (child.runAnimation) {
         child.isFinishAnimation = false;
         // setTimeout(() => {
-        // i++;
-        child.runAnimation();
+        child.runAnimation(delayArr[i]);
+        i++;
         // }, delayArr[i] * 1000);
       }
     });
