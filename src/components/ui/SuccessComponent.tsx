@@ -50,7 +50,8 @@ export const SuccessComponent = () => {
         }
       )
       .then(res => {
-        setPlayedUuid(res.data);
+        setPlayedUuid(res.data.id);
+        console.log(res.data);
       });
   }, []);
   useEffect(() => {
@@ -62,7 +63,7 @@ export const SuccessComponent = () => {
       const shareData = {
         title: '공유할 제목',
         text: '공유할 텍스트 내용',
-        url: 'https://example.com', // 공유할 URL
+        url: location.href, // 공유할 URL
       };
 
       // Web Share API를 사용하여 공유 다이얼로그 열기
@@ -84,11 +85,6 @@ export const SuccessComponent = () => {
       () => {
         console.log('URL이 복사되었습니다.');
 
-        setIsCopiedLink(true);
-        setTimeout(() => {
-          setIsCopiedLink(false);
-        }, 2000);
-
         toast(<CouponToast />, {
           containerId: 'link-toast',
           hideProgressBar: true,
@@ -107,6 +103,7 @@ export const SuccessComponent = () => {
   const apply = () => {
     window.location.href = 'https://naver.com';
     console.log(playedUuid);
+    //playedUuid
   };
   const setResultState = score => {
     // const score = stateStore.getState().score;

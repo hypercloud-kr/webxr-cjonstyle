@@ -87,6 +87,10 @@ const GuideImg = styled.img`
   width: 350px;
   height: 486px;
   z-index: 52;
+  @media (max-height: 610px) {
+    width: auto;
+    height: 400px;
+  }
 `;
 const Button = styled.button`
   position: fixed;

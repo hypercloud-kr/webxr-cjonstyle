@@ -19,7 +19,7 @@ const SuccessLottie = () => {
         style={{
           display: 'flex',
           width: '100%',
-          height: '200px',
+          height: '100%',
           overflow: 'hidden',
         }}
         isClickToPauseDisabled={true}
@@ -38,4 +38,6 @@ const Wrapper = styled.div`
   position: absolute;
   z-index: 51;
   width: 100%;
+  height: 100%;
+  top: -20px;
 `;

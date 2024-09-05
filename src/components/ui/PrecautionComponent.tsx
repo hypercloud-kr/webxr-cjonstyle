@@ -18,9 +18,9 @@ const PrecautionsComponent = () => {
       <PrecautionTitle>유의사항</PrecautionTitle>
       <ImgWrapper>
         <PrecautionUl>
-          <li>Chrom, Safari 브라우저 사용을 권장합니다.</li>
+          <li>크롬, 사파리 브라우저 사용을 권장합니다.</li>
           <li>
-            네트워크 환경에 따라 AR증강현실 로딩에 10초 이상의 시간이 소요될 수
+            네트워크 환경에 따라 AR 증강현실 로딩에 10초 이상의 시간이 소요될 수
             있습니다.
           </li>
           <li>
@@ -69,11 +69,11 @@ const PrecautionTitle = styled.div`
   color: #00ff9c;
   text-align: center;
   font-family: Pretendard;
-  font-size: 26px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 700;
-  line-height: 37.987px; /* 146.103% */
-  letter-spacing: 0.52px;
+  line-height: 46.557px; /* 155.188% */
+  letter-spacing: 0.6px;
   text-transform: uppercase;
 `;
 
@@ -93,7 +93,7 @@ const ImgWrapper = styled.div`
 
   color: #fff;
   font-family: Pretendard;
-  font-size: 15px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: 152%; /* 22.8px */
@@ -102,8 +102,9 @@ const ImgWrapper = styled.div`
 const PrecautionUl = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  max-width: 300px;
+  gap: 15px;
+  max-width: 330px;
+  padding-inline-start: 25px;
 `;
 
 const Button = styled.button`
