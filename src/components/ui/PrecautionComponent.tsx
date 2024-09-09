@@ -65,7 +65,7 @@ const StartingWrapper = styled.div`
 `;
 
 const TitleImg = styled.img`
-  margin-top: 100px;
+  margin-top: 80px;
   width: 38.52px;
   height: 19.52px;
 
@@ -87,7 +87,7 @@ const PrecautionTitle = styled.div`
 
 const ImgWrapper = styled.div`
   display: inline-flex;
-  margin-top: 31px;
+  margin-top: 22px;
   margin-bottom: 4px;
   padding: 0px 25px;
   flex-direction: column;
