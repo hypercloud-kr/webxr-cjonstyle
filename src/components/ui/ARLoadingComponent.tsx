@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import LottieData from '@/assets/video/success_lottie.json';
+import styled from '@emotion/styled';
+import LoadingLottie from '@/assets/video/loading.json';
 import Lottie from 'react-lottie';
 
-const SuccessLottie = () => {
+export const ARLoadingComponent = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: LottieData,
+    animationData: LoadingLottie,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice',
     },
@@ -18,8 +18,8 @@ const SuccessLottie = () => {
         options={defaultOptions}
         style={{
           display: 'flex',
-          width: '100%',
-          height: '100%',
+          width: '70px',
+          height: '70px',
           overflow: 'hidden',
         }}
         isClickToPauseDisabled={true}
@@ -28,8 +28,6 @@ const SuccessLottie = () => {
   );
 };
 
-export default SuccessLottie;
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -37,7 +35,7 @@ const Wrapper = styled.div`
   align-items: center;
   position: absolute;
   z-index: 51;
-  width: 100vw;
-  height: 132px;
-  top: -34px;
+  width: 100%;
+  height: 100%;
+  top: -20px;
 `;
