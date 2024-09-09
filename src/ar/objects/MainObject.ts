@@ -15,6 +15,7 @@ export class MainObject extends XrObject {
   correctAnimationObject;
   wrongAnimationObject;
   isFinishAnimation = false;
+  isOpen = true;
   constructor(item) {
     super();
     this.item = item;
@@ -25,7 +26,7 @@ export class MainObject extends XrObject {
 
     this.openAnimationObject = new OpenAnimation();
     this.openAnimationObject.position.copy(this.position);
-    this.appendChild(this.openAnimationObject);
+    // this.appendChild(this.openAnimationObject);
 
     this.correctAnimationObject = new CorrectAnimation();
     this.correctAnimationObject.position.copy(this.position);
@@ -56,13 +57,12 @@ export class MainObject extends XrObject {
       }
     });
     this.setAnimation({
-      mode: THREE.LoopOnce,
-      repetitions: 1,
+      mode: THREE.LoopRepeat,
       timeScale: 2,
     });
-    setTimeout(() => {
-      this.animate('box_1');
-    }, this.item.animateDelay * 1000);
+    // setTimeout(() => {
+    this.animate('box_1');
+    // }, this.item.animateDelay * 5000);
     // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
     //   this.callBackFinishAnimation();
     // });
@@ -76,17 +76,22 @@ export class MainObject extends XrObject {
     // console.log(this.modelGroup.userData, this.modelGroup);
     const action = this.animationsMap.get('box_1');
     action?.stop();
-    setTimeout(() => {
-      this.animate(this.item.aniName).then(() => {
-        this.isFinishAnimation = true;
-        this.openAnimationObject.stopAnimation();
-        this.parent.finishChildAnimation();
-      });
-      this.openAnimationObject.runAnimation();
-    }, this.item.animateDelay * 1000);
+    // setTimeout(() => {
+    this.setAnimation({
+      mode: THREE.LoopOnce,
+      repitition: 1,
+      timeScale: 2,
+    });
+    this.animate(`${this.item.aniName}`).then(() => {
+      this.isFinishAnimation = true;
+      // this.openAnimationObject.stopAnimation();
+      // this.parent.finishChildAnimation();
+    });
+    this.openAnimationObject.runAnimation();
+    // }, this.item.animateDelay * 1000);
   }
 
-  public runAnimation(delay) {
+  public runAnimation() {
     const action = this.animationsMap.get(this.item.aniName);
     // action?.stop();
     // action?.play();
@@ -97,30 +102,65 @@ export class MainObject extends XrObject {
     }
     // const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
     // const delay = Math.random() * 0.5;
-    setTimeout(() => {
-      action?.reset();
-      this.animate(this.item.aniName).then(() => {
-        this.isFinishAnimation = true;
-        this.openAnimationObject.stopAnimation();
-        this.parent.finishChildAnimation();
-      });
-      this.openAnimationObject.runAnimation();
-    }, delay * 1000);
+    // setTimeout(() => {
+    action?.reset();
+    this.animate(this.item.aniName).then(() => {
+      this.isFinishAnimation = true;
+      // this.openAnimationObject.stopAnimation();
+      this.parent.finishChildAnimation();
+    });
+    this.openAnimationObject.runAnimation();
+    // }, delay * 1000);
   }
 
-  onTouch(mesh?: THREE.Intersection[]) {
-    console.log(this.model.scene, mesh, this.item.name, stateStore.nextName());
+  onTouch() {
+    // console.log(this.model.scene, mesh, this.item.name, stateStore.nextName());
     if (this.item.name !== stateStore.nextName()) {
       this.wrongAnimationObject.runAnimation();
+      this.parent.children.forEach((child, i) => {
+        if (i >= 5) return;
+        else if (child.isOpen) return;
+        child.isOpen = true;
+        child.model.animations.forEach(clip => {
+          const action = child.modelMixer?.clipAction(clip);
+          action.clampWhenFinished = true;
+          action?.reset();
+          action?.stop();
+          child
+            .animate(`${child.item.aniName}`, { clampWhenFinished: true })
+            .then(() => {
+              // this.parent.finishChildAnimation();
+            });
+          child.openAnimationObject.runAnimation();
+        });
+      });
+      this.isOpen = true;
+      stateStore.rollbackItems();
       return;
     }
     this.correctAnimationObject.runAnimation();
     // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
     //   console.log('finish', stateStore.getState());
     // });
-
+    this.isOpen = false;
     stateStore.setItems(this.item.name);
-    this.callBackFinishAnimation();
+    // this.callBackFinishAnimation();
+
+    this.model.animations.forEach(clip => {
+      const action = this.modelMixer?.clipAction(clip);
+      action.clampWhenFinished = true;
+      action?.reset();
+      action?.stop();
+      this.openAnimationObject.stopAnimation();
+    });
+    this.animate(`${this.item.aniName}_close`, {
+      clampWhenFinished: true,
+    }).then(() => {
+      this.isFinishAnimation = true;
+      this.openAnimationObject.stopAnimation();
+      this.callBackFinishAnimation();
+      // this.parent.finishChildAnimation();
+    });
     // this.model.animations.forEach((clip) => {
     //   const action = this.modelMixer.clipAction(clip);
     //   action.stop();
@@ -128,7 +168,14 @@ export class MainObject extends XrObject {
   }
 
   callBackFinishAnimation() {
-    console.log('finish', stateStore.getState());
+    console.log(
+      'finish',
+      stateStore
+        .getState()
+        .items.forEach((item, i) =>
+          console.log(i, item.isCollected, item.isFinished)
+        )
+    );
     stateStore.setIsFinished(this.item.name);
     if (
       stateStore
@@ -143,11 +190,12 @@ export class MainObject extends XrObject {
             stateStore.getState().position[i][1],
             stateStore.getState().position[i][2]
           );
+          child.isOpen = true;
           setTimeout(() => {
-            child.animate(child.item.aniName);
+            child.animate(`${child.item.aniName}`);
             child.openAnimationObject.runAnimation();
-          }, child.item.animateDelay * 1000);
-        }, 1100);
+          }, child.item.animateDelay * 500);
+        }, 500);
         child.model.animations.forEach(clip => {
           const action = child.modelMixer?.clipAction(clip);
           action.clampWhenFinished = true;
@@ -161,6 +209,12 @@ export class MainObject extends XrObject {
       // stateStore.setGameState('end');
     }
   }
+
+  addOpenAnimationObject(group) {
+    group.appendChild(this.openAnimationObject);
+    this.openAnimationObject.position.copy(this.position);
+  }
+
   update() {
     // deltaTime을 곱해줘야 디바이스 성능에 따라 일정한 속도로 움직임
     // this.modelGroup.rotation.y += (Math.PI / 4) * deltaTime; //초당 90도
