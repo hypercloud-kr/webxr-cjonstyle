@@ -16,6 +16,11 @@ export class OpenAnimation extends XrObject {
     this.modelGroup.userData.id = null;
   }
 
+  async openAnimation() {
+    await this.lightAnimation.openAnimation();
+    await this.particleAnimation.openAnimation();
+  }
+
   runAnimation() {
     this.lightAnimation.runAnimation();
     this.particleAnimation.runAnimation();

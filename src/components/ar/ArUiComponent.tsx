@@ -57,7 +57,7 @@ function ArUiComponent() {
               setIsFinishingGame(true);
               setTimeout(() => {
                 stateStore.setGameState('end');
-              }, 1000);
+              }, 2000);
             });
           }, 1000);
           return 'START!';
@@ -248,15 +248,15 @@ const TimerBar = styled.div`
   border-radius: 25px 0 0 25px;
   /* transition: width 0.4s ease; 부드러운 진행 애니메이션 */
   border-radius: 78px;
-  background: #ff0045;
-  box-shadow: 0 -3px 0 rgba(211, 57, 69, 1) inset;
+  background: #7515d8;
+  box-shadow: 0px -3px 0px 0px #3f0892 inset;
 
   ${props =>
     props.speed >= 2 &&
     css`
       border-radius: 999px;
-      background: #da10f8;
-      box-shadow: 0px -3px 0px 0px #a300bd inset;
+      background: #ff0045;
+      box-shadow: 0px -3px 0px 0px #d30039 inset;
     `};
 `;
 
@@ -687,7 +687,7 @@ const TimeoutDivText = styled.div`
   animation: switch 3s linear;
   color: #14fea2;
   text-shadow: 0 8px 0 rgba(63, 8, 146, 1); /* Shadow from feOffset dy="8" */
-  font-size: 50px;
+  font-size: 70px;
   @keyframes switch {
     0% {
       opacity: 0;

@@ -17,13 +17,20 @@ export class OpenAnimationParticle extends XrObject {
     this.modelGroup.userData.id = null;
     // this.modelGroup.scale.set(0.5, 0.5, 0.5);
     this.setAnimation({
-      mode: THREE.LoopRepeat,
+      mode: THREE.LoopOnce,
       timeScale: 2,
     });
   }
 
+  openAnimation() {
+    return this.animate('Animation');
+  }
+
   runAnimation() {
-    this.animate('Animation');
+    this.animate('Animation', {
+      mode: THREE.LoopRepeat,
+      clampWhenFinished: true,
+    });
   }
 
   stopAnimation() {

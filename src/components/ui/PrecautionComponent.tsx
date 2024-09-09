@@ -28,6 +28,10 @@ const PrecautionsComponent = () => {
             수 있습니다.
           </li>
           <li>AR 콘텐츠 사용 시 주변 장애물이나 안전에 주의하시기 바랍니다.</li>
+          <li>
+            CJ온스타일 회원이 아니라면 참여하신 게임 점수가 사라집니다.
+            회원가입하시고 경품에 도전하세요!
+          </li>
         </PrecautionUl>
         <Button onClick={onClick}>확인</Button>
       </ImgWrapper>
@@ -64,6 +68,10 @@ const TitleImg = styled.img`
   margin-top: 100px;
   width: 38.52px;
   height: 19.52px;
+
+  @media (max-height: 650px) {
+    margin-top: 50px;
+  }
 `;
 const PrecautionTitle = styled.div`
   color: #00ff9c;
@@ -81,7 +89,7 @@ const ImgWrapper = styled.div`
   display: inline-flex;
   margin-top: 31px;
   margin-bottom: 4px;
-  padding: 0px 20px;
+  padding: 0px 25px;
   flex-direction: column;
   align-items: center;
   gap: 24px;
@@ -103,7 +111,7 @@ const PrecautionUl = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  max-width: 330px;
+  max-width: 340px;
   padding-inline-start: 25px;
 `;
 

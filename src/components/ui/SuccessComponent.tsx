@@ -101,8 +101,11 @@ export const SuccessComponent = () => {
     );
   };
   const apply = () => {
-    window.location.href = 'https://naver.com';
-    console.log(playedUuid);
+    if (process.env.NODE_ENV === 'production') {
+      window.location.href = `https://display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
+    } else {
+      window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
+    }
     //playedUuid
   };
   const setResultState = score => {

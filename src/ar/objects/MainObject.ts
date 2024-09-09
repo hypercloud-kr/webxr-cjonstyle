@@ -7,7 +7,7 @@ import { stateStore } from '@/ar/storage';
 import { OpenAnimation } from './animations/OpenAnimation';
 import { CorrectAnimation } from './animations/CorrectAnimation';
 import { WrongAnimation } from './animations/WrongAnimation';
-
+import { objectArr } from '../constants/constants';
 export class MainObject extends XrObject {
   touchableModelModule;
   item;
@@ -16,10 +16,9 @@ export class MainObject extends XrObject {
   wrongAnimationObject;
   isFinishAnimation = false;
   isOpen = true;
-  constructor(item) {
+  constructor(item: (typeof objectArr)[any]) {
     super();
     this.item = item;
-    // 오브젝트 기본값 설정
     ResourceManager.instance
       .loadGLTF(item.url)
       .then(this.onLoadModel.bind(this));
@@ -35,16 +34,11 @@ export class MainObject extends XrObject {
     this.wrongAnimationObject = new WrongAnimation();
     this.wrongAnimationObject.position.copy(this.position);
     this.appendChild(this.wrongAnimationObject);
-    // this.touchableModelModule = new TouchableModelModule(this);
-    // this.modules.push(this.touchableModelModule);
-    // this.touchableModelModule.onTouch = this.onTouch.bind(this);
-    // console.log(this.modelGroup.userData, this.modelGroup);
   }
 
   protected onLoadModelFinished() {
     // 모델 로드 완료 후 처리
-    // this.modelGroup.scale.set(5,5,5);
-    this.modelGroup.traverse(item => {
+    this.modelGroup.traverse((item: THREE.Mesh) => {
       if (item.isMesh) {
         item.castShadow = true;
         item.receiveShadow = true;
@@ -58,7 +52,7 @@ export class MainObject extends XrObject {
     });
     this.setAnimation({
       mode: THREE.LoopRepeat,
-      timeScale: 2,
+      timeScale: 1,
     });
     // setTimeout(() => {
     this.animate('box_1');
@@ -87,31 +81,33 @@ export class MainObject extends XrObject {
       // this.openAnimationObject.stopAnimation();
       // this.parent.finishChildAnimation();
     });
-    this.openAnimationObject.runAnimation();
+    this.openAnimationObject.openAnimation().then(() => {
+      this.afterOpenAnimation();
+    });
     // }, this.item.animateDelay * 1000);
   }
 
-  public runAnimation() {
-    const action = this.animationsMap.get(this.item.aniName);
-    // action?.stop();
-    // action?.play();
-    if (action) {
-      // action.time = 0;
-      // action.clampWhenFinished = true;
-      // action.setLoop(THREE.LoopOnce, 1);
-    }
-    // const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
-    // const delay = Math.random() * 0.5;
-    // setTimeout(() => {
-    action?.reset();
-    this.animate(this.item.aniName).then(() => {
-      this.isFinishAnimation = true;
-      // this.openAnimationObject.stopAnimation();
-      this.parent.finishChildAnimation();
-    });
-    this.openAnimationObject.runAnimation();
-    // }, delay * 1000);
-  }
+  // public runAnimation() {
+  //   const action = this.animationsMap.get(this.item.aniName);
+  //   // action?.stop();
+  //   // action?.play();
+  //   if (action) {
+  //     // action.time = 0;
+  //     // action.clampWhenFinished = true;
+  //     // action.setLoop(THREE.LoopOnce, 1);
+  //   }
+  //   // const delayArr = [0.1, 0.2, 0.3, 0.4, 0.5].sort(() => Math.random() - 0.5);
+  //   // const delay = Math.random() * 0.5;
+  //   // setTimeout(() => {
+  //   action?.reset();
+  //   this.animate(this.item.aniName).then(() => {
+  //     this.isFinishAnimation = true;
+  //     // this.openAnimationObject.stopAnimation();
+  //     this.parent.finishChildAnimation();
+  //   });
+  //   this.openAnimationObject.runAnimation();
+  //   // }, delay * 1000);
+  // }
 
   onTouch() {
     // console.log(this.model.scene, mesh, this.item.name, stateStore.nextName());
@@ -131,7 +127,9 @@ export class MainObject extends XrObject {
             .then(() => {
               // this.parent.finishChildAnimation();
             });
-          child.openAnimationObject.runAnimation();
+          this.openAnimationObject.openAnimation().then(() => {
+            this.afterOpenAnimation();
+          });
         });
       });
       this.isOpen = true;
@@ -193,8 +191,10 @@ export class MainObject extends XrObject {
           child.isOpen = true;
           setTimeout(() => {
             child.animate(`${child.item.aniName}`);
-            child.openAnimationObject.runAnimation();
-          }, child.item.animateDelay * 500);
+            child.openAnimationObject.openAnimation().then(() => {
+              this.afterOpenAnimation();
+            });
+          }, 1500);
         }, 500);
         child.model.animations.forEach(clip => {
           const action = child.modelMixer?.clipAction(clip);
@@ -215,6 +215,9 @@ export class MainObject extends XrObject {
     this.openAnimationObject.position.copy(this.position);
   }
 
+  afterOpenAnimation() {
+    this.openAnimationObject.runAnimation();
+  }
   update() {
     // deltaTime을 곱해줘야 디바이스 성능에 따라 일정한 속도로 움직임
     // this.modelGroup.rotation.y += (Math.PI / 4) * deltaTime; //초당 90도

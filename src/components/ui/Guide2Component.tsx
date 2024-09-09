@@ -57,13 +57,12 @@ const BoxContainer = styled.div`
   display: flex;
   width: 350px;
   height: 108px;
-  padding: 10px 22px 10px 10px;
+  padding: 10px 31px 10px 10px;
   align-items: center;
-  gap: 10px;
+  gap: 34px;
   flex-shrink: 0;
 
   border-radius: 13px;
-  border: var(--Size-base-size_xxxs, 2px) solid #fff;
   background: #fff;
   box-shadow: 0px 4px 0px 0px #3f0892;
 `;
