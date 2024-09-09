@@ -110,7 +110,7 @@ export const SuccessComponent = () => {
   };
   const setResultState = score => {
     // const score = stateStore.getState().score;
-    if (10 <= score && score < 40) {
+    if (0 <= score && score < 40) {
       // setTitle('쇼핑뉴비');
       setDescription('핫템을 겟하기에는');
       setDescription2('스피드가 부족했어요!');
@@ -136,11 +136,7 @@ export const SuccessComponent = () => {
     <SuccessContainer>
       <ResultContainer>
         <TitleDiv>
-          {stateStore.getState().score === 0 && !titleImg ? (
-            <div>Time out</div>
-          ) : (
-            <img src={titleImg} />
-          )}
+          <img src={titleImg} />
         </TitleDiv>
         <ScoreDiv>{stateStore.getState().score}점</ScoreDiv>
         <ScoreSectionContainer>
@@ -148,7 +144,7 @@ export const SuccessComponent = () => {
             <ColumnFlex>
               <ColumnTitle
                 check={
-                  0 < stateStore.getState().score &&
+                  0 <= stateStore.getState().score &&
                   stateStore.getState().score <= 30
                     ? true
                     : false
@@ -158,7 +154,7 @@ export const SuccessComponent = () => {
               </ColumnTitle>
               <ColumnImg
                 src={
-                  0 < stateStore.getState().score &&
+                  0 <= stateStore.getState().score &&
                   stateStore.getState().score <= 30
                     ? ellipseCheck
                     : ellipse
@@ -166,13 +162,13 @@ export const SuccessComponent = () => {
               ></ColumnImg>
               <ColumnScore
                 check={
-                  0 < stateStore.getState().score &&
+                  0 <= stateStore.getState().score &&
                   stateStore.getState().score <= 30
                     ? true
                     : false
                 }
               >
-                10~30점
+                0~30점
               </ColumnScore>
             </ColumnFlex>
           </ScoreSection>
