@@ -299,7 +299,7 @@ const ResultContainer = styled.div`
   box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   flex-direction: column;
   align-items: center;
-  padding: 45px 0 20px 0;
+  padding: 57px 0 20px 0;
   gap: 21px;
   /* justify-content: center;
   align-items: center;

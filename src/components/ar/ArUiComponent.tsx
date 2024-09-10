@@ -684,6 +684,7 @@ const TimeOutDiv = styled.div`
 `;
 
 const TimeoutDivText = styled.div`
+  font-family: yoon-a-yoonche, sans-serif;
   animation: switch 3s linear;
   color: #14fea2;
   text-shadow: 0 8px 0 rgba(63, 8, 146, 1); /* Shadow from feOffset dy="8" */
