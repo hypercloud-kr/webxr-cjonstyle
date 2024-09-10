@@ -3,13 +3,13 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import { stateStore } from '@/ar/storage';
 import { ArManager } from '@/ar/ArManager';
 import { css } from '@emotion/react';
-import scoreImg from '@/assets/imgs/timer.png';
+import scoreImg from '@/assets/imgs/score_star.png';
 // import rightArrow from '@/assets/svg/rightArrow.svg';
 import timerGreenImg from '@/assets/imgs/clock_green.png';
 import timerRedImg from '@/assets/imgs/clock_red.png';
 import SuccessLottie from '../ui/SuccessLottie';
 import scoreEffect from '@/assets/video/scoreEffect.gif';
-import timeoutEffect from '@/assets/video/timeout.gif';
+// import timeoutEffect from '@/assets/video/timeout.gif';
 
 function ArUiComponent() {
   // const [time, setTime] = useState(2000);
@@ -22,6 +22,7 @@ function ArUiComponent() {
   const [timerImg, setTimerImg] = useState(timerGreenImg);
   const [timerSpeed, setTimerSpeed] = useState(0);
   const [isShowScoreEffect, setIsShowScoreEffect] = useState(false);
+  const [score, setScore] = useState(0);
   const state = useSyncExternalStore(stateStore.subscribe, stateStore.getState);
 
   useEffect(() => {
@@ -35,6 +36,7 @@ function ArUiComponent() {
       setIsShowScoreEffect(true);
       setTimeout(() => {
         setIsShowScoreEffect(false);
+        setScore(stateStore.getState().score);
       }, 1000);
     }
   }, [stateStore.getState().score]);
@@ -55,7 +57,7 @@ function ArUiComponent() {
               setIsFinishingGame(true);
               setTimeout(() => {
                 stateStore.setGameState('end');
-              }, 1000);
+              }, 2000);
             });
           }, 1000);
           return 'START!';
@@ -89,7 +91,7 @@ function ArUiComponent() {
   useEffect(() => {
     const length = stateStore
       .getState()
-      .items.filter(item => item.isCollected).length;
+      .items.filter(item => item.isCollected && item.isFinished).length;
     // setScore(
     //   stateStore.getState().items.filter(item => item.isCollected).length
     // );
@@ -102,7 +104,7 @@ function ArUiComponent() {
         stateStore.initItems();
         stateStore.sufflePosition();
         //이후에 mainObject의 callbackfinishanimation함수 안에 mainGroup position set필요
-      }, 1000);
+      }, 1500);
     }
   }, [state.items]);
 
@@ -159,7 +161,8 @@ function ArUiComponent() {
           <VBar></VBar> */}
           {isShowScoreEffect && <ScoreEffect src={scoreEffect}></ScoreEffect>}
           <ScoreDiv>
-            SCORE<ColorSpan>{stateStore.getState().score}</ColorSpan>
+            <ScoreSpan>SCORE</ScoreSpan>
+            <ColorSpan>{score}</ColorSpan>
           </ScoreDiv>
         </ScoreContainer>
       </TopBar>
@@ -201,7 +204,11 @@ function ArUiComponent() {
         </TimeCountDivOutline>
       )}
       {timeCount && <TimeCountDiv key={timeCount}>{timeCount}</TimeCountDiv>}
-      {isFinishingGame && <TimeOutDiv src={timeoutEffect} />}
+      {isFinishingGame && (
+        <TimeOutDiv>
+          <TimeoutDivText>TIME OUT</TimeoutDivText>
+        </TimeOutDiv>
+      )}
     </>
   );
 }
@@ -216,7 +223,7 @@ const TopBar = styled.div`
   z-index: 50;
   width: 100%;
   align-items: center;
-  padding: 28px 21px 21px 40px;
+  padding: 28px 21px 21px 41px;
   justify-content: space-between;
 `;
 const TimerBarContainer = styled.div`
@@ -231,6 +238,7 @@ const TimerBarContainer = styled.div`
   border-radius: 999px;
   border: var(--Size-base-size_xxxs, 2px) solid var(--Cool-Neutral-90, #c4cbd7);
   background: var(--Common-100, #fff);
+  box-sizing: content-box;
 `;
 
 const TimerBar = styled.div`
@@ -247,8 +255,8 @@ const TimerBar = styled.div`
     props.speed >= 2 &&
     css`
       border-radius: 999px;
-      background: #da10f8;
-      box-shadow: 0px -3px 0px 0px #a300bd inset;
+      background: #ff0045;
+      box-shadow: 0px -3px 0px 0px #d30039 inset;
     `};
 `;
 
@@ -262,6 +270,7 @@ const ScoreContainer = styled.div`
   border: 2px solid #c4cbd7;
   height: 24px;
   justify-content: center;
+  box-sizing: content-box;
   /* width: 50%; */
   /* justify-content: space-between;
   padding: 0px 20px; */
@@ -269,10 +278,10 @@ const ScoreContainer = styled.div`
 
 const TimerImg = styled.img`
   position: absolute;
-  width: 29px;
-  height: 35px;
-  top: 21px;
-  left: 28px;
+  width: 58px;
+  height: 58px;
+  top: 8px;
+  left: 6px;
   align-items: center;
   justify-content: center;
   ${props =>
@@ -309,18 +318,22 @@ const TimerImg = styled.img`
 `;
 const ScoreImg = styled.img`
   position: absolute;
-  width: 40px;
-  height: 40px;
-  top: -10px;
-  left: -20px;
+  width: 58px;
+  height: 58px;
+  top: -22px;
+  left: -35px;
   align-items: center;
   justify-content: center;
 `;
 const ScoreEffect = styled.img`
   position: absolute;
-  top: -37px;
+  top: -18px;
+  right: -10px;
+  width: 60px;
+  height: 60px;
+  /* top: -37px;
   width: 100px;
-  height: 100px;
+  height: 100px; */
 `;
 // const CountDiv = styled.div`
 //   /* position: fixed;
@@ -343,9 +356,13 @@ const ScoreEffect = styled.img`
 //   text-transform: uppercase;
 //   align-items: center;
 // `;
+const ScoreSpan = styled.span`
+  padding-top: 2px;
+`;
 const ColorSpan = styled.span`
   padding: 0 7px;
-  color: #903bd1;
+  color: #7515d8;
+  font-size: 20px;
 `;
 
 // const VBar = styled.div`
@@ -372,7 +389,7 @@ const ScoreDiv = styled.div`
   align-items: center;
   color: #252525;
   font-family: Pretendard;
-  font-size: 10.607px;
+  font-size: 13px;
   font-style: normal;
   font-weight: 700;
   line-height: 12.375px; /* 116.667% */
@@ -654,7 +671,7 @@ const TimeCountDiv = styled.div`
   `}
 `;
 
-const TimeOutDiv = styled.img`
+const TimeOutDiv = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -665,4 +682,37 @@ const TimeOutDiv = styled.img`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.7);
+`;
+
+const TimeoutDivText = styled.div`
+  font-family: yoon-a-yoonche, sans-serif;
+  animation: switch 3s linear;
+  color: #14fea2;
+  text-shadow: 0 8px 0 rgba(63, 8, 146, 1); /* Shadow from feOffset dy="8" */
+  font-size: 70px;
+  @keyframes switch {
+    0% {
+      opacity: 0;
+      filter: blur(20px);
+      transform: scale(12);
+    }
+    33% {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(0.9);
+    }
+    73% {
+      opacity: 0;
+      filter: blur(10px);
+      transform: scale(0.1);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 `;

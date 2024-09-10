@@ -4,6 +4,8 @@ import { MainScene } from '@/ar/MainScene';
 import * as THREE from 'three';
 import { XrSceneConfig } from '@hypercloud-kr/webxr-node/dist/XrScene.ts';
 import { addTouchEvent, removeTouchEvent } from './touch/touch';
+import { stateStore } from '@/ar/storage';
+import { MainGroup } from './objects/MainGroup';
 
 const clock = new THREE.Clock();
 export let deltaTime = 0;
@@ -13,7 +15,6 @@ export function updateDeltaTime() {
 
 export class ArManager implements IAnimate {
   static _instance: ArManager;
-  ready;
   static get initialized() {
     return !!this._instance;
   }
@@ -40,11 +41,9 @@ export class ArManager implements IAnimate {
       return;
     }
     this._instance = new ArManager(config);
-    if (!config.isFirstStart) {
+    if (!stateStore.getState().firstStart) {
+      //config.isFirstStart
       this.initGroup(config.setIsOpenGuide2);
-      // const mainGroup = this.instance.mainScene.children[0];
-      // mainGroup.initAfterTouch();
-      // this.setReady();
     }
     // Solve InitCallback
     this.initCallbacks.forEach(callback => callback());
@@ -67,19 +66,12 @@ export class ArManager implements IAnimate {
   }
 
   static initGroup(setIsOpenGuide2?) {
-    const mainGroup = this.instance.mainScene.children.find(
-      item => item.id === 'mainGroup'
-    );
+    const mainGroup = this.instance.mainGroup;
 
     const callback = () => {
       if (setIsOpenGuide2) setIsOpenGuide2(false);
-      ArManager.setReady();
     };
     mainGroup.init(callback);
-  }
-
-  static setReady() {
-    this.instance.ready = true;
   }
   // Static Method End
 
@@ -87,52 +79,18 @@ export class ArManager implements IAnimate {
   // private Scene1: Scene1;
   // private Scene2: Scene2;
   public mainScene: MainScene;
+  public mainGroup: MainGroup;
   // 8ThWall에서 Slam용으로 사용할 카메라 return
   public get xr8Camera() {
     return this.mainScene.camera;
   }
   constructor(config: XrSceneConfig) {
     this.mainScene = new MainScene(config);
-    // this.Scene1 = new Scene1(canvas);
-    // this.Scene2 = new Scene2(canvas);
     addTouchEvent(this.mainScene);
-    this.mainGroup = this.mainScene.children[0];
-    // window.addEventListener("deviceorientation", this.mainGroup.handleOrientation, true);
-    // const requestPermission = (window.DeviceOrientationEvent as unknown as DeviceOrientationEventiOS)?.requestPermission;
-    // if (typeof (DeviceMotionEvent) !== 'undefined' && typeof (requestPermission) === 'function') {
-    //   requestPermission().then((response) => {
-    //       if (response === 'granted') {
-    //           window.addEventListener('devicemotion', this.mainGroup.handleOrientation)
-    //       }
-    //   })
-    // }
+    this.mainGroup = this.mainScene.findNodeById('mainGroup') as MainGroup;
   }
-  handleOrientation = event => {
-    const { absolute, alpha, beta, gamma } = event;
-    let div;
-    if (!document.getElementById('test')) {
-      div = document.createElement('div');
-    } else {
-      div = document.getElementById('test');
-    }
-    div.id = 'test';
-    div.innerHTML = `absolute: ${absolute}, alpha: ${alpha}, beta: ${beta}, gamma: ${gamma}`;
-    div.style.cssText =
-      'position: fixed; top: 30px; left: 0; z-index: 1000; background-color0padding: 10px;';
-    document.body.appendChild(div);
-
-    // const pos = this.parent.camera.position;
-    // const cameraDirection = new THREE.Vector3();
-    // this.parent.camera.getWorldDirection(cameraDirection);
-    // this.mainScene.children[0].modelGroup.position.set(pos.x + cameraDirection.x * 2, pos.y + cameraDirection.y * 2, pos.z + cameraDirection.z * 2);
-    // this.mainScene.children[0].modelGroup.lookAt(pos);
-    // this.mainScene.children[0].modelGroup.position.z = +beta - 90;
-  };
   release() {
-    const mainGroup = this.mainScene.children.find(
-      item => item.id === 'mainGroup'
-    );
-    mainGroup.initialize();
+    this.mainGroup.initialize();
     this.mainScene.release();
     removeTouchEvent();
     ArManager.initialize();

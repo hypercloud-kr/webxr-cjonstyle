@@ -22,8 +22,15 @@ export class OpenAnimationLight extends XrObject {
     });
   }
 
+  openAnimation() {
+    return this.animate('Animation');
+  }
+
   runAnimation() {
-    this.animate('Animation');
+    this.animate('Animation', {
+      mode: THREE.LoopRepeat,
+      clampWhenFinished: true,
+    });
   }
 
   stopAnimation() {

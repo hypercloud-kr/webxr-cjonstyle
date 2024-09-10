@@ -54,14 +54,23 @@ export const stateStore = {
   setRestart() {
     state = { ...state, firstStart: false };
     emitChange();
+    // const event = new CustomEvent('stateChanged', { firstStart: false });
+    // window.dispatchEvent(event);
   },
   initItems() {
-    const items = state.items.slice().sort(() => Math.random() - 0.5);
-    items.forEach(item => {
+    state.items.forEach(item => {
       item.isCollected = false;
       item.isFinished = false;
     });
+    const items = state.items.slice().sort(() => Math.random() - 0.5);
     state = { ...state, items };
+    emitChange();
+  },
+  rollbackItems() {
+    state.items.forEach(item => {
+      item.isCollected = false;
+      item.isFinished = false;
+    });
     emitChange();
   },
   nextName() {

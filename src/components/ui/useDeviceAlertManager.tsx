@@ -4,6 +4,7 @@ import AlertModal from '../Modal/AlertModal';
 import { createRoot } from 'react-dom/client';
 import styled from '@emotion/styled';
 import { palette, Guide } from '@hypercloud-kr/styling-kit';
+import { ARLoadingComponent } from './ARLoadingComponent';
 
 // 8thWall 자체 Alert 커스터마이징을 위한 Hook
 export default function useDeviceAlertManager() {
@@ -53,7 +54,7 @@ export default function useDeviceAlertManager() {
         return replaceDom(
           elementId,
           <FullDiv>
-            <Guide title={'Loading...'} />
+            <ARLoadingComponent></ARLoadingComponent>
           </FullDiv>
         );
       }

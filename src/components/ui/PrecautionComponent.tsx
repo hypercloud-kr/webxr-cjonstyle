@@ -18,9 +18,9 @@ const PrecautionsComponent = () => {
       <PrecautionTitle>유의사항</PrecautionTitle>
       <ImgWrapper>
         <PrecautionUl>
-          <li>Chrom, Safari 브라우저 사용을 권장합니다.</li>
+          <li>크롬, 사파리 브라우저 사용을 권장합니다.</li>
           <li>
-            네트워크 환경에 따라 AR증강현실 로딩에 10초 이상의 시간이 소요될 수
+            네트워크 환경에 따라 AR 증강현실 로딩에 10초 이상의 시간이 소요될 수
             있습니다.
           </li>
           <li>
@@ -28,6 +28,10 @@ const PrecautionsComponent = () => {
             수 있습니다.
           </li>
           <li>AR 콘텐츠 사용 시 주변 장애물이나 안전에 주의하시기 바랍니다.</li>
+          <li>
+            CJ온스타일 회원이 아니라면 참여하신 게임 점수가 사라집니다.
+            회원가입하시고 경품에 도전하세요!
+          </li>
         </PrecautionUl>
         <Button onClick={onClick}>확인</Button>
       </ImgWrapper>
@@ -61,27 +65,31 @@ const StartingWrapper = styled.div`
 `;
 
 const TitleImg = styled.img`
-  margin-top: 100px;
+  margin-top: 80px;
   width: 38.52px;
   height: 19.52px;
+
+  @media (max-height: 650px) {
+    margin-top: 50px;
+  }
 `;
 const PrecautionTitle = styled.div`
   color: #00ff9c;
   text-align: center;
   font-family: Pretendard;
-  font-size: 26px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 700;
-  line-height: 37.987px; /* 146.103% */
-  letter-spacing: 0.52px;
+  line-height: 46.557px; /* 155.188% */
+  letter-spacing: 0.6px;
   text-transform: uppercase;
 `;
 
 const ImgWrapper = styled.div`
   display: inline-flex;
-  margin-top: 31px;
+  margin-top: 22px;
   margin-bottom: 4px;
-  padding: 0px 20px;
+  padding: 0px 25px;
   flex-direction: column;
   align-items: center;
   gap: 24px;
@@ -93,7 +101,7 @@ const ImgWrapper = styled.div`
 
   color: #fff;
   font-family: Pretendard;
-  font-size: 15px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: 152%; /* 22.8px */
@@ -102,8 +110,9 @@ const ImgWrapper = styled.div`
 const PrecautionUl = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  max-width: 300px;
+  gap: 15px;
+  max-width: 340px;
+  padding-inline-start: 25px;
 `;
 
 const Button = styled.button`

@@ -4,13 +4,16 @@ import * as THREE from 'three';
 export const addTouchEvent = (scene: any) => {
   touchManager.setScene(scene);
   //TODO 한개만사용?? 2번 호출
-  window.addEventListener('click', touch);
-  // window.addEventListener('touchstart', touch);
+  if ('ontouchstart' in window) {
+    window.addEventListener('touchstart', touch);
+  } else {
+    window.addEventListener('touchstart', touch);
+  }
 };
 
 export const removeTouchEvent = () => {
   window.removeEventListener('click', touch);
-  // window.removeEventListener('touchstart', touch);
+  window.removeEventListener('touchstart', touch);
 };
 
 export const touch = (event: any) => {

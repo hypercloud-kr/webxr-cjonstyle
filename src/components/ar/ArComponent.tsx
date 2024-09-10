@@ -56,7 +56,7 @@ function ArComponent() {
           setIsOpenGuide2={setIsOpenGuide2}
         />
       )}
-      {isOpenGuide2 && <Guide2Component setIsOpenGuide={setIsOpenGuide2} />}
+      {isOpenGuide2 && <Guide2Component />}
     </>
   );
 }

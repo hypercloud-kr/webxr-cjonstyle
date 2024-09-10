@@ -14,7 +14,10 @@ const Guide2Component = () => {
     <StartingWrapper>
       <BoxContainer>
         <BoxImg src={boxOpenImg}></BoxImg>
-        <BoxText>선물박스를 놓을 평평한 바닥을 찾아 탭하세요!</BoxText>
+        <BoxText>
+          <div>선물박스를 놓을</div>
+          <div>바닥을 찾아 탭하세요!</div>
+        </BoxText>
       </BoxContainer>
       <Tap>
         <img src={handGestureImg}></img>
@@ -54,18 +57,14 @@ const BoxContainer = styled.div`
   display: flex;
   width: 350px;
   height: 108px;
-  padding: 10px 22px 10px 10px;
-  justify-content: flex-end;
+  padding: 10px 31px 10px 10px;
   align-items: center;
-  gap: 10px;
+  gap: 34px;
   flex-shrink: 0;
 
   border-radius: 13px;
-  border: var(--Size-base-size_xxxs, 2px) solid #fff;
-  background: linear-gradient(180deg, #fff 24.28%, #efdffb 91.4%);
-  box-shadow:
-    0px 4px 0px 0px rgba(0, 0, 0, 0.25),
-    0px -5px 4px 0px rgba(162, 130, 194, 0.5) inset;
+  background: #fff;
+  box-shadow: 0px 4px 0px 0px #3f0892;
 `;
 
 const BoxImg = styled.img`

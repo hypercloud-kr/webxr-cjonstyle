@@ -50,7 +50,8 @@ export const SuccessComponent = () => {
         }
       )
       .then(res => {
-        setPlayedUuid(res.data);
+        setPlayedUuid(res.data.id);
+        console.log(res.data);
       });
   }, []);
   useEffect(() => {
@@ -62,7 +63,7 @@ export const SuccessComponent = () => {
       const shareData = {
         title: '공유할 제목',
         text: '공유할 텍스트 내용',
-        url: 'https://example.com', // 공유할 URL
+        url: location.href, // 공유할 URL
       };
 
       // Web Share API를 사용하여 공유 다이얼로그 열기
@@ -84,11 +85,6 @@ export const SuccessComponent = () => {
       () => {
         console.log('URL이 복사되었습니다.');
 
-        setIsCopiedLink(true);
-        setTimeout(() => {
-          setIsCopiedLink(false);
-        }, 2000);
-
         toast(<CouponToast />, {
           containerId: 'link-toast',
           hideProgressBar: true,
@@ -105,12 +101,16 @@ export const SuccessComponent = () => {
     );
   };
   const apply = () => {
-    window.location.href = 'https://naver.com';
-    console.log(playedUuid);
+    if (process.env.NODE_ENV === 'production') {
+      window.location.href = `https://display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
+    } else {
+      window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
+    }
+    //playedUuid
   };
   const setResultState = score => {
     // const score = stateStore.getState().score;
-    if (10 <= score && score < 40) {
+    if (0 <= score && score < 40) {
       // setTitle('쇼핑뉴비');
       setDescription('핫템을 겟하기에는');
       setDescription2('스피드가 부족했어요!');
@@ -136,11 +136,7 @@ export const SuccessComponent = () => {
     <SuccessContainer>
       <ResultContainer>
         <TitleDiv>
-          {stateStore.getState().score === 0 && !titleImg ? (
-            <div>Time out</div>
-          ) : (
-            <img src={titleImg} />
-          )}
+          <img src={titleImg} />
         </TitleDiv>
         <ScoreDiv>{stateStore.getState().score}점</ScoreDiv>
         <ScoreSectionContainer>
@@ -148,7 +144,7 @@ export const SuccessComponent = () => {
             <ColumnFlex>
               <ColumnTitle
                 check={
-                  0 < stateStore.getState().score &&
+                  0 <= stateStore.getState().score &&
                   stateStore.getState().score <= 30
                     ? true
                     : false
@@ -158,7 +154,7 @@ export const SuccessComponent = () => {
               </ColumnTitle>
               <ColumnImg
                 src={
-                  0 < stateStore.getState().score &&
+                  0 <= stateStore.getState().score &&
                   stateStore.getState().score <= 30
                     ? ellipseCheck
                     : ellipse
@@ -166,13 +162,13 @@ export const SuccessComponent = () => {
               ></ColumnImg>
               <ColumnScore
                 check={
-                  0 < stateStore.getState().score &&
+                  0 <= stateStore.getState().score &&
                   stateStore.getState().score <= 30
                     ? true
                     : false
                 }
               >
-                10~30점
+                0~30점
               </ColumnScore>
             </ColumnFlex>
           </ScoreSection>
@@ -303,7 +299,7 @@ const ResultContainer = styled.div`
   box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
   flex-direction: column;
   align-items: center;
-  padding: 45px 0 20px 0;
+  padding: 57px 0 20px 0;
   gap: 21px;
   /* justify-content: center;
   align-items: center;

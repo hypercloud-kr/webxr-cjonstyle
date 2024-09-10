@@ -33,8 +33,8 @@ export const load8ThWall = (
 
 const XR8Renderer = (
   canvas: HTMLCanvasElement,
-  isFirstStart,
-  setIsOpenGuide2
+  isFirstStart: boolean,
+  setIsOpenGuide2: (isOpen: boolean) => void
 ) => ({
   name: 'webxr-boilerplate',
   onStart: () => {
