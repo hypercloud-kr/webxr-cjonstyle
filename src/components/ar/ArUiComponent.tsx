@@ -327,7 +327,8 @@ const ScoreImg = styled.img`
 `;
 const ScoreEffect = styled.img`
   position: absolute;
-  top: -22px;
+  top: -18px;
+  right: -10px;
   width: 60px;
   height: 60px;
   /* top: -37px;
