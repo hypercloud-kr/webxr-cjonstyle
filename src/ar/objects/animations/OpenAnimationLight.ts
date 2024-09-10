@@ -17,7 +17,7 @@ export class OpenAnimationLight extends XrObject {
     this.modelGroup.userData.id = null;
     // this.modelGroup.scale.set(0.5, 0.5, 0.5);
     this.setAnimation({
-      mode: THREE.LoopOnce,
+      mode: THREE.LoopRepeat,
       timeScale: 2,
     });
   }
