@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export const addLight = scene => {
-  const directLight = new THREE.DirectionalLight('#FFFFFF', 1);
+  const directLight = new THREE.DirectionalLight('#FFFFFF', 2.5);
   scene.add(directLight);
   // directLight.position.set(-8, 9, 12);
   // directLight.color.set('#DBDFFF');

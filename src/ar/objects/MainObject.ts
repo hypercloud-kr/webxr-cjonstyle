@@ -45,8 +45,6 @@ export class MainObject extends XrObject {
         if (item.material.name === 'box_tex_Base_color.004') {
           item.material.map.anisotropy =
             this.parent.parent.renderer.capabilities.getMaxAnisotropy();
-          // item.material.map.minFilter = THREE.LinearMipMapLinearFilter;
-          // item.material.refractionRatio = 0.98;
         }
       }
     });
@@ -54,12 +52,7 @@ export class MainObject extends XrObject {
       mode: THREE.LoopRepeat,
       timeScale: 1,
     });
-    // setTimeout(() => {
     this.animate('box_1');
-    // }, this.item.animateDelay * 5000);
-    // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
-    //   this.callBackFinishAnimation();
-    // });
     stateStore.setModelLoaded();
   }
 
@@ -67,24 +60,18 @@ export class MainObject extends XrObject {
     this.touchableModelModule = new TouchableModelModule(this);
     this.modules.push(this.touchableModelModule);
     this.touchableModelModule.onTouch = this.onTouch.bind(this);
-    // console.log(this.modelGroup.userData, this.modelGroup);
+
     const action = this.animationsMap.get('box_1');
     action?.stop();
-    // setTimeout(() => {
     this.setAnimation({
       mode: THREE.LoopOnce,
       repitition: 1,
       timeScale: 2,
     });
-    this.animate(`${this.item.aniName}`).then(() => {
-      this.isFinishAnimation = true;
-      // this.openAnimationObject.stopAnimation();
-      // this.parent.finishChildAnimation();
-    });
+    this.animate(`${this.item.aniName}`);
     this.openAnimationObject.openAnimation().then(() => {
       this.afterOpenAnimation();
     });
-    // }, this.item.animateDelay * 1000);
   }
 
   // public runAnimation() {
@@ -110,39 +97,13 @@ export class MainObject extends XrObject {
   // }
 
   onTouch() {
-    // console.log(this.model.scene, mesh, this.item.name, stateStore.nextName());
     if (this.item.name !== stateStore.nextName()) {
-      this.wrongAnimationObject.runAnimation();
-      this.parent.children.forEach((child, i) => {
-        if (i >= 5) return;
-        else if (child.isOpen) return;
-        child.isOpen = true;
-        child.model.animations.forEach(clip => {
-          const action = child.modelMixer?.clipAction(clip);
-          action.clampWhenFinished = true;
-          action?.reset();
-          action?.stop();
-          child
-            .animate(`${child.item.aniName}`, { clampWhenFinished: true })
-            .then(() => {
-              // this.parent.finishChildAnimation();
-            });
-          this.openAnimationObject.openAnimation().then(() => {
-            this.afterOpenAnimation();
-          });
-        });
-      });
-      this.isOpen = true;
-      stateStore.rollbackItems();
+      this.failTouch();
       return;
     }
     this.correctAnimationObject.runAnimation();
-    // this.animate('GiftBox_Ani02_zeroPoint_Anim_0').then(() => {
-    //   console.log('finish', stateStore.getState());
-    // });
     this.isOpen = false;
     stateStore.setItems(this.item.name);
-    // this.callBackFinishAnimation();
 
     this.model.animations.forEach(clip => {
       const action = this.modelMixer?.clipAction(clip);
@@ -154,26 +115,31 @@ export class MainObject extends XrObject {
     this.animate(`${this.item.aniName}_close`, {
       clampWhenFinished: true,
     }).then(() => {
-      this.isFinishAnimation = true;
       this.openAnimationObject.stopAnimation();
       this.callBackFinishAnimation();
-      // this.parent.finishChildAnimation();
     });
-    // this.model.animations.forEach((clip) => {
-    //   const action = this.modelMixer.clipAction(clip);
-    //   action.stop();
-    // });
   }
-
+  failTouch() {
+    this.wrongAnimationObject.runAnimation();
+    this.parent.children.forEach((child, i) => {
+      if (i >= 5) return;
+      else if (child.isOpen) return;
+      child.isOpen = true;
+      child.model.animations.forEach(clip => {
+        const action = child.modelMixer?.clipAction(clip);
+        action.clampWhenFinished = true;
+        action?.reset();
+        action?.stop();
+        child.animate(`${child.item.aniName}`, { clampWhenFinished: true });
+        child.openAnimationObject.openAnimation().then(() => {
+          child.afterOpenAnimation();
+        });
+      });
+    });
+    this.isOpen = true;
+    stateStore.rollbackItems();
+  }
   callBackFinishAnimation() {
-    console.log(
-      'finish',
-      stateStore
-        .getState()
-        .items.forEach((item, i) =>
-          console.log(i, item.isCollected, item.isFinished)
-        )
-    );
     stateStore.setIsFinished(this.item.name);
     if (
       stateStore
@@ -182,31 +148,31 @@ export class MainObject extends XrObject {
     ) {
       this.parent.children.forEach((child, i) => {
         if (i >= 5) return;
+        // setTimeout(() => {
+        // child.modelGroup.position.set(
+        //   stateStore.getState().position[i][0],
+        //   stateStore.getState().position[i][1],
+        //   stateStore.getState().position[i][2]
+        // );
+        child.isOpen = true;
         setTimeout(() => {
-          child.modelGroup.position.set(
-            stateStore.getState().position[i][0],
-            stateStore.getState().position[i][1],
-            stateStore.getState().position[i][2]
-          );
-          child.isOpen = true;
-          setTimeout(() => {
-            child.animate(`${child.item.aniName}`);
-            child.openAnimationObject.openAnimation().then(() => {
-              this.afterOpenAnimation();
-            });
-          }, 1500);
-        }, 500);
+          child.animate(`${child.item.aniName}`);
+          child.openAnimationObject.position.copy(child.position);
+          child.openAnimationObject.openAnimation().then(() => {
+            child.afterOpenAnimation();
+          });
+        }, 1500);
+        // }, 500);
         child.model.animations.forEach(clip => {
           const action = child.modelMixer?.clipAction(clip);
           action.clampWhenFinished = true;
           action?.reset();
           action?.stop();
-          child.openAnimationObject.stopAnimation();
         });
+        child.openAnimationObject.stopAnimation();
       });
       stateStore.setCount();
       stateStore.setScore();
-      // stateStore.setGameState('end');
     }
   }
 

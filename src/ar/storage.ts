@@ -81,7 +81,7 @@ export const stateStore = {
     }
   },
   sufflePosition() {
-    const position = state.position.sort(() => Math.random() - 0.5);
+    const position = state.position.slice().sort(() => Math.random() - 0.5);
     state = { ...state, position };
     emitChange();
   },
