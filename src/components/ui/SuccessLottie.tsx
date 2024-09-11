@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import LottieData from '@/assets/video/success_lottie.json';
 import Lottie from 'react-lottie';
 
-const SuccessLottie = () => {
+const SuccessLottie = ({ successCallback }) => {
   const defaultOptions = {
-    loop: true,
+    loop: false,
     autoplay: true,
     animationData: LottieData,
     rendererSettings: {
@@ -23,6 +23,14 @@ const SuccessLottie = () => {
           overflow: 'hidden',
         }}
         isClickToPauseDisabled={true}
+        eventListeners={[
+          {
+            eventName: 'complete',
+            callback: () => {
+              successCallback();
+            },
+          },
+        ]}
       />
     </Wrapper>
   );

@@ -15,7 +15,7 @@ export class MainObject extends XrObject {
   correctAnimationObject;
   wrongAnimationObject;
   isFinishAnimation = false;
-  isOpen = true;
+  public isOpen = true;
   constructor(item: (typeof objectArr)[any]) {
     super();
     this.item = item;
@@ -105,19 +105,14 @@ export class MainObject extends XrObject {
     this.isOpen = false;
     stateStore.setItems(this.item.name);
 
-    this.model.animations.forEach(clip => {
-      const action = this.modelMixer?.clipAction(clip);
-      action.clampWhenFinished = true;
-      action?.reset();
-      action?.stop();
-      this.openAnimationObject.stopAnimation();
-    });
+    this.modelMixer?.stopAllAction();
     this.animate(`${this.item.aniName}_close`, {
       clampWhenFinished: true,
     }).then(() => {
-      this.openAnimationObject.stopAnimation();
-      this.callBackFinishAnimation();
+      // this.callBackFinishAnimation();
+      stateStore.setIsFinished(this.item.name);
     });
+    this.openAnimationObject.stopAnimation();
   }
   failTouch() {
     this.wrongAnimationObject.runAnimation();
@@ -125,15 +120,10 @@ export class MainObject extends XrObject {
       if (i >= 5) return;
       else if (child.isOpen) return;
       child.isOpen = true;
-      child.model.animations.forEach(clip => {
-        const action = child.modelMixer?.clipAction(clip);
-        action.clampWhenFinished = true;
-        action?.reset();
-        action?.stop();
-        child.animate(`${child.item.aniName}`, { clampWhenFinished: true });
-        child.openAnimationObject.openAnimation().then(() => {
-          child.afterOpenAnimation();
-        });
+      child.modelMixer?.stopAllAction();
+      child.animate(`${child.item.aniName}`, { clampWhenFinished: true });
+      child.openAnimationObject.openAnimation().then(() => {
+        child.afterOpenAnimation();
       });
     });
     this.isOpen = true;
@@ -148,27 +138,22 @@ export class MainObject extends XrObject {
     ) {
       this.parent.children.forEach((child, i) => {
         if (i >= 5) return;
-        // setTimeout(() => {
-        // child.modelGroup.position.set(
-        //   stateStore.getState().position[i][0],
-        //   stateStore.getState().position[i][1],
-        //   stateStore.getState().position[i][2]
-        // );
-        child.isOpen = true;
         setTimeout(() => {
-          child.animate(`${child.item.aniName}`);
-          child.openAnimationObject.position.copy(child.position);
-          child.openAnimationObject.openAnimation().then(() => {
-            child.afterOpenAnimation();
-          });
-        }, 1500);
-        // }, 500);
-        child.model.animations.forEach(clip => {
-          const action = child.modelMixer?.clipAction(clip);
-          action.clampWhenFinished = true;
-          action?.reset();
-          action?.stop();
-        });
+          child.modelGroup.position.set(
+            stateStore.getState().position[i][0],
+            stateStore.getState().position[i][1],
+            stateStore.getState().position[i][2]
+          );
+          child.isOpen = true;
+          setTimeout(() => {
+            child.animate(`${child.item.aniName}`);
+            child.openAnimationObject.position.copy(child.position);
+            child.openAnimationObject.openAnimation().then(() => {
+              child.afterOpenAnimation();
+            });
+          }, 1500);
+        }, 500);
+        child.modelMixer?.stopAllAction();
         child.openAnimationObject.stopAnimation();
       });
       stateStore.setCount();

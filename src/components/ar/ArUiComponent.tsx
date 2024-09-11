@@ -9,6 +9,7 @@ import timerGreenImg from '@/assets/imgs/clock_green.png';
 import timerRedImg from '@/assets/imgs/clock_red.png';
 import SuccessLottie from '../ui/SuccessLottie';
 import scoreEffect from '@/assets/video/scoreEffect.gif';
+import { MainGroup } from '@/ar/objects/MainGroup';
 // import timeoutEffect from '@/assets/video/timeout.gif';
 
 function ArUiComponent() {
@@ -99,15 +100,27 @@ function ArUiComponent() {
 
     if (length === 5) {
       setIsOpenSuccess(true);
-      setTimeout(() => {
-        setIsOpenSuccess(false);
-        stateStore.initItems();
-        stateStore.sufflePosition();
-        //이후에 mainObject의 callbackfinishanimation함수 안에 mainGroup position set필요
-      }, 1500);
+      stateStore.setCount();
+      stateStore.setScore();
+      // setTimeout(() => {
+      //   setIsOpenSuccess(false);
+      //   stateStore.initItems();
+      //   stateStore.sufflePosition();
+      //   const mainGroup = ArManager.instance.mainScene.findNodeById('mainGroup') as MainGroup;
+      //   mainGroup.repositionChildObjects();
+      // }, 1500);
     }
   }, [state.items]);
 
+  const successCallback = () => {
+    setIsOpenSuccess(false);
+    stateStore.initItems();
+    stateStore.sufflePosition();
+    const mainGroup = ArManager.instance.mainScene.findNodeById(
+      'mainGroup'
+    ) as MainGroup;
+    mainGroup.repositionChildObjects();
+  };
   function startProgressBar(duration, callback) {
     // const progressBar = document.querySelector('#progress-bar');
     let startTime = null;
@@ -167,7 +180,9 @@ function ArUiComponent() {
         </ScoreContainer>
       </TopBar>
       <CardContainer>
-        {isOpenSuccess && <SuccessLottie></SuccessLottie>}
+        {isOpenSuccess && (
+          <SuccessLottie successCallback={successCallback}></SuccessLottie>
+        )}
         <Round>
           <RoundText
             key={stateStore.getState().count}
