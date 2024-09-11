@@ -10,6 +10,7 @@ import { addLight } from '@/utils/threeUtil';
 import { PlaneGrid } from '../objects/PlaneGrid';
 import { ArManager } from '../ArManager';
 import * as THREE from 'three';
+import { MainObject } from './MainObject';
 
 let angle: number | null | undefined;
 export class MainGroup extends XrObject {
@@ -94,7 +95,25 @@ export class MainGroup extends XrObject {
       }
     });
   }
+  repositionChildObjects() {
+    this.children.forEach((child: MainObject, i) => {
+      if (i >= 5) return;
+      child.isOpen = true;
+      child.modelGroup.position.set(
+        stateStore.getState().position[i][0],
+        stateStore.getState().position[i][1],
+        stateStore.getState().position[i][2]
+      );
+      child.modelMixer?.stopAllAction();
+      child.openAnimationObject.stopAnimation();
 
+      child.animate(`${child.item.aniName}`);
+      child.openAnimationObject.position.copy(child.position);
+      child.openAnimationObject.openAnimation().then(() => {
+        child.afterOpenAnimation();
+      });
+    });
+  }
   update() {
     super.update();
     if (angle !== null) {
@@ -114,6 +133,6 @@ export class MainGroup extends XrObject {
 const handleOrientation = (event: DeviceOrientationEvent) => {
   const { beta } = event;
   if (angle !== null) {
-    angle = (beta as number) - 50; //-(beta - 90);
+    angle = (beta as number) - 40; //-(beta - 90);
   }
 };
