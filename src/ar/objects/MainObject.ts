@@ -9,13 +9,14 @@ import { CorrectAnimation } from './animations/CorrectAnimation';
 import { WrongAnimation } from './animations/WrongAnimation';
 import { objectArr } from '../constants/constants';
 export class MainObject extends XrObject {
-  touchableModelModule;
+  touchableModelModule: TouchableModelModule | undefined;
   item;
   openAnimationObject;
   correctAnimationObject;
   wrongAnimationObject;
   isFinishAnimation = false;
   public isOpen = true;
+  name = 'mainObject';
   constructor(item: (typeof objectArr)[any]) {
     super();
     this.item = item;
@@ -129,37 +130,37 @@ export class MainObject extends XrObject {
     this.isOpen = true;
     stateStore.rollbackItems();
   }
-  callBackFinishAnimation() {
-    stateStore.setIsFinished(this.item.name);
-    if (
-      stateStore
-        .getState()
-        .items.every(item => item.isCollected && item.isFinished)
-    ) {
-      this.parent.children.forEach((child, i) => {
-        if (i >= 5) return;
-        setTimeout(() => {
-          child.modelGroup.position.set(
-            stateStore.getState().position[i][0],
-            stateStore.getState().position[i][1],
-            stateStore.getState().position[i][2]
-          );
-          child.isOpen = true;
-          setTimeout(() => {
-            child.animate(`${child.item.aniName}`);
-            child.openAnimationObject.position.copy(child.position);
-            child.openAnimationObject.openAnimation().then(() => {
-              child.afterOpenAnimation();
-            });
-          }, 1500);
-        }, 500);
-        child.modelMixer?.stopAllAction();
-        child.openAnimationObject.stopAnimation();
-      });
-      stateStore.setCount();
-      stateStore.setScore();
-    }
-  }
+  // callBackFinishAnimation() {
+  //   stateStore.setIsFinished(this.item.name);
+  //   if (
+  //     stateStore
+  //       .getState()
+  //       .items.every(item => item.isCollected && item.isFinished)
+  //   ) {
+  //     this.parent.children.forEach((child, i) => {
+  //       if (i >= 5) return;
+  //       setTimeout(() => {
+  //         child.modelGroup.position.set(
+  //           stateStore.getState().position[i][0],
+  //           stateStore.getState().position[i][1],
+  //           stateStore.getState().position[i][2]
+  //         );
+  //         child.isOpen = true;
+  //         setTimeout(() => {
+  //           child.animate(`${child.item.aniName}`);
+  //           child.openAnimationObject.position.copy(child.position);
+  //           child.openAnimationObject.openAnimation().then(() => {
+  //             child.afterOpenAnimation();
+  //           });
+  //         }, 1500);
+  //       }, 500);
+  //       child.modelMixer?.stopAllAction();
+  //       child.openAnimationObject.stopAnimation();
+  //     });
+  //     stateStore.setCount();
+  //     stateStore.setScore();
+  //   }
+  // }
 
   addOpenAnimationObject(group) {
     group.appendChild(this.openAnimationObject);

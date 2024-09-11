@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { stateStore } from '@/ar/storage';
 import { ArManager } from '@/ar/ArManager';
 import { css } from '@emotion/react';
@@ -10,14 +10,13 @@ import timerRedImg from '@/assets/imgs/clock_red.png';
 import SuccessLottie from '../ui/SuccessLottie';
 import scoreEffect from '@/assets/video/scoreEffect.gif';
 import { MainGroup } from '@/ar/objects/MainGroup';
+import rightArrow from '@/assets/svg/img_arrow.svg';
 // import timeoutEffect from '@/assets/video/timeout.gif';
 
 function ArUiComponent() {
-  // const [time, setTime] = useState(2000);
   const [timerWidth, setTimerWidth] = useState(2000);
-  // const [score, setScore] = useState(0);
   const [isStartingGame, setIsStartingGame] = useState(false);
-  const [timeCount, setTimeCount] = useState('');
+  const [timeCount, setTimeCount] = useState<number | string | undefined>();
   const [isOpenSuccess, setIsOpenSuccess] = useState(false);
   const [isFinishingGame, setIsFinishingGame] = useState(false);
   const [timerImg, setTimerImg] = useState(timerGreenImg);
@@ -25,14 +24,9 @@ function ArUiComponent() {
   const [isShowScoreEffect, setIsShowScoreEffect] = useState(false);
   const [score, setScore] = useState(0);
   const state = useSyncExternalStore(stateStore.subscribe, stateStore.getState);
+  const timeoutRef: React.MutableRefObject<Element | null> = useRef(null);
 
   useEffect(() => {
-    //   const id: any = setInterval(() => {
-    //       setTime((t) => t - 1);
-    //   }, 1000);
-    //   setIntervalId(id);
-    // setTimeout(() => {
-    // }, 500)
     if (stateStore.getState().score > 0) {
       setIsShowScoreEffect(true);
       setTimeout(() => {
@@ -41,6 +35,27 @@ function ArUiComponent() {
       }, 1000);
     }
   }, [stateStore.getState().score]);
+
+  useEffect(() => {
+    if (timeoutRef.current) {
+      timeoutRef.current.addEventListener('animationend', () => {
+        stateStore.setGameState('end');
+      });
+    }
+  }, [isFinishingGame]);
+
+  useEffect(() => {
+    if (
+      stateStore
+        .getState()
+        .items.every(item => item.isCollected && item.isFinished)
+    ) {
+      setIsOpenSuccess(true);
+      stateStore.setCount();
+      stateStore.setScore();
+    }
+  }, [state.items]);
+
   const onClick = () => {
     setIsStartingGame(true);
     if (!timeCount) setTimeCount(3);
@@ -49,16 +64,15 @@ function ArUiComponent() {
         if (count === 1) {
           clearInterval(intervalId);
           setTimeout(() => {
-            ArManager.instance.mainScene.children[0].children.forEach(child => {
-              if (child.runAnimationOpen) child.runAnimationOpen();
+            const mainGroup =
+              ArManager.instance.mainScene.findNodeById('mainGroup');
+            mainGroup.children.forEach(child => {
+              if (child.name === 'mainObject') child.runAnimationOpen();
             });
-            setTimeCount(null);
+            setTimeCount(undefined);
             setTimerSpeed(1);
             startProgressBar(30000, () => {
               setIsFinishingGame(true);
-              setTimeout(() => {
-                stateStore.setGameState('end');
-              }, 2000);
             });
           }, 1000);
           return 'START!';
@@ -66,51 +80,7 @@ function ArUiComponent() {
         return count - 1;
       });
     }, 1000);
-    // const intervalId = setInterval(() => {
-    //   if (timeCount === 1) {
-    //     console.log('?');
-    //     setTimeCount('시작!');
-    //     clearInterval(intervalId);
-    //     setTimeout(() => {
-    //       setTimeCount(null);
-    //     }, 500);
-    //   } else {
-    //     setTimeCount(timeCount => timeCount - 1);
-    //   }
-    // }, 1000)
   };
-
-  //   useEffect(() => {
-  //     if (time <= 0) {
-  //         clearInterval(intervalId);
-  //         setTimeout(() => {
-  //             stateStore.setGameState('end');
-  //         }, 1000);
-  //     }
-  //   }, [time]);
-
-  useEffect(() => {
-    const length = stateStore
-      .getState()
-      .items.filter(item => item.isCollected && item.isFinished).length;
-    // setScore(
-    //   stateStore.getState().items.filter(item => item.isCollected).length
-    // );
-    // console.log('sfafddfadfasff', length);
-
-    if (length === 5) {
-      setIsOpenSuccess(true);
-      stateStore.setCount();
-      stateStore.setScore();
-      // setTimeout(() => {
-      //   setIsOpenSuccess(false);
-      //   stateStore.initItems();
-      //   stateStore.sufflePosition();
-      //   const mainGroup = ArManager.instance.mainScene.findNodeById('mainGroup') as MainGroup;
-      //   mainGroup.repositionChildObjects();
-      // }, 1500);
-    }
-  }, [state.items]);
 
   const successCallback = () => {
     setIsOpenSuccess(false);
@@ -121,8 +91,8 @@ function ArUiComponent() {
     ) as MainGroup;
     mainGroup.repositionChildObjects();
   };
+
   function startProgressBar(duration, callback) {
-    // const progressBar = document.querySelector('#progress-bar');
     let startTime = null;
 
     function animateProgressBar(currentTime) {
@@ -136,7 +106,6 @@ function ArUiComponent() {
       if (stateStore.getState().gameState === 'end') {
         return;
       }
-      //   progressBar.style.width = progressPercentage + '%';
 
       if (duration - elapsedTime < 3000) {
         setTimerSpeed(3);
@@ -194,12 +163,15 @@ function ArUiComponent() {
         {stateStore.getState().items.map((item, i) => {
           // if (item.isCollected)
           return (
-            <CardOuter key={i}>
-              <CardInner flip={item.isCollected ? true : false}>
-                <Card src={item.img}></Card>
-                <Card src={item.backImg} flip={true}></Card>
-              </CardInner>
-            </CardOuter>
+            <>
+              <CardOuter key={i}>
+                <CardInner flip={item.isCollected ? true : false}>
+                  <Card src={item.img}></Card>
+                  <Card src={item.backImg} flip={true}></Card>
+                </CardInner>
+              </CardOuter>
+              {i === 4 ? null : <RightArrow src={rightArrow}></RightArrow>}
+            </>
           );
         })}
         <MissionDiv>미션</MissionDiv>
@@ -221,7 +193,7 @@ function ArUiComponent() {
       {timeCount && <TimeCountDiv key={timeCount}>{timeCount}</TimeCountDiv>}
       {isFinishingGame && (
         <TimeOutDiv>
-          <TimeoutDivText>TIME OUT</TimeoutDivText>
+          <TimeoutDivText ref={timeoutRef}>TIME OUT</TimeoutDivText>
         </TimeOutDiv>
       )}
     </>
@@ -430,13 +402,12 @@ const CardContainer = styled.div`
   left: 0;
   width: calc(100% - 40px);
   margin: 0 20px;
-  padding: 0 29px;
+  padding: 8px 9px 0 9px;
   height: 108px;
   z-index: 50;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
   border-radius: 10px;
   /* border: 1px solid var(--Cool-Neutral-60, #8D929F); */
   background: #6e15ce;
@@ -491,13 +462,13 @@ const RoundText = styled.div`
   `}
 `;
 const CardOuter = styled.div`
-  flex: 0 0 20%;
+  flex: 1;
   /* width: 100px; */
   height: 60px;
   perspective: 600px;
-  margin-top: 8px;
   display: flex;
   justify-content: center;
+  gap: 9px;
 `;
 const CardInner = styled.div`
   max-width: 60px;
@@ -530,6 +501,9 @@ const Card = styled.img`
       transform: rotateY(180deg);
     `}
 `;
+
+const RightArrow = styled.img``;
+
 const MissionDiv = styled.div`
   position: absolute;
   bottom: -23px;
@@ -701,7 +675,7 @@ const TimeOutDiv = styled.div`
 
 const TimeoutDivText = styled.div`
   font-family: yoon-a-yoonche, sans-serif;
-  animation: switch 3s linear;
+  animation: switch 2s linear;
   color: #14fea2;
   text-shadow: 0 8px 0 rgba(63, 8, 146, 1); /* Shadow from feOffset dy="8" */
   font-size: 70px;

@@ -312,11 +312,13 @@ const TitleDiv = styled.div`
   background-color: #43107A;
   border-radius: 50%; */
   position: absolute;
-  top: -60px;
+  top: -59px;
   /* color: white; */
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 157px;
+  height: 99px;
 `;
 const ScoreDiv = styled.div`
   display: flex;

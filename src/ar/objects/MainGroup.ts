@@ -133,6 +133,6 @@ export class MainGroup extends XrObject {
 const handleOrientation = (event: DeviceOrientationEvent) => {
   const { beta } = event;
   if (angle !== null) {
-    angle = (beta as number) - 40; //-(beta - 90);
+    angle = (beta as number) - 30; //-(beta - 90);
   }
 };

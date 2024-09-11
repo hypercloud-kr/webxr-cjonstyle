@@ -23,6 +23,7 @@ const SuccessLottie = ({ successCallback }) => {
           overflow: 'hidden',
         }}
         isClickToPauseDisabled={true}
+        speed={2}
         eventListeners={[
           {
             eventName: 'complete',

@@ -112,7 +112,7 @@ const PrecautionUl = styled.ul`
   flex-direction: column;
   gap: 15px;
   max-width: 340px;
-  padding-inline-start: 25px;
+  padding-inline-start: 30px;
 `;
 
 const Button = styled.button`
