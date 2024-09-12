@@ -1,5 +1,5 @@
 import { XrObject } from '@hypercloud-kr/webxr-node/dist/XrObject';
-import { PlaneObject } from './PlaneObjet';
+// import { PlaneObject } from './PlaneObjet';
 // import { TouchableModelModule } from '@hypercloud-kr/webxr-node/dist/modules/touch/TouchableModel';
 import { stateStore } from '@/ar/storage';
 import {
@@ -43,8 +43,8 @@ export class MainGroup extends XrObject {
     angle = null;
     this.modelGroup.visible = true;
     this.removeChild(this.grid);
-    const plane = new PlaneObject();
-    this.appendChild(plane);
+    // const plane = new PlaneObject();
+    // this.appendChild(plane);
 
     const light = addLight(this.modelGroup);
     light.target.position.copy(this.modelGroup.position);

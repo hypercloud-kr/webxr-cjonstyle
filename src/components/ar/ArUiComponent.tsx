@@ -165,7 +165,7 @@ const ImgWrapper = styled.div`
   display: inline-flex;
   position: fixed;
   left: 0;
-  bottom: 20px;
+  bottom: 70px;
   width: 100%;
   z-index: 50;
   margin-bottom: 4px;

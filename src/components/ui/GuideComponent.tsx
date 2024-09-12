@@ -87,7 +87,7 @@ const GuideImg = styled.img`
   width: 350px;
   height: 486px;
   z-index: 52;
-  @media (max-height: 610px) {
+  @media (max-height: 650px) {
     width: auto;
     height: 400px;
   }
@@ -95,7 +95,7 @@ const GuideImg = styled.img`
 const Button = styled.button`
   position: fixed;
   display: flex;
-  bottom: 24px;
+  bottom: 74px;
   width: calc(100% - 60px);
   padding: 16px 0px;
   flex-direction: column;
@@ -116,5 +116,4 @@ const Button = styled.button`
   letter-spacing: -0.2px;
 
   border-width: 0;
-  /* Body_01/700 */
 `;
