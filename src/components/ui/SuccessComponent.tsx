@@ -292,7 +292,7 @@ const ResultContainer = styled.div`
   position: relative;
   display: flex;
   width: calc(100% - 60px);
-  margin: 90px 30px 0 30px;
+  margin: 75px 30px 0 30px;
   /* height: 300px; */
   border-radius: 13px;
   background: #fff;

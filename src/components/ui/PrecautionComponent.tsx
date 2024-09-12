@@ -65,7 +65,7 @@ const StartingWrapper = styled.div`
 `;
 
 const TitleImg = styled.img`
-  margin-top: 80px;
+  margin-top: 60px;
   width: 38.52px;
   height: 19.52px;
 
@@ -118,7 +118,7 @@ const PrecautionUl = styled.ul`
 const Button = styled.button`
   position: fixed;
   display: flex;
-  bottom: 24px;
+  bottom: 74px;
   width: calc(100% - 40px);
   padding: 16px 0px;
   flex-direction: column;
