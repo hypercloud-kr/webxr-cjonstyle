@@ -105,6 +105,9 @@ const ImgWrapper = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 152%; /* 22.8px */
+  @media (max-width: 390px) {
+    padding: 0 20px;
+  }
 `;
 
 const PrecautionUl = styled.ul`
@@ -113,6 +116,9 @@ const PrecautionUl = styled.ul`
   gap: 15px;
   max-width: 340px;
   padding-inline-start: 30px;
+  @media (max-width: 390px) {
+    padding-inline-start: 20px;
+  }
 `;
 
 const Button = styled.button`

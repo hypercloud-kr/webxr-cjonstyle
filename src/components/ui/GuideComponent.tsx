@@ -53,7 +53,7 @@ const StartingWrapper = styled.div`
   background-size: cover;
   justify-content: space-between;
   align-items: center;
-  padding: 47px 0px 27px 0px;
+  padding: 37px 0px 27px 0px;
 `;
 
 // const BoxContainer = styled.div`
