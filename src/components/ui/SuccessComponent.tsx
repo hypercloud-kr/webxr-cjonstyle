@@ -108,7 +108,7 @@ export const SuccessComponent = () => {
   };
   const apply = () => {
     if (process.env.NODE_ENV === 'production') {
-      window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?infl_cd=I5350&plnExhbId=202409067081&playedId=${playedUuid}`;
+      window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?infl_cd=I5105&plnExhbId=202409067081&playedId=${playedUuid}`;
     } else {
       window.location.href = `https://display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
     }
