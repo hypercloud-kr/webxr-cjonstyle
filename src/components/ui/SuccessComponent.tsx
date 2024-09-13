@@ -53,6 +53,12 @@ export const SuccessComponent = () => {
         setPlayedUuid(res.data.id);
         console.log(res.data);
       });
+
+    try {
+      console.log(import.meta.env.VITE_NODE_ENV, process.env.NODE_ENV);
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
   useEffect(() => {
     setResultState(stateStore.getState().score);
@@ -104,7 +110,7 @@ export const SuccessComponent = () => {
     if (process.env.NODE_ENV === 'production') {
       window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
     } else {
-      window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
+      window.location.href = `https://display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
     }
     //playedUuid
   };

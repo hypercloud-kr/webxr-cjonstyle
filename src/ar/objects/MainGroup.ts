@@ -49,9 +49,9 @@ export class MainGroup extends XrObject {
     const light = addLight(this.modelGroup);
     light.target.position.copy(this.modelGroup.position);
     light.position.set(
-      this.modelGroup.position.x - 4,
-      this.modelGroup.position.y + 8,
-      this.modelGroup.position.z + 12
+      this.modelGroup.position.x - 1.375,
+      this.modelGroup.position.y + 4.578,
+      this.modelGroup.position.z + 17.038
     );
   }
 
