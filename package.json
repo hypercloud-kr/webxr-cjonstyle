@@ -20,7 +20,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
-    "@hypercloud-kr/graphics-components": "^0.2.2",
+    "@hypercloud-kr/graphics-components": "^0.3.2",
     "@hypercloud-kr/shader-components": "0.0.2",
     "@hypercloud-kr/styling-kit": "^0.7.1",
     "@hypercloud-kr/webxr-components": "0.0.28",
