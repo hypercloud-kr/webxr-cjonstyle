@@ -14,6 +14,7 @@ import kakaoTalkImg from '@/assets/imgs/kakao-talk 1.png';
 import { css } from '@emotion/react';
 import { toast } from 'react-toastify';
 import { CouponToast } from './CouponToast';
+import { useLocation } from 'react-router-dom';
 
 export const SuccessComponent = () => {
   // const [title, setTitle] = useState('');
@@ -21,6 +22,10 @@ export const SuccessComponent = () => {
   const [description2, setDescription2] = useState('');
   const [titleImg, setTitleImg] = useState('');
   const [playedUuid, setPlayedUuid] = useState('');
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const fromApp = queryParams.get('fromApp') ?? false;
 
   useEffect(() => {
     //appkey는 헤더에 필요
@@ -108,9 +113,9 @@ export const SuccessComponent = () => {
   };
   const apply = () => {
     if (process.env.NODE_ENV === 'production') {
-      window.location.href = `https://qa-display.cjonstyle.com/m/exhibition/exhibitionDetail?infl_cd=I5332&plnExhbId=202409067081&playedId=${playedUuid}`;
+      window.location.href = `https://qa-display.cjonstyle.com/m/exhibition/exhibitionDetail?infl_cd=I5332&plnExhbId=202409067081&playedId=${playedUuid}&fromApp=${fromApp}`;
     } else {
-      window.location.href = `https://display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}`;
+      window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?infl_cd=I5332&plnExhbId=202409067081&playedId=${playedUuid}&fromApp=${fromApp}`;
     }
     //playedUuid
   };
