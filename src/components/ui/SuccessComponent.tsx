@@ -112,12 +112,17 @@ export const SuccessComponent = () => {
     );
   };
   const apply = () => {
+    let applyUrl;
     if (process.env.NODE_ENV === 'production') {
-      window.location.href = `https://qa-display.cjonstyle.com/m/exhibition/exhibitionDetail?infl_cd=I5332&plnExhbId=202409067081&playedId=${playedUuid}&fromApp=${fromApp}`;
+      applyUrl = `https://qa-display.cjonstyle.com`;
     } else {
-      window.location.href = `https://dev-display.cjonstyle.com/m/exhibition/exhibitionDetail?infl_cd=I5332&plnExhbId=202409067081&playedId=${playedUuid}&fromApp=${fromApp}`;
+      applyUrl = `https://dev-display.cjonstyle.com`;
     }
-    //playedUuid
+    applyUrl += `/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}&fromApp=${fromApp}`;
+    if (fromApp) {
+      applyUrl += '&infl_cd=I5332';
+    }
+    window.location.href = applyUrl;
   };
   const setResultState = score => {
     // const score = stateStore.getState().score;
