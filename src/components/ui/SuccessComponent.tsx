@@ -119,9 +119,6 @@ export const SuccessComponent = () => {
       applyUrl = `https://dev-display.cjonstyle.com`;
     }
     applyUrl += `/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}&fromApp=${fromApp}`;
-    if (fromApp) {
-      applyUrl += '&infl_cd=I5332';
-    }
     window.location.href = applyUrl;
   };
   const setResultState = score => {
