@@ -72,9 +72,7 @@ export const SuccessComponent = () => {
     try {
       // 공유할 데이터 설정
       const shareData = {
-        title: '공유할 제목',
-        text: '공유할 텍스트 내용',
-        url: location.href, // 공유할 URL
+        url: window.location.href, // 공유할 URL
       };
 
       // Web Share API를 사용하여 공유 다이얼로그 열기
