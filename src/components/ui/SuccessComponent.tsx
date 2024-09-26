@@ -112,7 +112,7 @@ export const SuccessComponent = () => {
   const apply = () => {
     let applyUrl;
     if (process.env.NODE_ENV === 'production') {
-      applyUrl = `https://display.cjonstyle.com`;
+      applyUrl = `https://stg-display.cjonstyle.com`;
     } else {
       applyUrl = `https://stg-display.cjonstyle.com`;
     }
