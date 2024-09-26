@@ -27,7 +27,7 @@ export const load8ThWall = (
   ]);
   const allowedDevices = XR8.XrConfig.device().ANY;
   XR8.XrController.configure({ imageTargets: [] });
-  // Open the camera and start running the camera run loop.
+
   XR8.run({ canvas, allowedDevices });
 };
 
