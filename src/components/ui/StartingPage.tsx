@@ -4,15 +4,18 @@ import backgroundImg from '@/assets/imgs/background.jpg';
 // import { typography } from '@hypercloud-kr/styling-kit';
 import { useEffect } from 'react';
 import startingImg from '@/assets/imgs/starting_img.png';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // const body700 = typography.body02[700];
 
 const StartingPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const fromApp = queryParams.get('fromApp') ?? false;
   useEffect(() => {
     setTimeout(() => {
-      navigate('/precautions');
+      navigate(`/precautions?fromApp=${fromApp}`);
       // stateStore.setGameState('precautions');
     }, 1000);
   }, []);
