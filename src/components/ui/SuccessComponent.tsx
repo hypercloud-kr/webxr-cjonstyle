@@ -72,7 +72,7 @@ export const SuccessComponent = () => {
     try {
       // 공유할 데이터 설정
       const shareData = {
-        url: window.location.href, // 공유할 URL
+        url: window.location.origin, // 공유할 URL
       };
 
       // Web Share API를 사용하여 공유 다이얼로그 열기
@@ -89,7 +89,7 @@ export const SuccessComponent = () => {
     stateStore.setReady(false);
   };
   const copyLink = () => {
-    const url = window.location.href;
+    const url = window.location.origin;
     navigator.clipboard.writeText(url).then(
       () => {
         console.log('URL이 복사되었습니다.');

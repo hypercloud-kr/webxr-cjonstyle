@@ -21,6 +21,7 @@ function ArComponent() {
   const [isOpenGuide2, setIsOpenGuide2] = useState(
     !stateStore.getState().firstStart
   );
+  const [isShowingGuide, setIsShowingGuide] = useState(false);
   useEffect(() => {
     const canvas = document.getElementById('arCanvas') as HTMLCanvasElement;
     if (!canvas) return;
@@ -29,6 +30,7 @@ function ArComponent() {
 
     const loadXr = () => {
       load8ThWall(canvas, stateStore.getState().firstStart, setIsOpenGuide2);
+      setIsShowingGuide(true);
     };
     if (XR8_MODE) {
       window.XR8 ? loadXr() : window.addEventListener('xrloaded', loadXr);
@@ -41,7 +43,6 @@ function ArComponent() {
         XR8.stop();
         XR8.clearCameraPipelineModules();
       }
-      stateStore.setRestart();
     };
   }, []);
   useDeviceAlertManager();
@@ -50,7 +51,7 @@ function ArComponent() {
   return (
     <>
       <StyledCanvas id={'arCanvas'} />
-      {isOpenGuide && (
+      {isShowingGuide && isOpenGuide && (
         <GuideComponent
           setIsOpenGuide={setIsOpenGuide}
           setIsOpenGuide2={setIsOpenGuide2}

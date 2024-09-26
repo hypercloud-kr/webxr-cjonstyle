@@ -2,7 +2,6 @@ import styled from 'styled-components';
 // import mainImg from '/@assets/img/img_tit-logo.svg';
 import backgroundImg from '@/assets/imgs/background.jpg';
 // import { typography } from '@hypercloud-kr/styling-kit';
-import { stateStore } from '@/ar/storage';
 import crownImg from '@/assets/imgs/crown.png';
 import bgImg from '@/assets/imgs/img__co_on_02_bg.png';
 
@@ -10,7 +9,8 @@ import bgImg from '@/assets/imgs/img__co_on_02_bg.png';
 
 const PrecautionsComponent = () => {
   const onClick = () => {
-    stateStore.setGameState('running');
+    // stateStore.setGameState('running');
+    location.href = '/ar';
   };
   return (
     <StartingWrapper>

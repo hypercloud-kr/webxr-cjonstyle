@@ -47,7 +47,7 @@ export const globalState = {
   isModelLoaded: false,
   firstStart: true,
   ready: false,
-  gameState: 'start',
+  gameState: 'running',
   score: 0,
   count: 0,
   items: [

@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import styled from '@emotion/styled';
 import { palette, Guide } from '@hypercloud-kr/styling-kit';
 import { ARLoadingComponent } from './ARLoadingComponent';
+// import cjThumbnail from '@/assets/imgs/cj_thumbnail.png';
 
 // 8thWall 자체 Alert 커스터마이징을 위한 Hook
 export default function useDeviceAlertManager() {

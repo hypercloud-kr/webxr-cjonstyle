@@ -2,16 +2,18 @@ import styled from 'styled-components';
 // import mainImg from '/@assets/img/img_tit-logo.svg';
 import backgroundImg from '@/assets/imgs/background.jpg';
 // import { typography } from '@hypercloud-kr/styling-kit';
-import { stateStore } from '@/ar/storage';
 import { useEffect } from 'react';
 import startingImg from '@/assets/imgs/starting_img.png';
+import { useNavigate } from 'react-router-dom';
 
 // const body700 = typography.body02[700];
 
 const StartingPage = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {
-      stateStore.setGameState('precautions');
+      navigate('/precautions');
+      // stateStore.setGameState('precautions');
     }, 1000);
   }, []);
   // const onClick = () => {
