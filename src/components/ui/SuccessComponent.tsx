@@ -112,9 +112,9 @@ export const SuccessComponent = () => {
   const apply = () => {
     let applyUrl;
     if (process.env.NODE_ENV === 'production') {
-      applyUrl = `https://stg-display.cjonstyle.com`;
+      applyUrl = `https://display.cjonstyle.com`;
     } else {
-      applyUrl = `https://dev-display.cjonstyle.com`;
+      applyUrl = `https://stg-display.cjonstyle.com`;
     }
     applyUrl += `/m/exhibition/exhibitionDetail?plnExhbId=202409067081&playedId=${playedUuid}&fromApp=${fromApp}`;
     window.location.href = applyUrl;
