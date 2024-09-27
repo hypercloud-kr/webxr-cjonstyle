@@ -12,6 +12,7 @@ import ScoreBarComponent from '../ui/ar/ScoreBarComponent';
 import CardsComponent from '../ui/ar/CardsComponent';
 import TimerComponent from '../ui/ar/TimerComponent';
 import TimeOutComponent from '../ui/ar/TimeoutComponent';
+import { FunnelAttributionType, SolutionFunnel } from '@/util/funnel';
 
 function ArUiComponent() {
   const [timerWidth, setTimerWidth] = useState(2000);
@@ -71,6 +72,10 @@ function ArUiComponent() {
         return count - 1;
       });
     }, 1000);
+
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '게임 시작',
+    });
   };
 
   const successCallback = () => {

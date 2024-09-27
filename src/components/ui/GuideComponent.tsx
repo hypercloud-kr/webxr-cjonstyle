@@ -4,10 +4,17 @@ import backgroundImg from '@/assets/imgs/background.jpg';
 // import { typography } from '@hypercloud-kr/styling-kit';
 import { ArManager } from '@/ar/ArManager';
 import guideImg from '@/assets/imgs/img_game guide.png';
+import { useEffect } from 'react';
+import { FunnelAttributionType, SolutionFunnel } from '@/util/funnel';
 
 // const body700 = typography.body02[700];
 
 const GuideComponent = ({ setIsOpenGuide, setIsOpenGuide2 }) => {
+  useEffect(() => {
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '게임 안내 페이지',
+    });
+  }, []);
   const onClick = () => {
     setIsOpenGuide(false);
     setIsOpenGuide2(true);

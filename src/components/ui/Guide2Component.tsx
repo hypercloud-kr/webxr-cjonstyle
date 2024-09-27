@@ -6,10 +6,17 @@ import backgroundImg from '@/assets/imgs/background.jpg';
 import boxOpenImg from '@/assets/imgs/img_popup.png';
 import handGestureImg from '@/assets/imgs/img_hand gesture.png';
 import tapImg from '@/assets/imgs/img_Tap.png';
+import { useEffect } from 'react';
+import { FunnelAttributionType, SolutionFunnel } from '@/util/funnel';
 
 // const body700 = typography.body02[700];
 
 const Guide2Component = () => {
+  useEffect(() => {
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '바닥 인식',
+    });
+  }, []);
   return (
     <StartingWrapper>
       <BoxContainer>
