@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { CouponToast } from './CouponToast';
 import { useLocation } from 'react-router-dom';
 import { FunnelAttributionType, SolutionFunnel } from '@/util/funnel';
+import { getEnvInfo } from '@/ar/constants/apiConstants';
 
 export const SuccessComponent = () => {
   // const [title, setTitle] = useState('');
@@ -29,25 +30,13 @@ export const SuccessComponent = () => {
   const fromApp = queryParams.get('fromApp') ?? false;
 
   useEffect(() => {
-    //appkey는 헤더에 필요
-    let appKey;
-    let campaignId;
-    let url;
     SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
       clickInfo: '게임 완료',
     });
-    if (process.env.NODE_ENV === 'production') {
-      appKey = 'aa32beb9-5c79-4016-a0f4-b2a0bb489c42';
-      campaignId = 56;
-      url = `https://api.hars.kr/client/campaign/${campaignId}/played`;
-    } else {
-      appKey = 'bdc1ebfa-d33d-4ea1-9297-d0b114aef4c8';
-      campaignId = 401;
-      url = `https://api.stg.hars.kr/client/campaign/${campaignId}/played`;
-    }
+    const { appKey, campaignId, url } = getEnvInfo();
     axios
       .post(
-        url,
+        `${url}client/campaign/${campaignId}/played`,
         {
           score: stateStore.getState().score,
           deviceId: getDeviceId(),

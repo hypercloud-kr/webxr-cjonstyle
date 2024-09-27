@@ -49,6 +49,15 @@ export class MainScene extends XrScene {
     return this.children.find(item => item.id === id);
   }
   release(): void {
+    this.scene.traverse((obj: any) => {
+      if (obj.geometry && obj.material) {
+        if (obj.material.map) {
+          obj.material.map.dispose();
+        }
+        obj.geometry.dispose();
+        obj.material?.dispose();
+      }
+    });
     super.release();
   }
   render(): void {
