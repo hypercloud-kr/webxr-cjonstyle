@@ -5,6 +5,8 @@ import backgroundImg from '@/assets/imgs/background.jpg';
 import crownImg from '@/assets/imgs/crown.png';
 import bgImg from '@/assets/imgs/img__co_on_02_bg.png';
 import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { FunnelAttributionType, SolutionFunnel } from '@/util/funnel';
 
 // const body700 = typography.body02[700];
 
@@ -12,6 +14,13 @@ const PrecautionsComponent = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const fromApp = queryParams.get('fromApp') ?? false;
+
+  useEffect(() => {
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '유의사항',
+    });
+  }, []);
+
   const onClick = () => {
     // stateStore.setGameState('running');
     window.location.href = `/ar?fromApp=${fromApp}`;

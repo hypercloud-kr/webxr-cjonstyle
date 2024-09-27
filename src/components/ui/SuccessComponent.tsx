@@ -15,6 +15,7 @@ import { css } from '@emotion/react';
 import { toast } from 'react-toastify';
 import { CouponToast } from './CouponToast';
 import { useLocation } from 'react-router-dom';
+import { FunnelAttributionType, SolutionFunnel } from '@/util/funnel';
 
 export const SuccessComponent = () => {
   // const [title, setTitle] = useState('');
@@ -32,6 +33,9 @@ export const SuccessComponent = () => {
     let appKey;
     let campaignId;
     let url;
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '게임 완료',
+    });
     if (process.env.NODE_ENV === 'production') {
       appKey = 'aa32beb9-5c79-4016-a0f4-b2a0bb489c42';
       campaignId = 56;
@@ -81,8 +85,14 @@ export const SuccessComponent = () => {
     } catch (error) {
       console.error('공유가 취소되거나 실패했습니다.', error);
     }
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '공유하기',
+    });
   };
   const replay = () => {
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '리플레이',
+    });
     stateStore.setScore(true);
     stateStore.setCount(true);
     stateStore.setGameState('running');
@@ -103,6 +113,10 @@ export const SuccessComponent = () => {
           position: 'bottom-center',
           toastId: 'link-toast',
         });
+
+        SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+          clickInfo: '링크 복사',
+        });
       },
       err => {
         console.error('URL 복사에 실패했습니다.', err);
@@ -111,6 +125,9 @@ export const SuccessComponent = () => {
   };
   const apply = () => {
     let applyUrl;
+    SolutionFunnel.stack(FunnelAttributionType.EVENT_CLICK, {
+      clickInfo: '응모하기',
+    });
     if (process.env.NODE_ENV === 'production') {
       applyUrl = `https://display.cjonstyle.com`;
     } else {
@@ -273,7 +290,7 @@ export const SuccessComponent = () => {
       <ChoiceContainer>
         <InfoGroup>
           <InfoDiv>점수가 높을수록 당첨 확률 UP!</InfoDiv>
-          <ApplyProduct onClick={apply}>상품 응모하기</ApplyProduct>
+          <ApplyProduct onClick={apply}>경품 응모하기</ApplyProduct>
         </InfoGroup>
         <ReplayBtn onClick={replay}>다시 플레이하기</ReplayBtn>
         <ShareGroup>
